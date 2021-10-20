@@ -1,29 +1,36 @@
 @extends('Layouts.houseslayout')
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-8 pt-3">
-                  <img src="/storage/likebtn.jpg" class=" w-100" >
-            </div>
-            <div class="col-4">
-                <div>
-                    <div class="d-flex align-items-center">
-                        <div class = "pr-3">
-                            <button><img src="/storage/likebtn.jpg" alt="like" height="10" width="20"><a href=""></button>
-                            <img src="/storage/likebtn.jpg" alt="like" style="max-width:60px" class="rounded-circle w-100">
-                        </div>
-
-                     <div>
-                      <div class="font-weight-bold d-flex"> <a href="/stk"><span class="text-dark">owner</span></a>
-
-                     <button><img src="/storage/likebtn.jpg" alt="House" height="10" width="20"><a href=""></a></follow-button>
-                      </div>
-                     </div>
-                    </div>
-
-                   <p> <a href="/stk"><span class="text-dark"> Owner</span></a></p>
-               </div>
-        </div>
+    <div class="container" >
+               <div class="card  mt-2" style="color:blue; width: 18rem;">
+                <img src="/storage/ImagesHouses/likebtn.jpg" class="card-img-top mt-0 px-2" alt="House" style="color:#ffff">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+              </div>
+              <div class="card" style="color:blue; width: 18rem;">
+                <img src="/storage/ImagesHouses/likebtn.jpg" class="card-img-top" alt="House" style="color:#ffff">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+              </div>
+              <div class="card" style="color:blue; width: 18rem;">
+                <img src="/storage/ImagesHouses/likebtn.jpg" class="card-img-top" alt="House" style="color:#ffff">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+              </div>
+              <div class="card" style="color:blue; width: 18rem;">
+                <img src="/storage/ImagesHouses/likebtn.jpg" class="card-img-top" alt="House" style="color:#ffff">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+              </div>
+              <div class="card" style="color:blue; width: 18rem;">
+                <img src="/storage/ImagesHouses/likebtn.jpg" class="card-img-top" alt="House" style="color:#ffff">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+              </div>
     </div>
 
 @endsection
