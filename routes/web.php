@@ -31,3 +31,11 @@ Route::post('get-token', [MpesaController::class, 'getAccessToken']);
 Route::post('register-Urls', [MpesaController::class, 'registerUrls']);
 
 Route::post('simulate', [MpesaController::class, 'simulateTransaction']);
+
+Route::post('send-fcm-token', [FcmCloudMessagingController::class,'firebaseTokenStorage']);
+
+Route::patch('/fcm-token', [FcmCloudMessagingController::class, 'updateToken'])->name('fcmToken');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

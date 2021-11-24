@@ -1,46 +1,32 @@
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+
 require('./bootstrap');
 
-document.getElementById("btngetaccesstoken").addEventListener("click", (event) =>{
-    event.preventDefault()
-    alert("Clicked");
-    axios.post('/get-token', {})
-    .then((response) =>{
-        console.log(response.data)
-    })
-    .catch((error) =>{console.error();})
-})
+window.Vue = require('vue');
 
-document.getElementById("registerUrls").addEventListener('click', (event) =>{
-    event.preventDefault()
+/**
+ * The following block of code may be used to automatically register your
+ * Vue components. It will recursively scan this directory for the Vue
+ * components and automatically register them with their "basename".
+ *
+ * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ */
 
-    axios.post('register-Urls' ,{})
-    .then((response) =>{
-        if(response.data.RespomseDescription){
-          document.getElementById('response').innerHTML = response.data.RespomseDescription
-        }else{
-            document.getElementById('response').innerHTML = response.data.errorMessage
-        }
-        console.log(response.data);
-    })
-    .catch((error) =>{
-        console.log(error);
-    })
-})
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-document.getElementById("simulate").addEventListener('click', (event) =>{
- event.preventDefault()
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
- document.getElementById("accesstoken").innerHTML = "Clicked access Token";
- const requestBody = {
-     amount : document.getElementById('amount').value,
-     account : document.getElementById('account').value
- }
- axios.post('/simulate',requestBody)
- .then((response) => {
-     console.log(response.data);
- })
- .catch((error) =>{
-     console.log(error);
- })
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
 
-})
+const app = new Vue({
+    el: '#app',
+});

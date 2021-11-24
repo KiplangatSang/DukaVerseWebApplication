@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FcmCloudMessagingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('validation', [MpesaResponseController::class,'validation']);
 Route::post('confirmation', [MpesaResponseController::class,'confirmation']);
 Route::post('simulate', [MpesaResponseController::class,'validation']);
+Route::post('send-fcm-token', [FcmCloudMessagingController::class,'firebaseTokenStorage']);
+Route::post('get-fcm-token', [FcmCloudMessagingController::class,'firebaseTokenRetrieve']);
+Route::post('make-notification', [FcmCloudMessagingController::class,'makeNotification']);
+Route::get('curl_download', [FcmCloudMessagingController::class,'curldownload']);
+Route::post('make-updateToken', [FcmCloudMessagingController::class,'updateToken']);
+Route::post('sendNotification', [FcmCloudMessagingController::class,'sendNotification']);
 
+Route::post('delete-Tokendata', [FcmCloudMessagingController::class,'deleterecords']);
