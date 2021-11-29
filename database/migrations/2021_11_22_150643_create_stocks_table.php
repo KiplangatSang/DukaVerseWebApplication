@@ -18,15 +18,15 @@ class CreateStocksTable extends Migration
             $table-> string('stockNameId');
             $table-> string('stockName');
             $table-> string('stockSize');
-            $table-> int('stockAmount');
+            $table-> unsignedBigInteger('stockAmount');
             $table-> string('brand');
-            $table-> int('price');
-            $table-> int('totalCost');
+            $table-> unsignedBigInteger('price');
+            $table-> unsignedBigInteger('totalCost');
             $table-> string('retailNameId');
             $table-> string('retailOwnerId');
-            $table-> int('dayOfWeek');
+            $table-> unsignedBigInteger('dayOfWeek');
             $table-> string('month');
-            $table-> int('year');
+            $table-> unsignedBigInteger('year');
             $table->timestamps();
         });
     }

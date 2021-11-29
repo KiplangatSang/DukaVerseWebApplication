@@ -16,11 +16,11 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
            $table -> string('empName');
-           $table -> int('empNationalId');
-           $table -> int('pin');
+           $table -> unsignedBigInteger('empNationalId');
+           $table -> unsignedBigInteger('pin');
            $table -> string('userName');
            $table -> string('retailNameId');
-           $table ->string ('retailOwnerId');
+           $table ->string('retailOwnerId');
            $table -> string('employerId');
            $table -> string('dateEmployed');
            $table -> double('salary');

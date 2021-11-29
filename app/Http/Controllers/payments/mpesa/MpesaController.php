@@ -18,23 +18,25 @@ class MpesaController extends Controller
             array(
               CURLOPT_HTTPHEADER => ['Content-Type: application/json; charset=utf8'],
               CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_SSL_VERIFYPEER => false,
               CURLOPT_HEADER =>false,
               CURLOPT_USERPWD => env('MPESA_CONSUMER_KEY'). ":" . env('MPESA_CONSUMER_SECRET')
             )
             );
             $response = json_decode(curl_exec($curl));
             curl_close($curl);
-        //    return $response;
+           return $response;
     }
 /* get from   safaricom app*/
     public function makeHttp($url,$body){
-        $url = curl_init();
+        $curl = curl_init($url);
         curl_setopt_array(
             $curl,
             array(
                 CURLOPT_URL => $url,
                 CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Authorization:Bearer', $this ->getAccessToken()),
                 CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_POST =>true,
                 CURLOPT_POSTFIELDS =>JSON_ENCODE($body)
 
@@ -76,8 +78,8 @@ class MpesaController extends Controller
         );
 
         $url = env('MPESA_ENV') == 0
-        ?''
-        :'';
+        ?'https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest'
+        :'https://api.safaricom.co.ke/mpesa/b2c/v1/paymentrequest';
 
         $response = $this ->makeHttp($url,$body);
        return $response;

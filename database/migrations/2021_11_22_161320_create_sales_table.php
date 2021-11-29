@@ -18,12 +18,12 @@ class CreateSalesTable extends Migration
             $table-> string('itemNameId');
             $table-> string('itemName');
             $table-> string('itemSize');
-            $table-> int('itemAmount');
+            $table-> unsignedBigInteger('itemAmount');
             $table-> double('price');
             $table-> string('date');
             $table-> string('dayOfWeek');
             $table-> string('month');
-            $table-> int('year');
+            $table-> unsignedBigInteger('year');
             $table->timestamps();
         });
     }

@@ -4,5 +4,16 @@
 // Variables
 @import 'variables';
 
+$theme-colors:(
+    "primary":#959ae0,
+    "secondary" :#22c738,
+    "danger" :#c55050,
+);
+
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+
+
+

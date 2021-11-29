@@ -65,52 +65,6 @@
 <body style="background-color: #eff4f9">
     @yield('content')
 </body>
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-messaging.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
-    https://firebase.google.com/docs/web/setup#available-libraries -->
-
-<script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyDr39kd9qTF87nP59vLytmJTKE-HM8raw8",
-        authDomain: "953266534737-26u6ds799p74875p3nb5akmemj1vadpc.apps.googleusercontent.com",
-        projectId: "hs-microfinance",
-        storageBucket: "gs://hs-microfinance.appspot.com"
-        messagingSenderId: "953266534737",
-        appId: "1:953266534737:android:72c66fb0f901c768717b70"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-
-function initFirebaseMessagingRegistration() {
-    messaging.requestPermission().then(function () {
-        return messaging.getToken()
-    }).then(function(token) {
-
-        axios.post("{{ route('fcmToken') }}",{
-            _method:"PATCH",
-            token
-        }).then(({data})=>{
-            console.log(data)
-        }).catch(({response:{data}})=>{
-            console.error(data)
-        })
-
-    }).catch(function (err) {
-        console.log(`Token Error :: ${err}`);
-    });
-}
-
-initFirebaseMessagingRegistration();
-
-
-    messaging.onMessage(function({data:{body,title}}){
-        new Notification(title, {body});
-    });
-</script>
 
 </html>

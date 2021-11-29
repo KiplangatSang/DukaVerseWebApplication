@@ -17,7 +17,7 @@ class CreateRequiredItemsTable extends Migration
             $table->id();
             $table-> string('requiredItemId');
             $table-> string('requiredItem');
-            $table-> int('requiredAmount');
+            $table-> unsignedBigInteger('requiredAmount');
             $table-> double('projectedCost');
             $table-> string('requiredStatus');
             $table->timestamps();

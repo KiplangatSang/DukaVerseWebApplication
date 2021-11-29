@@ -23,7 +23,7 @@ class CreateRevenuesTable extends Migration
             $table-> double('itemPrice');
             $table-> double('sellingPrice');
             $table-> string('month');
-            $table-> int('year');
+            $table-> unsignedBigInteger('year');
             $table->timestamps();
 
 

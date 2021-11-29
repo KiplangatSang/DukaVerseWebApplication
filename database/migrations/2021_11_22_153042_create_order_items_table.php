@@ -17,7 +17,7 @@ class CreateOrderItemsTable extends Migration
             $table->id();
             $table-> string('itemId');
             $table-> string('itemName') ;
-            $table-> int('itemOrderAmount');
+            $table-> unsignedBigInteger('itemOrderAmount');
             $table-> string('orderId');
             $table-> string('paymentStatus');
             $table->timestamps();

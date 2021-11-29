@@ -20,7 +20,7 @@ class CreateProfitsTable extends Migration
             $table-> string('dayOfWeek');
             $table-> double('itemsProfit');
             $table-> string('month');
-            $table-> int('year');
+            $table-> unsignedBigInteger('year');
             $table->timestamps();
         });
     }
