@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FcmCloudMessagingController;
+use App\Http\Controllers\payments\mpesa\MpesaResponseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,5 +29,4 @@ Route::post('make-notification', [FcmCloudMessagingController::class,'makeNotifi
 Route::get('curl_download', [FcmCloudMessagingController::class,'curldownload']);
 Route::post('make-updateToken', [FcmCloudMessagingController::class,'updateToken']);
 Route::post('sendNotification', [FcmCloudMessagingController::class,'sendNotification']);
-
 Route::post('delete-Tokendata', [FcmCloudMessagingController::class,'deleterecords']);

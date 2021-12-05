@@ -20,10 +20,6 @@ class CreateSalesTable extends Migration
             $table-> string('itemSize');
             $table-> unsignedBigInteger('itemAmount');
             $table-> double('price');
-            $table-> string('date');
-            $table-> string('dayOfWeek');
-            $table-> string('month');
-            $table-> unsignedBigInteger('year');
             $table->timestamps();
         });
     }

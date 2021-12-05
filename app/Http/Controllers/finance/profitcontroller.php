@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Stock;
+namespace App\Http\Controllers\finance;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class Supplies extends Controller
+class profitcontroller extends Controller
 {
     //
 }

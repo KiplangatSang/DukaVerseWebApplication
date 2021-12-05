@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use app\Http\Controllers\payments\mpesa;
+use App\Http\Controllers\payments\mpesa\MpesaController;
+use App\Http\Controllers\FcmCloudMessagingController;
+use App\Http\Controllers\Sales\SalesController;
+use App\Http\Controllers\stock\stockController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +43,17 @@ Route::patch('/fcm-token', [FcmCloudMessagingController::class, 'updateToken'])-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//sales
+Route::get('/createsales', [SalesController::class, 'showCreateSales']);
+Route::get('/updatesales',[SalesController::class, 'update']);
+Route::get('/showallsales',[SalesController::class, 'show'] );
+Route::get('/salesitemsoncredit', [SalesController::class, 'showSoldItemsOnCredit']);
+Route::get('/view-emp-sales',[SalesController::class, 'showEmpSales'] );
+Route::get('/deletesales', [SalesController::class, 'delete']);
+Route::get('/view-retail-sales', [SalesController::class, 'updateToken']);
+Route::get('/soldPaidItems', [SalesController::class, 'showPaidSoldItems']);
+
+//stock
+Route::get('/create-stock', [stockController::class, 'create'])->name('createstock');
+Route::get('/show-all-stock', [stockController::class, 'index'])->name('showstock');
