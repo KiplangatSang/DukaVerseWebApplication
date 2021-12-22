@@ -3,38 +3,70 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
-use App\Sales\Sales;
-use Illuminate\Http\Request;
+use App\Sales;
+use Hamcrest\Core\HasToString;
 
 class SalesController extends Controller
 {
 
-    public function index($RetailId){
-        $allSales = Sales::where('retailid',$RetailId)
-                    ->orderBy('createdAt')->DESC
-                    ->get();
+    public function index(){
+        $allSales = Sales::all();
+        $salesitems = Sales::count();
+        $salesrevenue = Sales::sum('price');
+        $meansales = Sales::Avg('itemAmount');
 
-        return view("sales.showsolditems",compact('allSales'));
+        $salesdata = array(
+            'allSales' =>  $allSales,
+           'salesitems' => $salesitems,
+           'salesrevenue' => $salesrevenue,
+           'meansales' => $meansales
+        );
+         //dd( $salesdata);
+        return view("Sales.showsolditems") -> with( 'salesdata',$salesdata);
+    }
+
+
+    public function getSalesByDate(){
+     request()->validate(
+            ['startDate'=> 'required'
+            ]
+        );
+
+        $allSales = Sales:: where('created_at',greaterThan(request()->input('startdate')))->get();
+
+        $salesitems = count(Sales::where('created_at',greaterThan(request()->input('startdate')))->get());
+        $salesrevenue = Sales::sum('price');
+        $meansales = Sales::Avg('itemAmount');
+
+        $salesdata = array(
+            'allSales' =>  $allSales,
+           'salesitems' => $salesitems,
+           'salesrevenue' => $salesrevenue,
+           'meansales' => $meansales
+        );
+         //dd( $salesdata);
+        return view("Sales.showsolditems") -> with( 'salesdata',$salesdata);
+
     }
 
 
     public function create(){
-
-    $saleitem = request()->validate(
+     request()->validate(
         ['itemNameId'=> 'required',
         'itemName' => 'required',
-        'itemSize' => 'required',
+        'description' => 'required',
        'itemAmount' => 'required',
+       'itemImage' => ['required','image'],
       'price'=>'required'
         ]
     );
 
-    $salesdata = Sales::upsert(
+    Sales::upsert(
         ['itemNameId' => request()->input('itemNameId'), 'name' => request()->input('itemName')],
         ['itemSize' => request()->input('itemSize'),'itemAmount' =>  request()->input('itemAmount'),'price' =>  request()->input('price')]
     );
 
-    return view("sales.createsolditems",compact('salesdata'));
+    return redirect("/showallsales");
     }
 
     public function showCreateSales(){
@@ -49,25 +81,49 @@ class SalesController extends Controller
 
 
     public function showPaidSoldItems(){
-        // $allSales = Sales::where('status','paid')
-        //             ->orderBy('createdAt')->DESC
-        //             ->get();
-         return view('sales.showpaidsolditems');
+        $allSales = Sales::where('itemAmount','150')
+                    ->orderBy('created_at','DESC')
+                    ->get();
+
+                    $salesitems = Sales::count();
+                    $salesrevenue = Sales::sum('price');
+                    $meansales = Sales::Avg('itemAmount');
+
+                    $salesdata = array(
+                        'allSales' =>  $allSales,
+                       'salesitems' => $salesitems,
+                       'salesrevenue' => $salesrevenue,
+                       'meansales' => $meansales
+                    );
+         return view('sales.showpaidsolditems',compact('salesdata'));
     }
     public function showSoldItemsOnCredit(){
-        // $allSales = Sales::where('status','paid')
-        //             ->orderBy('createdAt')->DESC
-        //             ->get();
-         return view('sales.showsolditemsoncredit');
+        $allSales = Sales::where('itemAmount','150')
+        ->orderBy('created_at','DESC')
+        ->get();
+
+        $salesitems = Sales::count();
+        $salesrevenue = Sales::sum('price');
+        $meansales = Sales::Avg('itemAmount');
+
+        $salesdata = array(
+            'allSales' =>  $allSales,
+           'salesitems' => $salesitems,
+           'salesrevenue' => $salesrevenue,
+           'meansales' => $meansales
+        );
+         return view('sales.showsolditemsoncredit',compact('salesdata'));
     }
-    public function show(){
-        // $allSales = Sales::where('retailid',$RetailId)
-        //             ->orderBy('createdAt')->DESC
-        //             ->get();
-        return view('sales.showsolditems');
+    public function show($id){
+        $allSales = Sales::where('id',$id)
+                    ->orderBy('created_at', 'DESC')
+                    ->get();
+
+                   // dd($allSales);
+        return view('sales.showsinglesaleitem',compact('allSales'));
     }
-    public function delete($RetailId){
-        $allSales = Sales::where('retailid',$RetailId)
+    public function delete($id){
+        $allSales = Sales::where('id',$id)
                     ->orderBy('createdAt')->DESC
                     ->get();
     }

@@ -14,7 +14,7 @@ class stockController extends Controller
      */
     public function index()
     {
-        return view('stock.itemsonstore.showItemsinstore');
+        return view('stock.itemsinstore.showitemsinstore');
     }
 
     /**
@@ -24,7 +24,7 @@ class stockController extends Controller
      */
     public function create()
     {
-        return view('stock.itemsonstore.createItemsOnStore');
+        return view('stock.itemsinstore.createitemsinstore');
         //
     }
 
@@ -47,7 +47,7 @@ class stockController extends Controller
      */
     public function show($id)
     {
-        return view('stock.showItemsinstore');
+        return view('stock.showitemsinstore');
         //
     }
 
@@ -89,18 +89,18 @@ class stockController extends Controller
 
 
 public function showRetailStock(){
-    return view('stock.showItemsinstore');
+    return view('stock.showitemsinstore');
 }
 
 public function createAStock(){
-    return view('stock.createItemsOnStore');
+    return view('stock.createitemsinstore');
 }
 
 
 public function updateAStock(){
-    return view('stock.showItemsinstore');
+    return view('stock.showitemsinstore');
 }
 public function deleteAStock(){
-    return redirect('stock.showItemsinstore');
+    return redirect('stock.showitemsinstore');
 }
 }

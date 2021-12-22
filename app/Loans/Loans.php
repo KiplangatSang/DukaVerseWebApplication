@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Loans;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sales extends Model
+class Loans extends Model
 {
     //
 }

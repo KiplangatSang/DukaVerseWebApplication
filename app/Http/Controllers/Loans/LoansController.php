@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\stock;
+namespace App\Http\Controllers\Loans;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class requiredItemsController extends Controller
+class LoansController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class requiredItemsController extends Controller
     {
         //
 
-        return view('stock.RequiredItems.showrequireditems');
+        return view('Loans.loan');
     }
 
     /**
@@ -27,8 +27,6 @@ class requiredItemsController extends Controller
     public function create()
     {
         //
-
-        return view('stock.RequiredItems.createRequiredItem');
     }
 
     /**
