@@ -11,5 +11,12 @@ class Sales extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    protected $fillable = ['itemNameId', 'itemName', 'itemSize', 'itemAmount', 'price'];
+    protected $guarded = [];
+
+    public function format(){
+         return ['sales_id' => $this->id,
+         'salesname' => $this->name,
+         'created_at' => $this->created_at,
+    ];
+    }
 }

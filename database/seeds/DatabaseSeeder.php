@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             LoansSeeder::class,
             SalesSeeder::class,
             StockSeeder::class,
+            RolesSeeder::class,
         ]);
     }
 

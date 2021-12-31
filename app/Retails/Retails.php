@@ -7,8 +7,7 @@ use App\Retails\RetailOwner;
 
 class Retails extends Model
 {
-    public function retailOwner(){
-    $retails = Retails;
-    $retails->belongsToMany(RetailOwner::class);
+    public function RetailOwner(){
+    $this->belongsToMany(RetailOwner::class);
     }
 }

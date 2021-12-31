@@ -16,6 +16,12 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+
+
+            $this->app->singleton(PaymentGatewayContract::class,function($app){
+                return new RepositoryServiceProvider(  $this->app);
+            });
+
     }
 
     /**

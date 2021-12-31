@@ -8,8 +8,8 @@ use App\Retails\Retails;
 
 class RetailOwner extends Model
 {
-    public function RetailOwnerWithRetail(){
-    $retailowner = RetailOwner;
-    $retailowner->hasMany(Retails::class);
+    public function Retails(){
+
+    $this->hasMany(Retails::class);
     }
 }

@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'email', 'password',
     ];
 
     /**
@@ -36,4 +36,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+
+    public function Roles(){
+        $this->morphOne(Roles::class,'roleable');
+    }
+
+    public function tags(){
+        $this->morphToMany(Tags::class,'taggable');
+    }
+    // public function Sales(){
+    //     $this->hasOne(Roles::class);
+    // }
+
 }
