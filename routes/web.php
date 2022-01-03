@@ -73,3 +73,8 @@ Route::get('/show-all-required-item', [requiredItemsController::class, 'index'])
 
 //loans
 Route::get('/get-available-loans', [LoansController::class, 'index'])->name('loanitems');
+
+//terms and conditions
+Route::get('/terms_and_conditions', function () {
+    return view('termsandconditions');
+});
