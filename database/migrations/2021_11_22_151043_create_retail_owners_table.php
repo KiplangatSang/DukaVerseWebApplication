@@ -16,7 +16,7 @@ class CreateRetailOwnersTable extends Migration
         Schema::create('retail_owners', function (Blueprint $table) {
             $table->id();
             $table-> string('retailOwnerId');
-            $table-> string('retailOwner');
+            $table-> string('retailOwnerName');
             $table-> string('pin');
             $table-> string('phoneno');
             $table-> string('email');

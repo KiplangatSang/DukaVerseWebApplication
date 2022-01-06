@@ -24,9 +24,6 @@ class CreateStocksTable extends Migration
             $table-> unsignedBigInteger('totalCost');
             $table-> string('retailNameId');
             $table-> string('retailOwnerId');
-            $table-> unsignedBigInteger('dayOfWeek');
-            $table-> string('month');
-            $table-> unsignedBigInteger('year');
             $table->timestamps();
         });
     }

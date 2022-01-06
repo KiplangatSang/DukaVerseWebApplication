@@ -15,8 +15,8 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('roleable_id');
-            $table->string('roleable_type');
+            $table->bigInteger('roleable_id')->default(1);
+            $table->string('roleable_type')->nullable();
             $table->bigInteger('county');
             $table->integer('role_id');
             $table->integer('is_super_admin');

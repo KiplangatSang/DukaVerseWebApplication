@@ -1,8 +1,9 @@
 <?php
 
+use App\RequiredItems\RequiredItems;
 use Illuminate\Database\Seeder;
 
-class sales extends Seeder
+class RequiredItemsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,5 +13,8 @@ class sales extends Seeder
     public function run()
     {
         //
+
+        factory(RequiredItems::class,10)
+        ->create();
     }
 }

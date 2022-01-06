@@ -15,8 +15,7 @@ class RolesSeeder extends Seeder
     public function run()
     {
         //
-        for($i=0; $i<10; $i++){
-             factory(Roles::class)->create();
+      factory(  Roles::class,10)
+        ->create();
     }
- }
 }

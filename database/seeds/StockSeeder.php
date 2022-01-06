@@ -1,5 +1,6 @@
 <?php
 
+use App\Stock\Stock as StockStock;
 use Illuminate\Database\Seeder;
 
 class StockSeeder extends Seeder
@@ -12,5 +13,8 @@ class StockSeeder extends Seeder
     public function run()
     {
         //
+
+       factory(StockStock::class,10)
+        ->create();
     }
 }

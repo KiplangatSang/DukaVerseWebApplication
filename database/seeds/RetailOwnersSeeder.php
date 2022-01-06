@@ -1,11 +1,9 @@
 <?php
 
-use App\Loans\Loans;
+use App\Retails\RetailOwner;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
-class LoansSeeder extends Seeder
+class RetailOwnersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +12,7 @@ class LoansSeeder extends Seeder
      */
     public function run()
     {
-        //
-        factory(Loans::class,10)
+        factory(RetailOwner::class,10)
         ->create();
     }
 }

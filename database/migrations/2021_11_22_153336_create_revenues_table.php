@@ -15,19 +15,12 @@ class CreateRevenuesTable extends Migration
     {
         Schema::create('revenues', function (Blueprint $table) {
             $table->id();
-
             $table-> string('revenueId');
-            $table-> string('revenueDate');
-            $table-> string('dayOfWeek');
-            $table-> string('itemName');
+            $table-> string('revenueItem');
             $table-> double('itemPrice');
             $table-> double('sellingPrice');
-            $table-> string('month');
-            $table-> unsignedBigInteger('year');
+            $table-> double('revenue');
             $table->timestamps();
-
-
-
         });
     }
 

@@ -16,11 +16,7 @@ class CreateProfitsTable extends Migration
         Schema::create('profits', function (Blueprint $table) {
             $table->id();
             $table-> string('profitId');
-            $table-> string('profitDate');
-            $table-> string('dayOfWeek');
-            $table-> double('itemsProfit');
-            $table-> string('month');
-            $table-> unsignedBigInteger('year');
+            $table-> double('profitAmount');
             $table->timestamps();
         });
     }

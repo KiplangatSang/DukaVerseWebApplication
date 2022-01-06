@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Stock;
+namespace App\RequiredItems;
 
 use Illuminate\Database\Eloquent\Model;
 
 class RequiredItems extends Model
 {
     //
+
+    protected $guarded =[];
 }
