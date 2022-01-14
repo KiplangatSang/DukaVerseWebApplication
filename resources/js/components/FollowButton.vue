@@ -1,5 +1,7 @@
 <template>
     <div>
+
+
         <button class="btn btn-primary ml-4" onClick="followUser" v-text="buttonText" type= "menu"></button>
     </div>
 </template>

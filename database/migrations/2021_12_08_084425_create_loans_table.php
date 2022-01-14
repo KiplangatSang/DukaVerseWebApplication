@@ -16,10 +16,15 @@ class CreateLoansTable extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
             $table->string('loanable_id');
-            $table->double('loanAmount');
             $table->string('loanable_type');
+            $table->double('min_loan_range');
+            $table->double('max_loan_range');
+            $table->longText('loan_description');
             $table->integer('repayment_status');
-            $table->double('repay_amount');
+            $table->double('active_loan_users');
+            $table->double('active_loan_repayments');
+            $table->double('passive_loan_users');
+            $table->double('passive_loan_repayments');
             $table->timestamps();
         });
     }

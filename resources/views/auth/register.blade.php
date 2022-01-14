@@ -10,91 +10,83 @@
 																				<div class="col-12 col-md-9 col-lg-7 col-xl-6">
 																								<div class="card" style="border-radius: 15px;">
 																												<div class="card-body p-5">
-																																<h2 class="text-uppercase text-center mb-4">Create an account</h2>
+																																<h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
 																																<form method="POST" action="{{ route('register') }}">
-																																				@csrf
+                                                                                                                                    @csrf
 
-																																				<div class="form-outline mb-3">
-																																								<input type="text" id="name"
-																																												class="form-control form-control-lg  @error('username') is-invalid @enderror  "
-																																												name="username" value="{{ old('username') }}" required autocomplete="username"
-																																												autofocus />
+																																				<div class="form-outline mb-2">
+																																								<input type="text" id="name" class="form-control form-control-lg  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus/>
 																																								<label class="form-label" for="username">Your Name</label>
-																																								@error('username')
-																																												<span class="invalid-feedback" role="alert">
-																																																<strong>{{ $message }}</strong>
-																																												</span>
-																																								@enderror
+                                                                                                                                                                @error('username')
+                                                                                                                                                                <span class="invalid-feedback" role="alert">
+                                                                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                                                                </span>
+                                                                                                                                                            @enderror
 																																				</div>
 
-																																				<div class="form-outline mb-3">
-																																								<input type="email" id="email"
-																																												class="form-control form-control-lg  @error('email') is-invalid @enderror"
-																																												name="email" value="{{ old('email') }}" required autocomplete="email" />
+																																				<div class="form-outline mb-2">
+																																								<input type="email" id="email" class="form-control form-control-lg  @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email"/>
 																																								<label class="form-label" for="email">Your Email</label>
-																																								@error('email')
-																																												<span class="invalid-feedback" role="alert">
-																																																<strong>{{ $message }}</strong>
-																																												</span>
-																																								@enderror
+                                                                                                                                                                @error('email')
+                                                                                                                                                                <span class="invalid-feedback" role="alert">
+                                                                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                                                                </span>
+                                                                                                                                                            @enderror
 																																				</div>
 
-																																				<div class="form-outline mb-3">
-																																								<input type="password" id="password"
-																																												class="form-control form-control-lg @error('password') is-invalid @enderror"
-																																												name="password" required autocomplete="new-password" />
+																																				<div class="form-outline mb-2">
+																																								<input type="password" id="password" class="form-control form-control-lg @error('password') is-invalid @enderror"  name="password" required autocomplete="new-password" />
 																																								<label class="form-label" for="password">Password</label>
 
-																																								@error('password')
-																																												<span class="invalid-feedback" role="alert">
-																																																<strong>{{ $message }}</strong>
-																																												</span>
-																																								@enderror
+                                                                                                                                                                @error('password')
+                                                                                                                                                                <span class="invalid-feedback" role="alert">
+                                                                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                                                                </span>
+                                                                                                                                                            @enderror
 																																				</div>
 
-																																				<div class="form-outline mb-3">
-																																								<input type="password" id="password-confirm" class="form-control form-control-lg"
-																																												name="password_confirmation" required autocomplete="new-password" />
+																																				<div class="form-outline mb-2">
+																																								<input type="password" id="password-confirm" class="form-control form-control-lg"  name="password_confirmation" required autocomplete="new-password"/>
 																																								<label class="form-label" for="password-confirm">Repeat your password</label>
 
 																																				</div>
 
-																																				<div class="form-check mb-4 well ">
+																																				<div class="form-check">
 
 
-																																												<input
-																																																class="form-check-input  @error('terms_and_conditions') is-invalid @enderror"
-																																																type="checkbox" value="" id="terms_and_conditions"
-																																																name="termsAndConditions" >
-																																												<label class="form-check-label " for="form2Example3g">
-																																																I agree all statements in
-																																																<a href="/terms_and_conditions" class="text-body"><u>Terms of
-																																																								service</u></a>
-																																												</label>
+                                                                                                                                                    @if (session()->has('terms_and_conditions'))
+
+                                                                                                                                                    <input class="form-check-input me-2 @error('terms_and_conditions') is-invalid @enderror" type="checkbox" value="Accepted"
+                                                                                                                                                    id="terms_and_conditions" name="terms_and_conditions"  checked/>
+
+                                                                                                                                                    @else
+
+                                                                                                                                                    <input class="form-check-input me-2 @error('terms_and_conditions') is-invalid @enderror" type="checkbox" value="Accepted"
+                                                                                                                                                    id="terms_and_conditions" name="terms_and_conditions" />
+
+                                                                                                                                                    @endif
 
 
+                                                                                                                                                       <label class="form-check-label mt-1" for="form2Example3g">
+																																												I agree all statements in <a href="/terms_and_conditions" class="text-body"><u>Terms of
+																																																				service</u></a>
+																																								</label>
 
-																																												@error('terms_and_conditions')
-																																																<span class="invalid-feedback" role="alert">
-																																																				<strong>{{ $message }}</strong>
-																																																</span>
-																																												@enderror
-
-                                                                                                                                                                                @if (session()->has('terms_and_conditions'))
-
-                                                                                                                                                                                @endif
-
-
+                                                                                                                                                                @error('terms_and_conditions')
+                                                                                                                                                                <span class="invalid-feedback" role="alert">
+                                                                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                                                                </span>
+                                                                                                                                                            @enderror
 
 																																				</div>
 
-																																				<div class="d-flex justify-content-center">
-																																								<button type="submit"
+																																				<div class="d-flex justify-content-center mt-2">
+																																								<button type ="submit"
 																																												class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">{{ __('Register') }}</button>
 																																				</div>
 
-																																				<p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/login"
+																																				<p class="text-center text-muted mt-2">Have already an account? <a href="/login"
 																																												class="fw-bold text-body"><u>Login here</u></a></p>
 
 																																</form>

@@ -1,11 +1,11 @@
-@extends('layouts.Login')
+@extends('layouts.login')
 @section('content')
-   <section class="material-half-bg">
-      <div class="cover"></div>
+   <section class="material-half-bg" >
+      <div class="cover" style="background-color: #820fc0"></div>
     </section>
-    <section class="login-content">
-      <div class="logo">
-        <h1>Storm5</h1>
+    <section class="login-content " >
+      <div class="logo ">
+        <h1>Retail Storm5</h1>
       </div>
       <div class="login-box">
         <form  class="login-form" method="POST" action="{{ route('login') }}">
@@ -52,6 +52,9 @@
                 <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>
                     SIGN IN
                 </button>
+
+                <p class="semibold-text m-3"><a href="/register">Or Register to be a member</a></p>
+
               </div>
           </div>
         </form>
@@ -61,17 +64,28 @@
 
 
 
-        <form class="forget-form" action="{{ route('password.request') }}">
+        <form class="forget-form" method="POST" action="{{ route('password.email') }}">
+            @csrf
           <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>Forgot Password ?</h3>
           <div class="form-group">
+
+            <input type="hidden" name="token" value="{{ $token ?? 'guest' }}">
+
             <label class="control-label">EMAIL</label>
-            <input class="form-control" type="text" placeholder="Email">
+            <input id="email" class="form-control @error('email') is-invalid @enderror" type="email" placeholder="Email" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+
+            @error('email')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+
           </div>
           <div class="form-group btn-container">
-            <button class="btn btn-primary btn-block"><i class="fa fa-unlock fa-lg fa-fw"></i>RESET</button>
+            <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-unlock fa-lg fa-fw"></i>RESET</button>
           </div>
           <div class="form-group mt-3">
-            <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> Back to Login</a></p>
+            <p class="semibold-text mb-0"><a href="/login" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> Back to Login</a></p>
           </div>
         </form>
       </div>

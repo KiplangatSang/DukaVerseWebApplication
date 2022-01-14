@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Loans;
 
 use App\Http\Controllers\Controller;
+use App\Loans\Loans;
 use Illuminate\Http\Request;
 
 class LoansController extends Controller
@@ -15,8 +16,8 @@ class LoansController extends Controller
     public function index()
     {
         //
-
-        return view('Loans.loan');
+       $loans = Loans::all();
+        return view('Loans.loan',compact('loans'));
     }
 
     /**

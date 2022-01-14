@@ -25,6 +25,7 @@ $factory->define(User::class, function (Faker $faker) {
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'userpin'=> rand(1000,9999),
+        'terms_and_conditions'=>'Accepted',
         'isOwner'=>$faker->boolean,
         'isEmployee'=> $faker->boolean(),
         'remember_token' => Str::random(10),
