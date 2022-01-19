@@ -17,6 +17,8 @@ class CreateLoansTable extends Migration
             $table->id();
             $table->string('loanable_id');
             $table->string('loanable_type');
+            $table->string('loan_type');
+            $table->double('loan_interest_rate');
             $table->double('min_loan_range');
             $table->double('max_loan_range');
             $table->longText('loan_description');

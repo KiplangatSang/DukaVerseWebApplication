@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Http\Views\Composers\SalesComposer;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\View;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -40,5 +42,8 @@ class AppServiceProvider extends ServiceProvider
             return 'AB-'.substr($part,0,3).'_'.substr($part,3);
         });
         Schema::defaultStringLength(191);
+
+
+        View::composer(['Retailers.addretail','Layouts.app','Loans.loan','Loans.loanitems'], SalesComposer::class);
     }
 }

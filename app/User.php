@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Retails\Retail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,14 +41,24 @@ class User extends Authenticatable
 
 
     public function Roles(){
-        $this->morphOne(Roles::class,'roleable');
+        return $this->morphOne(Roles::class,'roleable');
     }
 
     public function tags(){
-        $this->morphToMany(Tags::class,'taggable');
+        return $this->morphToMany(Tags::class,'taggable');
     }
+
+
+    public function Retails(){
+        return $this->morphMany(Retail::class,'retailable');
+    }
+
+    public function LoanApplication(){
+        return $this->morphMany(LoanApplication::class,'loanapplicable');
+    }
+
     // public function Sales(){
-    //     $this->hasOne(Roles::class);
+    //     return $this->hasOne(Roles::class);
     // }
 
 }

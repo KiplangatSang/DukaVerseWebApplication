@@ -4,9 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Http\Controllers\FcmCloudMessagingController;
 use App\Http\Controllers\Loans\LoansController;
+use App\Http\Controllers\Retails\RetailsController;
 use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\stock\requiredItemsController;
 use App\Http\Controllers\stock\stockController;
+use App\Retails\Retail;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -73,8 +75,50 @@ Route::get('/show-all-required-item', [requiredItemsController::class, 'index'])
 
 //loans
 Route::get('/get-available-loans', [LoansController::class, 'index'])->name('loanitems');
+Route::get('/loans/show-my-loans', [LoansController::class, 'showAppliedLoans'])->name('getMyLoans');
+Route::get('/request-loan/{loan_id}/{amount}', [LoansController::class, 'applyLoan'])->name('LoanApplication');
+
+// let form = document.getElementById("loanForm").action = action;
+
+
+// 				                        let el = document.createElement("input");
+// 				                        el.className = "integr_elements";
+
+
+//                                         el.name ="amount";
+//                                         el.value = inputValue;
+
+
+// 				                        form.appendChild(el);
+
+//                                         form.action = action;
+
+// 				                        form.submit();
+
+
+
+
+
 
 //terms and conditions
 Route::get('/terms_and_conditions', function () {
     return view('termsandconditions');
 });
+
+
+// Route::put('/post/{post}', function (Post $post) {
+//     // The current user may update the post...
+// })->middleware('can:update,post'); ->middleware('can:registerRetail,post');
+
+
+//retails
+Route::get('/retails/addretail', function (Retail $retail) {
+    // The current user may update the post...
+
+return view('Retailers.addretail');
+
+});
+
+//register a retail
+Route::post('/register/add-retail',  [RetailsController::class, 'create']);
+

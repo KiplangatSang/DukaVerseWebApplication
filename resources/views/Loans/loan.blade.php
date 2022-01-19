@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
 				<div class="app-title">
+
+
 								<div>
 												<h1><i class="fa fa-th-list"></i> Data Table</h1>
 												<p>Table to display analytical data effectively</p>
@@ -20,35 +22,39 @@
 																												<thead>
 																																<tr>
 																																				<th>Loan Type</th>
-																																				<th>Loan Range</th>
 																																				<th>Loan Amount</th>
-																																				<th>Loan Description</th>
-																																				@can('view-loan', $loan)
-																																								<th>Repayment Status</th>
-																																								<th>Active Loan Users</th>
-																																								<th>Active Loan Repayments</th>
-																																								<th>Passive Loan Users</th>
-																																								<th>Passive Loan Repayments</th>
+																																				<th>Loan Duration</th>
+																																				<th>Loan Status</th>
+																																				<th>Assigned By</th>
+																																				<th>Assigned at</th>
+																																				<th>View Loan </th>
+
+																																				@can('view-loan', $loans)
 																																				@endcan
 
 																																</tr>
 
 																												</thead>
 																												<tbody>
-																																<tr>
-																																				<td>{{ $loan['loanable_type'] }}</td>
-																																				<td>{{ 'ksh' . $loan['min_loan_range'] . 'ksh' . $loan['max_loan_range'] }}</td>
+																																@foreach ($loans as $loan)
+																																				<tr>
 
-																																				<td>{{ $loan['loan_description'] }}</td>
-																																				@can('view-loan', $loan)
-																																								<td>{{ $loan['repayment_status'] }}</td>
-																																								<td>{{ $loan['active_loan_users'] }}</td>
-																																								<td>{{ $loan['active_loan_repayments'] }}</td>
-																																								<td>{{ $loan['passive_loan_users'] }}</td>
-																																								<td>{{ $loan['passive_loan_repayments'] }}</td>
 
-																																				@endcan
-																																</tr>
+																																								<td>{{ $loan->loan_type }}</td>
+																																								<td>{{ 'Ksh ' . $loan->loan_amount }}</td>
+																																								<td>{{ $loan->loan_duration . ' Days' }}</td>
+																																								<td>{{ $loan->loan_status }}</td>
+																																								<td>{{ $loan->loan_assigned_at }}</td>
+																																								<td>{{ $loan->loan_assigned_by }}</td>
+																																								<td><a href="/sales-item/{{$loan->id}}"><i class="fa fa-eye col"> View</i></a></td>
+
+
+																																								@can('view-loan', $loans)
+																																								@endcan
+
+																																				</tr>
+																																@endforeach
+
 																												</tbody>
 																								</table>
 																				</div>

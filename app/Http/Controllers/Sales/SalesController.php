@@ -9,6 +9,11 @@ use Hamcrest\Core\HasToString;
 class SalesController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(){
         $allSales = Sales::all();
         $salesitems = Sales::count();
@@ -32,9 +37,9 @@ class SalesController extends Controller
             ]
         );
 
-        $allSales = Sales:: where('created_at',greaterThan(request()->input('startdate')))->get();
+        $allSales = Sales:: where('created_at','>',request()->input('startdate'))->get();
 
-        $salesitems = count(Sales::where('created_at',greaterThan(request()->input('startdate')))->get());
+        $salesitems = count(Sales::where('created_at','>',request()->input('startdate'))->get());
         $salesrevenue = Sales::sum('price');
         $meansales = Sales::Avg('itemAmount');
 

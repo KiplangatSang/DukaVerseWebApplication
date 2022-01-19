@@ -3,11 +3,21 @@
 namespace App\Http\Controllers\Loans;
 
 use App\Http\Controllers\Controller;
+use App\LoanApplication;
 use App\Loans\Loans;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class LoansController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,9 +26,71 @@ class LoansController extends Controller
     public function index()
     {
         //
-       $loans = Loans::all();
-        return view('Loans.loan',compact('loans'));
+        $loans = Loans::all();
+        // dd($loans);
+        return view('Loans.loanitems', compact('loans'));
     }
+
+
+    public function showAppliedLoans()
+    {
+
+        $user = auth()->user();
+        $loans = LoanApplication::whereIn('loanapplicable_id', $user)->orderBy('created_at', 'DESC')->get();
+
+
+        foreach ($loans as $loan) {
+            if ($loan->loan_status == -1) {
+                $loan->loan_status = "Waiting";
+                $loan->loan_assigned_at = "N/A";
+                $loan->loan_assigned_by =  "N/A";
+                $loan->loan_repaid_amount =  "N/A";
+            } elseif ($loan->loan_status == 0) {
+                $loan->loan_status = "Processed";
+            } else {
+                $loan->loan_status = "Paid";
+            }
+
+
+        }
+
+
+
+
+
+        return view('Loans.loan', compact('loans'));
+    }
+
+    public function applyLoan($loan_id, $amount)
+    {
+
+        $loan = Loans::where('id', $loan_id)->first();
+        // dd($loan);
+
+        try {
+            auth()->user()->LoanApplication()->create(
+                [
+                    'loan_type' => $loan->loan_type,
+                    'loan_amount' => preg_replace('/\s+/', '', $amount),
+                    'loan_duration' => 30,
+                    'loan_interest' => $loan->loan_interest_rate,
+                    'loan_status' => -1,
+                    'loan_assigned_at' => null,
+                    'loan_assigned_by' => null,
+                    'loan_repaid_amount' => 0.0
+
+                ]
+            );
+        } catch (Exception $exception) {
+            $exception->getMessage();
+            sleep(2);
+            return redirect('/get-available-loans')->with('message', 'Loan Could not be processed');
+        }
+        sleep(3);
+        return redirect('/get-available-loans')->with('success', 'Loan Application Successful');
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

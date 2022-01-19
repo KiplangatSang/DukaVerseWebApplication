@@ -15,10 +15,11 @@ $factory->define(Loans::class, function (Faker $faker) {
 
         'loanable_id'=> Str::random(1,100000),
         'loanable_type'=> Str::random(1,100000),
+        'loan_type'=> Str::random(1,100000),
         'min_loan_range'=> rand(1000,100000),
         'max_loan_range'=> rand(10000,1000000),
         'repayment_status'=>rand(-1,1),
-        //'repay_amount'=> rand(100,1000),
+        'loan_interest_rate'=> rand(10,25),
         'loan_description'=>$faker->paragraph(4),
         'active_loan_users'=>rand(100,1000),
         'active_loan_repayments'=>rand(100,1000),

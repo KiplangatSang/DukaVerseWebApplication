@@ -121,7 +121,7 @@
                     <td><a href="/sales-item/{{$saleitem->id}}"> {{$saleitem->timestamps}}</a>
 
                     </td>
-                    <td><a href="/sales-item/{{$saleitem->id}}"><i class="fa fa-eye col"></i></a></td>
+                    <td><a href="/sales-item/{{$saleitem->id}}"><i class="fa fa-eye col"> View</i></a></td>
                 </a>
                 </tr>
                   @endforeach
