@@ -18,6 +18,7 @@ class CreateLoanApplicationsTable extends Migration
             $table->bigInteger('loanapplicable_id');
             $table->string('loanapplicable_type');
             $table->string('loan_type');
+            $table->bigInteger('loan_id');
             $table->double('loan_amount');
             $table->integer('loan_duration');
             $table->double('loan_interest');

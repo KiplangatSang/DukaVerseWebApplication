@@ -20,13 +20,24 @@
 												</div>
 								@endif
 
-                                @if (session()->has('success'))
+								@if (session()->has('success'))
 												<div class="container-fluid alert alert-success">
 																{{ session()->get('success') }}
 												</div>
 								@endif
 
 								<div class="col-md-12">
+
+												@if (count($loans) < 1)
+
+																<div class="container-fluid alert alert-success">
+																				<h3 class="text-display-4 text-info">No available Loans</h3>
+
+                                                                                <a href="/home" class="button btn btn-secondary">Back to Dashbord</a>
+                                                                            </div>
+												@endif
+
+
 
 												@foreach ($loans as $loan)
 																<div class="tile-body">
@@ -66,7 +77,8 @@
 																																				<div class="form-group col-md-3 align-self-end">
 
 																																								<a class="btn btn-info" href="#" id="loanAmountAlert"
-																																												onclick="submitform(@json($loan->id))">Apply Now</a>
+																																												onclick="submitform(@json($loan->id),@json($loan->min_loan_range),@json($loan->max_loan_range))">Apply
+																																												Now</a>
 
 
 																																				</div>

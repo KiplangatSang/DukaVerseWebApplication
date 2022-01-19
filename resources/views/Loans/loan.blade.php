@@ -4,16 +4,21 @@
 
 
 								<div>
-												<h1><i class="fa fa-th-list"></i> Data Table</h1>
-												<p>Table to display analytical data effectively</p>
+												<h1><i class="fa fa-th-list"></i>My Loans History</h1>
+												<p>List of Loans that have been requested</p>
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-												<li class="breadcrumb-item">Tables</li>
-												<li class="breadcrumb-item active"><a href="#">Data Table</a></li>
+												<li class="breadcrumb-item">Loans</li>
+												<li class="breadcrumb-item active"><a href="#">Loan History</a></li>
 								</ul>
 				</div>
 				<div class="row">
+								@if (session()->has('success'))
+												<div class="container-fluid alert alert-success">
+																{{ session()->get('success') }}
+												</div>
+								@endif
 								<div class="col-md-12">
 												<div class="tile">
 																<div class="tile-body">
@@ -38,6 +43,7 @@
 																												<tbody>
 																																@foreach ($loans as $loan)
 																																				<tr>
+                                                                                                                                                    {{dd($loan)}}
 
 
 																																								<td>{{ $loan->loan_type }}</td>
@@ -46,7 +52,8 @@
 																																								<td>{{ $loan->loan_status }}</td>
 																																								<td>{{ $loan->loan_assigned_at }}</td>
 																																								<td>{{ $loan->loan_assigned_by }}</td>
-																																								<td><a href="/sales-item/{{$loan->id}}"><i class="fa fa-eye col"> View</i></a></td>
+																																								<td><a href="/sales-item/{{ $loan->id }}"><i class="fa fa-eye col">
+																																																				View</i></a></td>
 
 
 																																								@can('view-loan', $loans)

@@ -14,6 +14,7 @@ $factory->define(LoanApplication::class, function (Faker $faker) {
         'loanapplicable_id'=> Str::random(1,100000),
         'loanapplicable_type'=> Str::random(1,100000),
         'loan_type'=> Str::random(1,100000),
+        'loan_id'=> rand(1,20),
         'loan_amount'=> rand(1000,100000),
         'loan_duration'=> rand(10000,1000000),
         'loan_interest'=> rand(10000,1000000),

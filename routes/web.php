@@ -77,23 +77,10 @@ Route::get('/show-all-required-item', [requiredItemsController::class, 'index'])
 Route::get('/get-available-loans', [LoansController::class, 'index'])->name('loanitems');
 Route::get('/loans/show-my-loans', [LoansController::class, 'showAppliedLoans'])->name('getMyLoans');
 Route::get('/request-loan/{loan_id}/{amount}', [LoansController::class, 'applyLoan'])->name('LoanApplication');
-
-// let form = document.getElementById("loanForm").action = action;
-
-
-// 				                        let el = document.createElement("input");
-// 				                        el.className = "integr_elements";
+Route::get('/loans/pay-a-loan/{loan_id}', [LoansController::class, 'payLoanRequest'])->name('LoanApplication');
 
 
-//                                         el.name ="amount";
-//                                         el.value = inputValue;
 
-
-// 				                        form.appendChild(el);
-
-//                                         form.action = action;
-
-// 				                        form.submit();
 
 
 

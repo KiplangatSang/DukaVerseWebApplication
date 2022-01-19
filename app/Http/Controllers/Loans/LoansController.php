@@ -71,6 +71,7 @@ class LoansController extends Controller
             auth()->user()->LoanApplication()->create(
                 [
                     'loan_type' => $loan->loan_type,
+                    'loan_id' => $loan->id,
                     'loan_amount' => preg_replace('/\s+/', '', $amount),
                     'loan_duration' => 30,
                     'loan_interest' => $loan->loan_interest_rate,
@@ -87,8 +88,15 @@ class LoansController extends Controller
             return redirect('/get-available-loans')->with('message', 'Loan Could not be processed');
         }
         sleep(3);
-        return redirect('/get-available-loans')->with('success', 'Loan Application Successful');
+        return redirect('/loans/show-my-loans')->with('success', 'Loan Application Successful');
     }
+
+
+     public function payLoanRequest($loan_id){
+
+
+
+     }
 
 
 

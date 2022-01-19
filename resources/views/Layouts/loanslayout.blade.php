@@ -270,8 +270,12 @@
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item  bg-success" href="/get-available-loans"><i
 																																class="icon fa fa-circle-o"></i>Request A Loan</a></li>
-																				<li><a class="treeview-item  bg-success" href="#"><i class="icon fa fa-circle-o"></i>Pay A
-																												loan</a></li>
+																				<li><a class="treeview-item  bg-success" href="/loans/show-my-loans"><i
+																																class="icon fa fa-circle-o"></i> Loan History
+                                                                                                                            </a></li>
+																				<li><a class="treeview-item  bg-success" href="/loans/pay-a-loan"><i
+																																class="icon fa fa-circle-o"></i> Pay Loan
+																												</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
@@ -337,7 +341,8 @@
 				            type: "info"
 				        });
 				    });
-				    function submitform(loan_id) {
+
+				    function submitform(loan_id, min_loan_range, max_loan_range) {
 				        swal({
 				            title: "Loan Request",
 				            text: "You are about to request a loan,\n Enter amount you want to request.",
@@ -357,14 +362,21 @@
 
 				                if (parseInt(inputValue)) {
 				                    //var x = document.getElementById("loanForm").selectedIndex;
-				                    var form_route = loan_id+"/"+inputValue;
+				                    var form_route = loan_id + "/" + inputValue;
 				                    if (form_route !== "") {
-                                        var form_action =  document.getElementById("loanForm").action;
-                                        document.getElementById("loanForm").action = form_action + form_route;
-				                        document.getElementById("loanForm").submit();
-                                      // console.log(document.getElementById("loanForm").action);
-                                        swal("Success!", "Your Loan request has been sent.  " + typeof parseInt(inputValue),
-				                        "success");
+				                        if (parseInt(inputValue) >= parseInt(min_loan_range) && parseInt(inputValue) <=
+				                            parseInt(max_loan_range)) {
+				                            var form_action = document.getElementById("loanForm").action;
+				                            document.getElementById("loanForm").action = form_action + form_route;
+				                            document.getElementById("loanForm").submit();
+				                            // console.log(document.getElementById("loanForm").action);
+				                            swal("Success!", "Your Loan request has been sent.  " + typeof parseInt(inputValue),
+				                                "success");
+				                        } else {
+				                            swal("The input should be between " + min_loan_range + " and" + max_loan_range,
+				                                "Request Canceled  :)", "error");
+
+				                        }
 				                    }
 
 
