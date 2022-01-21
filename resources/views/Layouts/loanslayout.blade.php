@@ -370,11 +370,11 @@
 				                            document.getElementById("loanForm").action = form_action + form_route;
 				                            document.getElementById("loanForm").submit();
 				                            // console.log(document.getElementById("loanForm").action);
-				                            swal("Success!", "Your Loan request has been sent.  " + typeof parseInt(inputValue),
+				                            swal("Success!", "Your Loan request has been sent. \n  Await its Processing within 24 hrs",
 				                                "success");
 				                        } else {
-				                            swal("The input should be between " + min_loan_range + " and" + max_loan_range,
-				                                "Request Canceled  :)", "error");
+				                            swal("The input should be between ksh " + min_loan_range + " and ksh " + max_loan_range,
+				                                " Request Canceled", "error");
 
 				                        }
 				                    }

@@ -19,8 +19,16 @@
 																{{ session()->get('success') }}
 												</div>
 								@endif
+
 								<div class="col-md-12">
-												<div class="tile">
+
+
+                                    @if (count($loans ) < 1 )
+                                    <div class="container-fluid alert alert-info mx-auto justify-content-center">
+                                        <h5 class="text-display-4 text-danger text-align-center ">You have no Loans History</h5>
+                        </div>
+                                    @else
+                                        <div class="tile">
 																<div class="tile-body">
 																				<div class="table-responsive">
 																								<table class="table table-hover table-bordered" id="sampleTable">
@@ -43,7 +51,7 @@
 																												<tbody>
 																																@foreach ($loans as $loan)
 																																				<tr>
-                                                                                                                                                    {{dd($loan)}}
+                                                                                                                                                    {{-- {{dd($loan)}} --}}
 
 
 																																								<td>{{ $loan->loan_type }}</td>
@@ -52,7 +60,7 @@
 																																								<td>{{ $loan->loan_status }}</td>
 																																								<td>{{ $loan->loan_assigned_at }}</td>
 																																								<td>{{ $loan->loan_assigned_by }}</td>
-																																								<td><a href="/sales-item/{{ $loan->id }}"><i class="fa fa-eye col">
+																																								<td><a href="/loans/view-applied-loan/{{ $loan->loan_id }}/{{ $loan->id }}"><i class="fa fa-eye col">
 																																																				View</i></a></td>
 
 
@@ -67,6 +75,8 @@
 																				</div>
 																</div>
 												</div>
+                                    @endif
+
 								</div>
 				</div>
 @endsection

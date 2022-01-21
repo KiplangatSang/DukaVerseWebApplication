@@ -91,15 +91,6 @@ class LoansController extends Controller
         return redirect('/loans/show-my-loans')->with('success', 'Loan Application Successful');
     }
 
-
-     public function payLoanRequest($loan_id){
-
-
-
-     }
-
-
-
     /**
      * Show the form for creating a new resource.
      *

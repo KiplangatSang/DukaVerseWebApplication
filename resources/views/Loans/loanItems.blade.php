@@ -64,8 +64,8 @@
 																																				</div>
 																																				<div class="form-group col-md-3">
 																																								<label class="control-label"><strong>Amount</strong> </label>
-																																								<h5 class="text-display-6 text-danger">{{ $loan->min_loan_range }} to <br>
-																																												{{ $loan->max_loan_range }}</h3>
+																																								<h5 class="text-display-6 text-danger">Ksh {{ $loan->min_loan_range }} to <br>
+                                                                                                                                                                    Ksh {{ $loan->max_loan_range }}</h3>
 																																				</div>
 																																				<div class="form-group col-md-3">
 																																								<label class="control-label"><strong>Loan Description</strong></label>

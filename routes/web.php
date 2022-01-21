@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Http\Controllers\FcmCloudMessagingController;
+use App\Http\Controllers\Loans\LoansApplicationsController;
 use App\Http\Controllers\Loans\LoansController;
 use App\Http\Controllers\Retails\RetailsController;
 use App\Http\Controllers\Sales\SalesController;
@@ -77,7 +78,14 @@ Route::get('/show-all-required-item', [requiredItemsController::class, 'index'])
 Route::get('/get-available-loans', [LoansController::class, 'index'])->name('loanitems');
 Route::get('/loans/show-my-loans', [LoansController::class, 'showAppliedLoans'])->name('getMyLoans');
 Route::get('/request-loan/{loan_id}/{amount}', [LoansController::class, 'applyLoan'])->name('LoanApplication');
-Route::get('/loans/pay-a-loan/{loan_id}', [LoansController::class, 'payLoanRequest'])->name('LoanApplication');
+Route::get('/loans/pay-a-loan/{loanapplication_id}', [LoansApplicationsController::class, 'payLoanRequest'])->name('LoanApplication');
+Route::get('/loans/view-applied-loan/{loan_id}/{loanapplication_id}', [LoansApplicationsController::class, 'showAppliedLoanItem']);
+
+
+//payments
+Route::get('/payments/cardpayments', function () {
+    return view('payments.cardpayments');
+});
 
 
 
