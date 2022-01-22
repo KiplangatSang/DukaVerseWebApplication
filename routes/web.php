@@ -5,6 +5,7 @@ use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Http\Controllers\FcmCloudMessagingController;
 use App\Http\Controllers\Loans\LoansApplicationsController;
 use App\Http\Controllers\Loans\LoansController;
+use App\Http\Controllers\Payments\CardPayments\CardPaymentsController;
 use App\Http\Controllers\Retails\RetailsController;
 use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\stock\requiredItemsController;
@@ -83,9 +84,7 @@ Route::get('/loans/view-applied-loan/{loan_id}/{loanapplication_id}', [LoansAppl
 
 
 //payments
-Route::get('/payments/cardpayments', function () {
-    return view('payments.cardpayments');
-});
+Route::get('/payments/cardpayments', [CardPaymentsController::class, 'index']);
 
 
 
