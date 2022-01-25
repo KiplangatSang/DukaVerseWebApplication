@@ -273,7 +273,7 @@
 																				<li><a class="treeview-item  bg-success" href="/loans/show-my-loans"><i
 																																class="icon fa fa-circle-o"></i> Loan History
                                                                                                                             </a></li>
-																				<li><a class="treeview-item  bg-success" href="/loans/pay-a-loan"><i
+																				<li><a class="treeview-item  bg-success" href="/loans/show-my-loans"><i
 																																class="icon fa fa-circle-o"></i> Pay Loan
 																												</a></li>
 																</ul>

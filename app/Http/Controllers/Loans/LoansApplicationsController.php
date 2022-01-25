@@ -5,10 +5,17 @@ namespace App\Http\Controllers\Loans;
 use App\Http\Controllers\Controller;
 use App\LoanApplication;
 use App\Loans\Loans;
+use App\Repositories\ThirdPartyRepository;
 use Illuminate\Http\Request;
 
 class LoansApplicationsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     //
     public function index($loan_id){
 
@@ -57,11 +64,16 @@ class LoansApplicationsController extends Controller
     }
 
     public function payLoanRequest($loanapplication_id){
+
+        $thirdPartyRepo = new ThirdPartyRepository();
+        $thirdPartyImages = $thirdPartyRepo->getThirdPartyImages();
         $loanApplication = LoanApplication::where('id',$loanapplication_id)->first();
-        dd($loanApplication);
+        $loanPaymentData = array(
+            'thirdPartyImages' => $thirdPartyImages,
+            'loanApplication'  => $loanApplication,
+        );
 
-
-
-
+          // dd($loanPaymentData);
+       return view('Loans.loanpayments',compact('loanPaymentData'));
     }
 }
