@@ -26,7 +26,7 @@ class ThirdPartyRepository
 
     public function thirdpartyPayments()
     {
-        $thirdParties = array('MPESA.jpg', 'kcb.png', 'equity.png');
+        $thirdParties = array('MPESA.jpg', 'KCB.png', 'EQUITY.png');
         $thirdPartyImagePaths = array();
 
         foreach ($thirdParties as $thirdParty) {

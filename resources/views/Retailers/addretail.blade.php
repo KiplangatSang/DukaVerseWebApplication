@@ -2,7 +2,6 @@
 @section('content')
 				<div class="app-title">
 								<div>
-
 												<h1><i class="fa fa-edit"></i>Retail Registration</h1>
 												<p>Register Your Retail Shop</p>
 								</div>

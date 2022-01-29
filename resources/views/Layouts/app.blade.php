@@ -216,7 +216,7 @@
 																								class="app-menu__icon fa fa-edit"></i><span class="app-menu__label ">Employees</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  bg-success" href="form-components.html"><i
+																				<li><a class="treeview-item  bg-success" href="/employees/showemployees"><i
 																																class="icon fa fa-circle-o "></i> Employee Information</a></li>
 																				<li><a class="treeview-item  bg-success" href="form-custom.html"><i
 																																class="icon fa fa-circle-o"></i>Employee Sales</a></li>
@@ -224,7 +224,7 @@
 																																class="icon fa fa-circle-o "></i>Requests</a></li>
 																				<li><a class="treeview-item  bg-success" href="form-notifications.html"><i
 																																class="icon fa fa-circle-o "></i>Salaries</a></li>
-																				<li><a class="treeview-item  bg-success" href="form-notifications.html"><i
+																				<li><a class="treeview-item  bg-success" href="/employees/addemployee"><i
 																																class="icon fa fa-circle-o "></i>Add Employee</a></li>
 																</ul>
 												</li>

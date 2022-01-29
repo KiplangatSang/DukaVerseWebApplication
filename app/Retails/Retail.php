@@ -2,6 +2,7 @@
 
 namespace App\Retails;
 
+use App\Employees;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,4 +23,13 @@ class Retail extends Model
 
         return  $this->hasMany(Retails::class);
     }
+
+    public function Employees(){
+
+            return $this->morphMany(Employees::class,'employeeable');
+
+    }
+
+
+
 }

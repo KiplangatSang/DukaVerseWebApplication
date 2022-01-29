@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Employees\EmployeeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Http\Controllers\FcmCloudMessagingController;
@@ -85,6 +86,20 @@ Route::get('/loans/view-applied-loan/{loan_id}/{loanapplication_id}', [LoansAppl
 
 //payments
 Route::get('/payments/cardpayments', [CardPaymentsController::class, 'index']);
+Route::get('/payments/mpesapayments', [MpesaController::class, 'index']);
+Route::post('/payments/mpesapayments/simulatepayments', [MpesaController::class, 'simulateTransaction']);
+Route::post('/payments/mpesapayments/stkpush', [MpesaController::class, 'stkPush']);
+
+Route::post('/stkpush', [MpesaController::class, 'stkPushResponse']);
+
+
+//employees
+Route::get('/employees/showemployees', [EmployeeController::class, 'index']);
+Route::get('/employees/addemployee', [EmployeeController::class, 'create']);
+Route::post('/employees/create-new-emp', [EmployeeController::class, 'newEmployee']);
+
+
+
 
 
 

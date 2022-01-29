@@ -1,4 +1,4 @@
-@extends('Layouts.houseslayout')
+@extends('Layouts.homelayout')
 @section('content')
     <div class="container" >
                <div class="card  mt-2" style="color:blue; width: 18rem;">

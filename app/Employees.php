@@ -13,4 +13,9 @@ class Employees extends Model
     public function Roles(){
        $this->morphMany(Roles::class,'roleable');
     }
+
+    public  function employeeable(){
+
+        return $this->morphTo(Retail::class);
+    }
 }

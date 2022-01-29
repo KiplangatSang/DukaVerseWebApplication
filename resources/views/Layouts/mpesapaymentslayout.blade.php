@@ -16,15 +16,13 @@
 				<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
                 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/cardpayments.css') }}">
 
-				<!-- Font-icon css-->
+                <!-- Font-icon css-->
 				<link rel="stylesheet" type="text/css"
 								href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/dropzone.js') }}"></script>
-				<script type="text/javascript" src="{{ asset('assets/js/plugins/bootstrap-notify.min.js') }}"></script>
-				<script type="text/javascript" src="{{ asset('assets/js/plugins/sweetalert.min.js') }}"></script>
 </head>
 
-<body class="app sidebar-mini  pace-done">
+<body class="app sidebar-mini">
 				<!-- Navbar-->
 				<header class="app-header"><a class="app-header__logo" href="index.html">Storm5</a>
 								<!-- Sidebar toggle button-->
@@ -126,11 +124,9 @@
 				<aside class="app-sidebar bg-success">
 
 								<div class="app-sidebar__user"><img class="app-sidebar__user-avatar d-flex w-25"
-																src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
-																alt="User Image">
+																src="/storage/RetailPictures/{{$data['retailimage']->retailPicture ??  'noprofile.png'}}" alt="User Image">
 												<div>
-																<p class="app-sidebar__user-name">
-																				{{ $data['retailimage']->retailName ?? (Auth::user()->username ?? 'guest') }}</p>
+																<p class="app-sidebar__user-name">{{$data['retailimage']->retailName ?? Auth::user()->username ?? 'guest' }}</p>
 
 
 																@if (Auth::user()->isOnwer)
@@ -272,12 +268,8 @@
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item  bg-success" href="/get-available-loans"><i
 																																class="icon fa fa-circle-o"></i>Request A Loan</a></li>
-																				<li><a class="treeview-item  bg-success" href="/loans/show-my-loans"><i
-																																class="icon fa fa-circle-o"></i> Loan History
-                                                                                                                            </a></li>
-																				<li><a class="treeview-item  bg-success" href="/loans/show-my-loans"><i
-																																class="icon fa fa-circle-o"></i> Pay Loan
-																												</a></li>
+																				<li><a class="treeview-item  bg-success" href="#"><i class="icon fa fa-circle-o"></i>Pay A
+																												loan</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
@@ -324,78 +316,108 @@
 				<script src="{{ asset('assets/js/popper.min.js') }}"></script>
 				<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 				<script src="{{ asset('assets/js/main.js') }}"></script>
-
 				<!-- The javascript plugin to display page loading on top-->
 				<script src="{{ asset('assets/js/plugins/pace.min.js') }}"></script>
-
-
-				{{-- notification section --}}
-
 				<!-- Page specific javascripts-->
-
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/chart.js') }}"></script>
 				<script type="text/javascript">
-				    $('#demoNotify').click(function() {
-				        $.notify({
-				            title: "Update Complete : ",
-				            message: "Something cool is just updated!",
-				            icon: 'fa fa-check'
-				        }, {
-				            type: "info"
-				        });
-				    });
+				    var data = {
+				        labels: ["January", "February", "March", "April", "May"],
+				        datasets: [{
+				                label: "My First dataset",
+				                fillColor: "rgba(220,220,220,0.2)",
+				                strokeColor: "rgba(220,220,220,1)",
+				                pointColor: "rgba(220,220,220,1)",
+				                pointStrokeColor: "#fff",
+				                pointHighlightFill: "#fff",
+				                pointHighlightStroke: "rgba(220,220,220,1)",
 
-				    function submitform(loan_id, min_loan_range, max_loan_range) {
-				        swal({
-				            title: "Loan Request",
-				            text: "You are about to request a loan,\n Enter amount you want to request.",
-				            type: "input",
-				            inputPlaceholder: 'Enter Loan amount here',
-				            showCancelButton: true,
-				            confirmButtonText: "Confirm, Submit!",
-				            cancelButtonText: "No, Cancel !",
-				            closeOnConfirm: false,
-				            closeOnCancel: false,
-
-				        }, function(isConfirm) {
-				            if (isConfirm) {
-
-				                let inputValue = isConfirm;
+                                data: @json($data['salesData'])
 
 
-				                if (parseInt(inputValue)) {
-				                    //var x = document.getElementById("loanForm").selectedIndex;
-				                    var form_route = loan_id + "/" + inputValue;
-				                    if (form_route !== "") {
-				                        if (parseInt(inputValue) >= parseInt(min_loan_range) && parseInt(inputValue) <=
-				                            parseInt(max_loan_range)) {
-				                            var form_action = document.getElementById("loanForm").action;
-				                            document.getElementById("loanForm").action = form_action + form_route;
-				                            document.getElementById("loanForm").submit();
-				                            // console.log(document.getElementById("loanForm").action);
-				                            swal("Success!", "Your Loan request has been sent. \n  Await its Processing within 24 hrs",
-				                                "success");
-				                        } else {
-				                            swal("The input should be between ksh " + min_loan_range + " and ksh " + max_loan_range,
-				                                " Request Canceled", "error");
-
-				                        }
-				                    }
-
-
-				                } else {
-				                    swal("The input should be a number ", "Request Canceled  :)", "error");
-
-				                }
+				            },
+				            {
+				                label: "My Second dataset",
+				                fillColor: "rgba(151,187,205,0.2)",
+				                strokeColor: "rgba(151,187,205,1)",
+				                pointColor: "rgba(151,187,205,1)",
+				                pointStrokeColor: "#fff",
+				                pointHighlightFill: "#fff",
+				                pointHighlightStroke: "rgba(151,187,205,1)",
+				                data: @json($data['salesData'])
 
 
 
-				            } else {
-				                swal("Cancelled", "Request Canceled  :)", "error");
 				            }
-				        });
+				        ]
+				    };
+				    var pdata = [{
+
+
+				            value: 40,
+				            color: "#46BFBD",
+				            highlight: "#5AD3D1",
+				            label: "Complete"
+				        },
+				        {
+				            value: 60,
+				            color: "#F7464A",
+				            highlight: "#000000",
+				            label: "In-Progress"
+				        }
+				    ]
+
+				    var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+				    var lineChart = new Chart(ctxl).Line(data);
+
+				    var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+				    var pieChart = new Chart(ctxp).Pie(pdata);
+				</script>
+				<!-- Google analytics script-->
+				<script type="text/javascript">
+				    if (document.location.hostname == 'pratikborsadiya.in') {
+				        (function(i, s, o, g, r, a, m) {
+				            i['GoogleAnalyticsObject'] = r;
+				            i[r] = i[r] || function() {
+				                (i[r].q = i[r].q || []).push(arguments)
+				            }, i[r].l = 1 * new Date();
+				            a = s.createElement(o),
+				                m = s.getElementsByTagName(o)[0];
+				            a.async = 1;
+				            a.src = g;
+				            m.parentNode.insertBefore(a, m)
+				        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+				        ga('create', 'UA-72504830-1', 'auto');
+				        ga('send', 'pageview');
 				    }
 				</script>
 
+
+
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/bootstrap-datepicker.min.js') }}"></script>
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/dropzone.js') }}"></script>
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/select2.min.js') }}"></script>
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/bootstrap-datepicker.min.js') }}"></script>
+
+
+				<script type="text/javascript">
+				    $('#sl').on('click', function() {
+				        $('#tl').loadingBtn();
+				        $('#tb').loadingBtn({
+				            text: "Signing In"
+				        });
+				    });
+
+				    $('#el').on('click', function() {
+				        $('#tl').loadingBtnComplete();
+				        $('#tb').loadingBtnComplete({
+				            html: "Sign In"
+				        });
+				    });
+
+
+				    $('#multipleSelectForm').select2();
+				</script>
 
 </body>
 
