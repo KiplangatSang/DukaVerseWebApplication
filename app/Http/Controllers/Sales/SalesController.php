@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
-use App\Sales;
+use App\Sales\Sales ;
 use Hamcrest\Core\HasToString;
 
 class SalesController extends Controller

@@ -1,4 +1,4 @@
-@extends('Layouts.cardpaymentslayout')
+@extends('Layouts.login')
 @section('content')
     <div class="container">
             <div class="card mt-5 mx-auto">

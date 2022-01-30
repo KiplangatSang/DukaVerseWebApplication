@@ -14,7 +14,7 @@ class MpesaController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->phone = Auth::user()->phonenumber;
+       // $this->phone = Auth::user()->phonenumber;
     }
 
     public function index(){

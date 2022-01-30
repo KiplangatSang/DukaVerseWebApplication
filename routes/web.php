@@ -98,6 +98,12 @@ Route::get('/employees/showemployees', [EmployeeController::class, 'index']);
 Route::get('/employees/addemployee', [EmployeeController::class, 'create']);
 Route::post('/employees/create-new-emp', [EmployeeController::class, 'newEmployee']);
 
+Route::get('/employee/viewEmployee/{emp_id}', [EmployeeController::class, 'show']);
+Route::get('/employee/viewEmployee/salaries', [EmployeeController::class, 'Salaries']);
+Route::get('/employee/viewEmployee/sales', [EmployeeController::class, 'Sales']);
+
+
+
 
 
 
@@ -121,13 +127,9 @@ Route::get('/terms_and_conditions', function () {
 
 
 //retails
-Route::get('/retails/addretail', function (Retail $retail) {
-    // The current user may update the post...
-
-return view('Retailers.addretail');
-
-});
+Route::get('/retails/retails-list',  [RetailsController::class, 'create']);
+Route::get('/retails/addretail',  [RetailsController::class, 'create']);
 
 //register a retail
-Route::post('/register/add-retail',  [RetailsController::class, 'create']);
+Route::post('/register/add-retail',  [RetailsController::class, 'addARetail']);
 

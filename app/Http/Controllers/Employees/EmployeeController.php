@@ -30,9 +30,12 @@ class EmployeeController extends Controller
 
     public function create()
     {
+
         $user = auth()->user();
         $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
-
+        if(count($retail) < 1){
+            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
+        }
         $empdata = array(
             'Retail' => $retail
         );
@@ -58,44 +61,43 @@ class EmployeeController extends Controller
         $user = auth()->user();
         $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->first();
 
-
-
-        $retail->Employees()->create(
-            [
-                'empName' => $request->emp_name,
-                'empEmail' => $request->emp_email,
-                'empNationalId' => $request->emp_ID,
-                'pin' => date('Y'),
-                'empRole' => $request->emp_role,
-                'userName' => $request->emp_name,
-                'dateEmployed' => now(),
-                'salary' => $request->emp_salary,
-
-            ]
-        );
-
-
-
-
-        return redirect('/employees/showemployees');
-       // dd($data['emp_role']);
-
-
         try {
 
+            $retail->Employees()->create(
+                [
+                    'empName' => $request->emp_name,
+                    'empEmail' => $request->emp_email,
+                    'empPhoneno'=>$request->emp_phoneno,
+                    'empNationalId' => $request->emp_ID,
+                    'pin' => date('Y'),
+                    'empRole' => $request->emp_role,
+                    'userName' => $request->emp_name,
+                    'dateEmployed' => now(),
+                    'salary' => $request->emp_salary,
 
+                ]
+            );
+
+            return redirect('/employees/showemployees')->with('success');
         } catch (Exception $ex) {
 
-
-            dd($ex->getTraceAsString());
+            $ex->getMessage();
+            return back()->with('message',"Could not register Employee");
         }
 
 
 
     }
 
-    public function show()
+    public function show($emp_id)
     {
+        $emp = Employees::where('id',$emp_id)->first();
+
+        $empdata = array(
+            'emp' => $emp,
+        );
+        return view('Employees.showemployee',compact('empdata'));
+        //dd($emp);
     }
 
     public function update()

@@ -15,6 +15,8 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table-> bigInteger('saleable_id');
+            $table-> string('saleable_type');
             $table-> string('itemNameId');
             $table-> string('itemName');
             $table-> string('itemSize');

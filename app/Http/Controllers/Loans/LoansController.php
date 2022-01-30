@@ -85,7 +85,7 @@ class LoansController extends Controller
         } catch (Exception $exception) {
             $exception->getMessage();
             sleep(2);
-            return redirect('/get-available-loans')->with('message', 'Loan Could not be processed');
+            return redirect('/get-available-loans')->with('message', 'Loan Could not be Processed');
         }
         sleep(3);
         return redirect('/loans/show-my-loans')->with('success', 'Loan Application Successful');

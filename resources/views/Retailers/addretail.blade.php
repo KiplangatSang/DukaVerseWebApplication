@@ -14,6 +14,17 @@
 				<div class="row">
 								<div class="col">
 												<div class="tile">
+                                                    @if (session()->has('message'))
+                                                    <div class="container-fluid alert alert-danger">
+                                                                    {{ session()->get('message') }}
+                                                    </div>
+                                    @endif
+
+                                    @if (session()->has('success'))
+                                                    <div class="container-fluid alert alert-success">
+                                                                    {{ session()->get('success') }}
+                                                    </div>
+                                    @endif
 																<h3 class="tile-title">Fill in the form to register your shop/retail</h3>
 																<div class="tile-body">
 																				<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/register/add-retail">

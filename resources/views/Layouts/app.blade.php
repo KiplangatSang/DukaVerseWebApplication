@@ -122,9 +122,11 @@
 				<aside class="app-sidebar bg-success">
 
 								<div class="app-sidebar__user"><img class="app-sidebar__user-avatar d-flex w-25"
-																src="/storage/RetailPictures/{{$data['retailimage']->retailPicture ??  'noprofile.png'}}" alt="User Image">
+																src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
+																alt="User Image">
 												<div>
-																<p class="app-sidebar__user-name">{{$data['retailimage']->retailName ?? Auth::user()->username ?? 'guest' }}</p>
+																<p class="app-sidebar__user-name">
+																				{{ $data['retailimage']->retailName ?? (Auth::user()->username ?? 'guest') }}</p>
 
 
 																@if (Auth::user()->isOnwer)
@@ -217,12 +219,12 @@
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item  bg-success" href="/employees/showemployees"><i
-																																class="icon fa fa-circle-o "></i> Employee Information</a></li>
-																				<li><a class="treeview-item  bg-success" href="form-custom.html"><i
+																																class="icon fa fa-circle-o "></i> Employees List</a></li>
+																				<li><a class="treeview-item  bg-success" href="/employee/viewEmployee/sales"><i
 																																class="icon fa fa-circle-o"></i>Employee Sales</a></li>
 																				<li><a class="treeview-item  bg-success" href="form-samples.html"><i
 																																class="icon fa fa-circle-o "></i>Requests</a></li>
-																				<li><a class="treeview-item  bg-success" href="form-notifications.html"><i
+																				<li><a class="treeview-item  bg-success" href="/employee/viewEmployee/salaries"><i
 																																class="icon fa fa-circle-o "></i>Salaries</a></li>
 																				<li><a class="treeview-item  bg-success" href="/employees/addemployee"><i
 																																class="icon fa fa-circle-o "></i>Add Employee</a></li>
@@ -330,7 +332,7 @@
 				                pointHighlightFill: "#fff",
 				                pointHighlightStroke: "rgba(220,220,220,1)",
 
-                                data: @json($data['salesData'])
+				                data: @json($data['salesData'])
 
 
 				            },

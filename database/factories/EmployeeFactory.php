@@ -13,6 +13,7 @@ $factory->define(Employees::class, function (Faker $faker) {
         'employeeable_type' => "App\Retails\Retail",
         'empName' => $faker->name,
         'empEmail' => $faker->email,
+        'empPhoneno'=>rand(20000,400000),
         'empRole' => Str::random(10),
         'empNationalId' => rand(20000,400000),
         'pin' => rand(2000,4000),

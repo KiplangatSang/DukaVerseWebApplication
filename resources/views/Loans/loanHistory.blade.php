@@ -15,6 +15,17 @@
     <div class="col-md-12">
       <div class="tile">
         <div class="tile-body">
+            @if (session()->has('message'))
+												<div class="container-fluid alert alert-danger">
+																{{ session()->get('message') }}
+												</div>
+								@endif
+
+								@if (session()->has('success'))
+												<div class="container-fluid alert alert-success">
+																{{ session()->get('success') }}
+												</div>
+								@endif
           <div class="table-responsive">
             <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Sales\Sales;
 use Illuminate\Database\Eloquent\Model;
 
 class Employees extends Model
@@ -11,11 +12,15 @@ class Employees extends Model
 
 
     public function Roles(){
-       $this->morphMany(Roles::class,'roleable');
+      return $this->morphMany(Roles::class,'roleable');
     }
 
     public  function employeeable(){
 
         return $this->morphTo(Retail::class);
     }
+
+    public function Sales(){
+        return $this->morphMany(Sales::class,'saleable');
+      }
 }

@@ -19,6 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->longText('employeeable_type');
             $table->string('empName');
             $table->string('empEmail');
+            $table->string('empPhoneno');
             $table->unsignedBigInteger('empNationalId');
             $table->unsignedBigInteger('pin');
             $table->string('userName');
