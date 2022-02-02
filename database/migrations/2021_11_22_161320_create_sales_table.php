@@ -17,6 +17,8 @@ class CreateSalesTable extends Migration
             $table->id();
             $table-> bigInteger('saleable_id');
             $table-> string('saleable_type');
+            $table-> bigInteger('retailsaleable_id');
+            $table-> string('retailsaleable_type');
             $table-> string('itemNameId');
             $table-> string('itemName');
             $table-> string('itemSize');

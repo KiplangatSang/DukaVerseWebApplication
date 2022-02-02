@@ -16,14 +16,18 @@ class CreateStocksTable extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table-> string('stockNameId');
+            $table-> bigInteger('stockable_id');
+            $table-> string('stockable_type');
+            $table-> bigInteger('retailstockable_id');
+            $table-> string('retailstockable_type');
+            $table-> bigInteger('supplierstockable_id');
+            $table-> string('supplierstockable_type');
             $table-> string('stockName');
             $table-> string('stockSize');
             $table-> unsignedBigInteger('stockAmount');
             $table-> string('brand');
-            $table-> unsignedBigInteger('price');
+            $table-> double('price');
             $table-> unsignedBigInteger('totalCost');
-            $table-> string('retailNameId');
-            $table-> string('retailOwnerId');
             $table->timestamps();
         });
     }

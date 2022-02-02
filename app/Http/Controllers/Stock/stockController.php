@@ -1,20 +1,56 @@
 <?php
 
-namespace App\Http\Controllers\stock;
+namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
+use App\Stock\Stock;
 use Illuminate\Http\Request;
 
-class stockController extends Controller
+class StockController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function __construct()
     {
-        return view('stock.itemsinstore.showitemsinstore');
+        $this->middleware('auth');
+    }
+
+    public function index(){
+        $user = auth()->user();
+        //$retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
+        $retail = $user->Retails()->get();
+        if(count($retail) < 1){
+            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
+        }
+
+
+        $retails = auth()->user()->Retails()->get();
+
+        $allStocks = null;
+        $stocksitems = null;
+        $stocksrevenue = null;
+
+        foreach($retails as $retail){
+           $retailName = $retail->retailName;
+             $stocksitems = count($retail->stocks);
+                $stocksrevenue = $retail->stocks->sum('price');
+            $allStocks = array(
+               "Stocks"  => $retail->stocks,
+
+            );
+        }
+        $stocksdata = array(
+            'allStocks' =>  $allStocks,
+           'stocksitems' => $stocksitems,
+           'stocksrevenue' => $stocksrevenue,
+           'retails' => $retails,
+        );
+
+         //dd( $salesdata);
+        return view("Stock.ItemsInStore.showitemsinstore",compact('stocksdata'));
     }
 
     /**
@@ -47,7 +83,15 @@ class stockController extends Controller
      */
     public function show($id)
     {
-        return view('stock.showitemsinstore');
+        $allStocks = Stock::where('stockName',$id)
+        ->orderBy('created_at', 'DESC')
+        ->get();
+$stocksdata = array(
+'allStocks' =>  $allStocks,
+);
+
+
+        return view('stock.ItemsInStore.showiteminstore',compact('stocksdata'));
         //
     }
 
@@ -80,8 +124,11 @@ class stockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($stock_id)
     {
+        Stock::destroy($stock_id);
+
+        return back()->with('success', 'Deletion Successful');
         //
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
+use App\Retails\Retail;
 use App\Sales\Sales ;
 use Hamcrest\Core\HasToString;
 
@@ -15,19 +16,75 @@ class SalesController extends Controller
     }
 
     public function index(){
-        $allSales = Sales::all();
-        $salesitems = Sales::count();
-        $salesrevenue = Sales::sum('price');
-        $meansales = Sales::Avg('itemAmount');
+        $user = auth()->user();
+        //$retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
+        $retail = $user->Retails()->get();
+        if(count($retail) < 1){
+            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
+        }
 
+
+        $retails = auth()->user()->Retails()->get();
+
+        $allSales = null;
+        $salesitems = null;
+        $salesrevenue = null;
+        $meansales = null;
+
+        foreach($retails as $retail){
+           $retailName = $retail->retailName;
+             $salesitems = count($retail->sales);
+                $salesrevenue = $retail->sales->sum('price');
+                $meansales = $retail->sales->Avg('itemAmount');
+            $allSales = array(
+               "Sales"  => $retail->sales,
+
+            );
+        }
         $salesdata = array(
             'allSales' =>  $allSales,
            'salesitems' => $salesitems,
            'salesrevenue' => $salesrevenue,
-           'meansales' => $meansales
+           'meansales' => $meansales,
+           'retails' => $retails,
         );
+
          //dd( $salesdata);
-        return view("Sales.showsolditems") -> with( 'salesdata',$salesdata);
+        return view("Sales.showsolditems",compact('salesdata'));
+    }
+
+
+    public function getSalesByRetail($retailId){
+
+        $retails = Retail::where('id',$retailId)->get();
+
+        $allSales = null;
+        $salesitems = null;
+        $salesrevenue = null;
+        $meansales = null;
+
+        foreach($retails as $retail){
+            $sales = $retail->sales;
+           // dd($sales);
+             $salesitems = count($sales);
+                $salesrevenue = $sales->sum('price');
+                $meansales = $sales->Avg('itemAmount');
+            $allSales = array(
+               "Sales"  => $sales,
+
+            );
+        }
+        $salesdata = array(
+            'allSales' =>  $allSales,
+           'salesitems' => $salesitems,
+           'salesrevenue' => $salesrevenue,
+           'meansales' => $meansales,
+           'retails' => $retails,
+        );
+
+
+         dd( $salesdata);
+         return view("Sales.showsolditems",compact('salesdata'));
     }
 
 
@@ -37,21 +94,48 @@ class SalesController extends Controller
             ]
         );
 
-        $allSales = Sales:: where('created_at','>',request()->input('startdate'))->get();
+        $to = now();
+        if(request()->input('endDate') != null ){
+            $to = request()->input('endDate')." 23:59:59";
+            //dd($to);
+        }
 
-        $salesitems = count(Sales::where('created_at','>',request()->input('startdate'))->get());
-        $salesrevenue = Sales::sum('price');
-        $meansales = Sales::Avg('itemAmount');
 
+       // dd(now());
+        $from = request()->input('startDate')." 00:00:00";
+        dd($from);
+
+
+
+        $retails = auth()->user()->Retails()->get();
+
+        $allSales = null;
+        $salesitems = null;
+        $salesrevenue = null;
+        $meansales = null;
+
+        foreach($retails as $retail){
+            $sales = Sales::whereBetween('created_at', [$from." 00:00:00",$to." 23:59:59"])->get();
+           // dd($sales);
+             $salesitems = count($sales);
+                $salesrevenue = $sales->sum('price');
+                $meansales = $sales->Avg('itemAmount');
+            $allSales = array(
+               "Sales"  => $sales,
+
+            );
+        }
         $salesdata = array(
             'allSales' =>  $allSales,
            'salesitems' => $salesitems,
            'salesrevenue' => $salesrevenue,
-           'meansales' => $meansales
+           'meansales' => $meansales,
+           'retails' => $retails,
         );
-         //dd( $salesdata);
-        return view("Sales.showsolditems") -> with( 'salesdata',$salesdata);
 
+
+         //dd( $salesdata);
+         return view("Sales.showsolditems",compact('salesdata'));
     }
 
 
@@ -120,17 +204,21 @@ class SalesController extends Controller
          return view('sales.showsolditemsoncredit',compact('salesdata'));
     }
     public function show($id){
-        $allSales = Sales::where('id',$id)
+        $allSales = Sales::where('itemName',$id)
                     ->orderBy('created_at', 'DESC')
                     ->get();
+        $salesdata = array(
+            'allSales' =>  $allSales,
+        );
 
                    // dd($allSales);
-        return view('sales.showsinglesaleitem',compact('allSales'));
+        return view('Sales.showsaleitem',compact('salesdata'));
     }
-    public function delete($id){
-        $allSales = Sales::where('id',$id)
-                    ->orderBy('createdAt')->DESC
-                    ->get();
+    public function delete($sale_id){
+        Sales::destroy($sale_id);
+
+        return back()->with('success', 'Deletion Successful');
+
     }
 
 

@@ -14,6 +14,8 @@
 
 				<!-- Main CSS-->
 				<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
+				<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/cardpayments.css') }}">
+
 				<!-- Font-icon css-->
 				<link rel="stylesheet" type="text/css"
 								href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -311,6 +313,30 @@
 				<main class="app-content bg-white">
 								@yield('content')
 				</main>
+                <script type="text/javascript">
+				    function submitform() {
+				        var btn = document.getElementById("sales_date_btn");
+				        if (btn.innerText === "Red") {
+				            btn.innerText = "Blue";
+				        } else {
+				            btn.innerText = "Red";
+				        }
+				        document.getElementById("sales_date_form").action = "/sales-by-date/1";
+				        document.getElementById("sales_date_form").submit();
+
+				    }
+
+                    function submitretailform(id) {
+
+				        document.getElementById("retailform").action = "/sales/sales-by-retail/"+id;
+				        document.getElementById("retailform").submit();
+
+				    }
+
+
+				</script>
+
+
 				<!-- Essential javascripts for application to work-->
 				<script src="{{ asset('assets/js/jquery-3.3.1.min.js') }}"></script>
 				<script src="{{ asset('assets/js/popper.min.js') }}"></script>
@@ -373,24 +399,7 @@
 				    var ctxp = $("#pieChartDemo").get(0).getContext("2d");
 				    var pieChart = new Chart(ctxp).Pie(pdata);
 				</script>
-				<!-- Google analytics script-->
-				<script type="text/javascript">
-				    if (document.location.hostname == 'pratikborsadiya.in') {
-				        (function(i, s, o, g, r, a, m) {
-				            i['GoogleAnalyticsObject'] = r;
-				            i[r] = i[r] || function() {
-				                (i[r].q = i[r].q || []).push(arguments)
-				            }, i[r].l = 1 * new Date();
-				            a = s.createElement(o),
-				                m = s.getElementsByTagName(o)[0];
-				            a.async = 1;
-				            a.src = g;
-				            m.parentNode.insertBefore(a, m)
-				        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-				        ga('create', 'UA-72504830-1', 'auto');
-				        ga('send', 'pageview');
-				    }
-				</script>
+
 
 
 
@@ -418,6 +427,46 @@
 
 				    $('#multipleSelectForm').select2();
 				</script>
+
+				{{-- date picker --}}
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/jquery.dataTables.min.js') }}"></script>
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/dataTables.bootstrap.min.js') }}"></script>
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/bootstrap-datepicker.min.js') }}"></script>
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/select2.min.js') }}"></script>
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/bootstrap-datepicker.min.js') }}"></script>
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/dropzone.js') }}"></script>
+				<script type="text/javascript">
+				    $('#sl').on('click', function() {
+				        $('#tl').loadingBtn();
+				        $('#tb').loadingBtn({
+				            text: "Signing In"
+				        });
+				    });
+
+				    $('#el').on('click', function() {
+				        $('#tl').loadingBtnComplete();
+				        $('#tb').loadingBtnComplete({
+				            html: "Sign In"
+				        });
+				    });
+
+				    $('#startDate').datepicker({
+				        format: "yyyy-mm-dd",
+				        autoclose: true,
+				        todayHighlight: true
+				    });
+				    $('#endDate').datepicker({
+				        format: "yyyy-mm-dd",
+				        autoclose: true,
+				        todayHighlight: true
+				    });
+
+				    $('#demoSelect').select2();
+				</script>
+				<script type="text/javascript">
+				    $('#sampleTable').DataTable();
+				</script>
+
 
 </body>
 

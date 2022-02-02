@@ -16,14 +16,14 @@
 												<div class="tile">
 																<h3 class="tile-title">Fill in the form to register a Employee</h3>
 																<div class="tile-body">
-																				<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/employees/create-new-emp">
+																				<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/employee/updateEmployeeData/{{$empdata['emp']->id}}">
 
 																								@csrf
 																								<div class="form-group col">
 
 
 																												<label for="exampleSelect1">Retail Name</label>
-																												<select class="form-control" id="exampleSelect1" name="retail_id">
+																												<select class="form-control" id="exampleSelect1" name="retail_id" value="{{$empdata['emp']->empRole}}">
 																																@foreach ($empdata['Retail'] as $data)
 
 																																				<option value="{{ $data->id }}">{{ $data->retailName }}</option>
@@ -45,7 +45,7 @@
 
 																				<label for="exampleSelect1">Employee Name</label>
 																				<input class="form-control  @error('emp_name') is-invalid @enderror" type="text"
-																								placeholder="Enter Employee Name" name="emp_name" value="{{ old('emp_name') }}"
+																								placeholder="Enter Employee Name" name="emp_name" value="{{ $empdata['emp']->empName }}"
 																								autocomplete="emp_name" required>
 
 																				@error('emp_name')
@@ -61,7 +61,7 @@
 																<div class="form-group col">
 																				<div class="form-group">
 																								<label for="exampleSelect1">Role</label>
-																								<select class="form-control" id="exampleSelect1" name="emp_role">
+																								<select class="form-control" id="exampleSelect1" name="emp_role" value="{{$empdata['emp']->empName}}">
 																												<option value="Sales">Sales</option>
 																												<option value="Managerial">Managerial</option>
 																												<option value="Accounts">Account</option>
@@ -80,7 +80,7 @@
 																				<label class="control-label ">Employee ID/Passport Number</label>
 																				<div>
 																								<input class="form-control  @error('emp_ID') is-invalid @enderror" type="text"
-																												placeholder="Enter Employee ID/Passport Number" name="emp_ID" value="{{ old('emp_ID') }}"
+																												placeholder="Enter Employee ID/Passport Number" name="emp_ID" value="{{$empdata['emp']->empNationalId}}"
 																												autocomplete="emp_ID" required>
 
 																								@error('emp_ID')
@@ -96,7 +96,7 @@
 																				<label class="control-label ">Phone Number</label>
 																				<div>
 																								<input class="form-control  @error('emp_phoneno') is-invalid @enderror" type="phone"
-																												placeholder="Enter Employee Phone Number" name="emp_phoneno" value="{{ old('emp_phoneno') }}"
+																												placeholder="Enter Employee Phone Number" name="emp_phoneno" value="{{ $empdata['emp']->empPhoneno }}"
 																												autocomplete="emp_phoneno" required>
 
 																								@error('emp_phoneno')
@@ -112,7 +112,7 @@
 																				<label class="control-label ">Email</label>
 																				<div>
 																								<input class="form-control  @error('emp_email') is-invalid @enderror" type="email"
-																												placeholder="Enter Employee Email" name="emp_email" value="{{ old('emp_email') }}"
+																												placeholder="Enter Employee Email" name="emp_email" value="{{$empdata['emp']->empEmail }}"
 																												autocomplete="emp_email" required>
 
 																								@error('emp_email')
@@ -131,7 +131,7 @@
 																				<label class="control-label ">Salary</label>
 																				<div>
 																								<input class="form-control  @error('emp_salary') is-invalid @enderror" type="Number"
-																												placeholder="Enter Employee Salary" name="emp_salary" value="{{ old('emp_salary') }}"
+																												placeholder="Enter Employee Salary" name="emp_salary" value="{{ $empdata['emp']->salary }}"
 																												autocomplete="emp_salary" required>
 
 																								@error('emp_salary')
@@ -151,7 +151,7 @@
 												<div class="tile-footer">
 																<div class="row">
 																				<div class="col-md-8 col-md-offset-3">
-																								<button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Register
+																								<button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update
 																												Employee</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="/home"><i
 																																class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
 																				</div>

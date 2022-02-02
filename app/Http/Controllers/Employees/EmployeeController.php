@@ -100,10 +100,45 @@ class EmployeeController extends Controller
         //dd($emp);
     }
 
-    public function update()
+    public function update($emp_id)
     {
-    }
-    public function delete()
+        $user = auth()->user();
+        $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
+
+
+        $emp = Employees::where('id',$emp_id)->first();
+
+        $empdata = array(
+            'emp' => $emp,
+            'Retail' => $retail,
+        );
+        return view('Employees.updateemployee',compact('empdata'));
+        }
+
+        public function updateEmployee($emp_id,Request $request)
+        {
+
+
+
+            Employees::where('id',$request->emp_id)->update([
+                'empName'=>$request->emp_name,
+                'empEmail' => $request->emp_email,
+                    'empPhoneno'=>$request->emp_phoneno,
+                    'empNationalId' => $request->emp_ID,
+                    'pin' => date('Y'),
+                    'empRole' => $request->emp_role,
+                    'userName' => $request->emp_name,
+                    'dateEmployed' => now(),
+                    'salary' => $request->emp_salary,
+            ]
+        );
+
+
+            return redirect('/employee/viewEmployee/'.$emp_id)->with('success','Update done successfully');
+            }
+    public function delete($emp_id)
     {
+        Employees::destroy($emp_id);
+        return redirect('/employees/showemployees')->with('success','Deletion Successful');
     }
 }

@@ -10,7 +10,7 @@ use App\Http\Controllers\Payments\CardPayments\CardPaymentsController;
 use App\Http\Controllers\Retails\RetailsController;
 use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\stock\requiredItemsController;
-use App\Http\Controllers\stock\stockController;
+use App\Http\Controllers\stock\StockController;
 use App\Retails\Retail;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,16 +59,24 @@ Route::get('/showallsales',[SalesController::class, 'index'] );
 Route::get('/sales-item/{id}',[SalesController::class, 'show'] );
 Route::get('/salesitemsoncredit', [SalesController::class, 'showSoldItemsOnCredit']);
 Route::get('/view-emp-sales',[SalesController::class, 'showEmpSales'] );
-Route::get('/deletesales{id}', [SalesController::class, 'delete']);
+Route::get('/sales/delete/{id}', [SalesController::class, 'delete']);
 Route::get('/view-retail-sales', [SalesController::class, 'updateToken']);
 Route::get('/soldPaidItems', [SalesController::class, 'showPaidSoldItems']);
-Route::post('/sales-by-date', [SalesController::class, 'getSalesByDate']);
+Route::get('/sales/sales-by-date', [SalesController::class, 'getSalesByDate']);
+Route::post('/sales/sales-by-retail/{id}', [SalesController::class, 'getSalesByDate']);
 
 
 
 //stock
-Route::get('/create-stock', [stockController::class, 'create'])->name('createstock');
-Route::get('/show-all-stock', [stockController::class, 'index'])->name('showstock');
+Route::get('/create-stock', [StockController::class, 'create'])->name('createstock');
+Route::get('/show-all-stock', [StockController::class, 'index'])->name('showstock');
+Route::get('/stock-item/{id}',[StockController::class, 'show'] );
+Route::get('/stockitemsoncredit', [StockController::class, 'showSoldItemsOnCredit']);
+Route::get('/stock/delete/{id}', [StockController::class, 'destroy']);
+Route::get('/view-retail-sales', [StockController::class, 'updateToken']);
+Route::get('/stock/stock-by-date', [StockController::class, 'getSalesByDate']);
+Route::post('/stock/stock-by-retail/{id}', [StockController::class, 'getSalesByDate']);
+
 
 
 // required items
@@ -99,8 +107,12 @@ Route::get('/employees/addemployee', [EmployeeController::class, 'create']);
 Route::post('/employees/create-new-emp', [EmployeeController::class, 'newEmployee']);
 
 Route::get('/employee/viewEmployee/{emp_id}', [EmployeeController::class, 'show']);
+Route::get('/employee/updateEmployee/{emp_id}', [EmployeeController::class, 'update']);
+Route::post('/employee/updateEmployeeData/{emp_id}', [EmployeeController::class, 'updateEmployee']);
 Route::get('/employee/viewEmployee/salaries', [EmployeeController::class, 'Salaries']);
-Route::get('/employee/viewEmployee/sales', [EmployeeController::class, 'Sales']);
+Route::get('/employee/viewEmployee/sales/{emp_id}', [EmployeeController::class, 'Sales']);
+Route::get('/employee/delete/{emp_id}', [EmployeeController::class, 'delete']);
+
 
 
 

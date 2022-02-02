@@ -12,14 +12,19 @@ $factory->define(Stock::class, function (Faker $faker) {
     return [
 
         'stockNameId' => $faker->name,
+        'stockable_id' =>  rand(2,11),
+        'stockable_type' => 'App\Employee',
+        'retailstockable_id' => rand(10,11),
+        'retailstockable_type' => 'App\Retails\Retail',
+        'supplierstockable_id' => rand(10,11),
+        'supplierstockable_type' => 'App\Supplies\Supplies',
         'stockName' => $faker->name,
         'stockSize' =>rand(200,2000),
         'stockAmount' =>rand(200,2000),
         'brand' => $faker->name,
          'price'=>rand(200,2000),
          'totalCost'=>rand(200,2000),
-         'retailNameId'=>rand(200,2000),
-         'retailOwnerId'=>rand(200,2000),
+
 
     ];
 });

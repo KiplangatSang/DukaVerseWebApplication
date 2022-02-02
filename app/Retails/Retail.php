@@ -3,6 +3,8 @@
 namespace App\Retails;
 
 use App\Employees;
+use App\Sales\Sales;
+use App\Stock\Stock;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +20,17 @@ class Retail extends Model
         return $this->morphTo(User::class);
 
     }
+
+
+
+    public function sales(){
+        return $this->morphMany(\App\Sales\Sales::class,'retailsaleable');
+    }
+
+    public function stocks(){
+        return $this->morphMany(Stock::class,'retailstockable');
+    }
+
 
     public function Retails(){
 

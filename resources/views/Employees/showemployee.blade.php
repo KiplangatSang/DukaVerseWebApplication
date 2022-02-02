@@ -12,6 +12,17 @@
 								</ul>
 				</div>
 				<div class="row">
+								@if (session()->has('message'))
+												<div class="container-fluid alert alert-danger">
+																{{ session()->get('message') }}
+												</div>
+								@endif
+
+								@if (session()->has('success'))
+												<div class="container-fluid alert alert-success">
+																{{ session()->get('success') }}
+												</div>
+								@endif
 								<div class="col ">
 												<div class="tile col ">
 
@@ -32,12 +43,15 @@
 																				<div class="app-sidebar__user col-md-8">
 																								<div class="tile-body row d-flex justify-content-center">
 
-																												<a class="mr-3" href="#"><button class="btn btn-primary"> Update Employee Details
+																												<a class="mr-3" href="/employee/updateEmployee/{{ $empdata['emp']->id }}"><button
+																																				class="btn btn-primary"> Update Employee
 																																</button></a>
-																												<a class="mr-3" href="#"><button class="btn btn-success "> Show Employee Sales
+																												<a class="mr-3" href="#"><button class="btn btn-success "> Show  Sales
 																																</button></a>
 
-																												<a class="mr-3" href="#"><button class="btn btn-info "> Show Employee Salaries
+																												<a class="mr-3" href="#"><button class="btn btn-info "> Show  Salaries
+																																</button></a>
+																												<a class="mr-3" href="/employee/delete/{{ $empdata['emp']->id }}"><button class="btn btn-danger "> Delete Employee
 																																</button></a>
 																								</div>
 
