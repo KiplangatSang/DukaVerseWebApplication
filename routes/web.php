@@ -11,6 +11,7 @@ use App\Http\Controllers\Retails\RetailsController;
 use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\stock\requiredItemsController;
 use App\Http\Controllers\stock\StockController;
+use App\Http\Controllers\supplies\OrdersController;
 use App\Retails\Retail;
 use Illuminate\Support\Facades\Auth;
 
@@ -80,8 +81,32 @@ Route::post('/stock/stock-by-retail/{id}', [StockController::class, 'getSalesByD
 
 
 // required items
-Route::get('/create-requireditems', [requiredItemsController::class, 'create'])->name('createrequireditem');
-Route::get('/show-all-required-item', [requiredItemsController::class, 'index'])->name('showrequieditem');
+Route::get('/requireditem/create-requireditems', [RequiredItemsController::class, 'create'])->name('createrequireditem');
+Route::get('/requireditem/show-all-required-item', [RequiredItemsController::class, 'index'])->name('showrequieditem');
+Route::get('/requireditem/requireditem-item/{id}',[RequiredItemsController::class, 'show'] );
+Route::get('/requireditem/requireditemoncredit', [RequiredItemsController::class, 'showSoldItemsOnCredit']);
+Route::get('/requireditem/delete/{id}', [RequiredItemsController::class, 'destroy']);
+Route::get('/requireditem/view-retail-sales', [RequiredItemsController::class, 'updateToken']);
+Route::get('/requireditem/requireditem-by-date', [RequiredItemsController::class, 'getSalesByDate']);
+Route::post('/requireditem/requireditem-by-retail/{id}', [RequiredItemsController::class, 'getSalesByDate']);
+Route::post('/requireditems/order', [RequiredItemsController::class, 'order']);
+Route::get('/requireditems/editRequiredItems/{id}', [RequiredItemsController::class, 'editRequiredItems']);
+
+
+//Orders
+Route::post('/orders/confirmOrder/{retail_id}', [OrdersController::class, 'store']);
+Route::get('/orders/index', [OrdersController::class, 'index']);
+Route::get('/orders/order-item/show/{id}', [OrdersController::class, 'show']);
+Route::get('/orders/create', [OrdersController::class, 'create']);
+Route::get('/orders/order-item/show/{id}', [OrdersController::class, 'show']);
+Route::get('/orders/delete', [OrdersController::class, 'delete']);
+
+
+
+
+
+
+
 
 
 //loans

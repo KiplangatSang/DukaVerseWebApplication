@@ -37,6 +37,7 @@
 																																				<th>Item Amount</th>
 																																				<th>Price</th>
 																																				<th>Date Sold</th>
+																																				<th>Required Status</th>
 																																				<th>Delete</th>
 
 
@@ -61,8 +62,18 @@
 
 																																								<td>{{ $stock['price'] }}</td>
 																																								<td>{{ $stock['created_at'] }}</td>
-																																								<td><a href="/stock/delete/{{ $stock['id'] }}"><i class="fa fa-trash-o"
-																																																				aria-hidden="true"> Delete</i></a></td>
+
+																																								@if (!$stock['isRequired'])
+																																												<td><a href="/stock/Set-as-Required/{{ $stock['id'] }}"
+																																																				class="btn btn-info"><i class="fa fa-trash-o" aria-hidden="true">
+																																																								Mark as Required</i></a></td>
+																																								@else
+																																												<td><a href="/stock/set-as-Required/{{ $stock['id'] }}"><i
+																																																								class="fa fa-trash-o" aria-hidden="true">This item is required</i></a></td>
+																																								@endif
+
+																																								<td><a href="/stock/delete/{{ $stock['id'] }}" class="btn btn-danger"><i
+																																																				class="fa fa-trash-o" aria-hidden="true"> Delete</i></a></td>
 
 
 

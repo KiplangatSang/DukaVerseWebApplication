@@ -18,12 +18,13 @@ class StockController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(){
+    public function index()
+    {
         $user = auth()->user();
         //$retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
         $retail = $user->Retails()->get();
-        if(count($retail) < 1){
-            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
+        if (count($retail) < 1) {
+            return redirect('/retails/addretail')->with('message', 'Register Your Retail Shop First');
         }
 
 
@@ -33,24 +34,24 @@ class StockController extends Controller
         $stocksitems = null;
         $stocksrevenue = null;
 
-        foreach($retails as $retail){
-           $retailName = $retail->retailName;
-             $stocksitems = count($retail->stocks);
-                $stocksrevenue = $retail->stocks->sum('price');
+        foreach ($retails as $retail) {
+            $retailName = $retail->retailName;
+            $stocksitems = count($retail->stocks);
+            $stocksrevenue = $retail->stocks->sum('price');
             $allStocks = array(
-               "Stocks"  => $retail->stocks,
+                "Stocks"  => $retail->stocks,
 
             );
         }
         $stocksdata = array(
             'allStocks' =>  $allStocks,
-           'stocksitems' => $stocksitems,
-           'stocksrevenue' => $stocksrevenue,
-           'retails' => $retails,
+            'stocksitems' => $stocksitems,
+            'stocksrevenue' => $stocksrevenue,
+            'retails' => $retails,
         );
 
-         //dd( $salesdata);
-        return view("Stock.ItemsInStore.showitemsinstore",compact('stocksdata'));
+        //dd( $salesdata);
+        return view("Stock.ItemsInStore.showitemsinstore", compact('stocksdata'));
     }
 
     /**
@@ -83,15 +84,15 @@ class StockController extends Controller
      */
     public function show($id)
     {
-        $allStocks = Stock::where('stockName',$id)
-        ->orderBy('created_at', 'DESC')
-        ->get();
-$stocksdata = array(
-'allStocks' =>  $allStocks,
-);
+        $allStocks = Stock::where('stockName', $id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+        $stocksdata = array(
+            'allStocks' =>  $allStocks,
+        );
 
 
-        return view('stock.ItemsInStore.showiteminstore',compact('stocksdata'));
+        return view('stock.ItemsInStore.showiteminstore', compact('stocksdata'));
         //
     }
 
@@ -132,22 +133,22 @@ $stocksdata = array(
         //
     }
 
-     //
+    //
 
 
-public function showRetailStock(){
-    return view('stock.showitemsinstore');
-}
+    public function showRetailStock()
+    {
+        return view('stock.showitemsinstore');
+    }
 
-public function createAStock(){
-    return view('stock.createitemsinstore');
-}
+    public function createAStock()
+    {
+        return view('stock.createitemsinstore');
+    }
 
 
-public function updateAStock(){
-    return view('stock.showitemsinstore');
-}
-public function deleteAStock(){
-    return redirect('stock.showitemsinstore');
-}
+    public function updateAStock()
+    {
+        return view('stock.showitemsinstore');
+    }
 }

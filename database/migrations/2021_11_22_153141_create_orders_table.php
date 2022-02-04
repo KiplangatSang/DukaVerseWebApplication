@@ -16,11 +16,14 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table-> string('orderId');
+            $table-> string('orderable_id');
+            $table-> string('orderable_type');
+            $table-> string('retailorderable_id');
+            $table-> string('retailorderable_type');
+            $table-> longText('ordered_items');
             $table-> unsignedBigInteger('orderItemsCount');
             $table-> string('orderDate');
             $table-> string('paymentStatus');
-            $table-> string('retailNameId');
-            $table-> string('retailOwnerId');
             $table->timestamps();
         });
     }

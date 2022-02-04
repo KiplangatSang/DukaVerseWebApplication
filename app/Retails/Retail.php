@@ -5,6 +5,7 @@ namespace App\Retails;
 use App\Employees;
 use App\Sales\Sales;
 use App\Stock\Stock;
+use App\Supplies\Orders;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,6 +43,11 @@ class Retail extends Model
             return $this->morphMany(Employees::class,'employeeable');
 
     }
+
+    public function orders(){
+        return $this->morphToMany(Orders::class,'orderable');
+}
+
 
 
 

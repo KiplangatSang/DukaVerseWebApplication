@@ -1,20 +1,33 @@
 @extends('Layouts.app')
 @section('content')
+				@if (session()->has('message'))
+								<div class="container-fluid alert alert-danger">
+												{{ session()->get('message') }}
+								</div>
+				@endif
+
+				@if (session()->has('success'))
+								<div class="container-fluid alert alert-success">
+												{{ session()->get('success') }}
+								</div>
+				@endif
 				<div class="app-title">
+
 								<div>
-												<h1><i class="fa fa-th-list"></i> Stock Table</h1>
+												<h1><i class="fa fa-th-list"></i> Required Items Table</h1>
 												<div class="row">
 																<div class="col">
-																				<p class="p-2">All Stock entered between </p>
+																				<p class="p-2">All Required Items entered between </p>
 
 																</div>
 																<div class="d-flex justify-content-center ml-5">
-																				<form class="row form formcontrol" method="GET" action="/sales/sales-by-date" enctype="multipart/form-data" id="sales_date_form">
+																				<form class="row form formcontrol" method="GET" action="/sales/sales-by-date"
+																								enctype="multipart/form-data" id="sales_date_form">
 																								@csrf
 																								<div class="col">
 																												<div class="tile-body">
 																																<input class="form-control  @error('startDate') is-invalid @enderror" name="startDate"
-																																				type="text" placeholder="Select Date"  autocomplete="new-startDate" >
+																																				type="text" placeholder="Select Date" autocomplete="new-startDate">
 																																@error('startDate')
 																																				<span class="invalid-feedback" role="alert">
 																																								<strong>{{ $message }}</strong>
@@ -34,9 +47,9 @@
 																												</div>
 																								</div>
 
-																												<div class="tile-body">
-                                                                                                                    <button class="btn btnsecondary bg-success text-light" type="submit">View</button>
-																												</div>
+																								<div class="tile-body">
+																												<button class="btn btnsecondary bg-success text-light" type="submit">View</button>
+																								</div>
 
 																				</form>
 																</div>
@@ -44,42 +57,43 @@
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-												<li class="breadcrumb-item">Stock</li>
-												<li class="breadcrumb-item active"><a href="#">Stock Items- Table</a></li>
+												<li class="breadcrumb-item">Required Items</li>
+												<li class="breadcrumb-item active"><a href="#">Required Items Table</a></li>
 								</ul>
 				</div>
 
 				<div class="d-flex justify-content-center">
-                    <div class="col-md-3 m-3 ">
-                        <form action="/sales/sales-by-retail/{id}" method="POST" enctype="multipart/form-data" id="retailform">
-                            @csrf
-                                    <label for="exampleSelect1"><strong>Retails</strong> </label>
-                                    <select class="form-control" id="exampleSelect1" name="retail_id">
-                                                    <option  disabled> <strong> Select a retail shop</strong></option>
-                                                    @foreach ($stocksdata['retails'] as $data)
-                                                                   <option value="0">All Shops</option>
-                                                                    <option value="{{ $data->id }}" onclick="submitretailform({{$data->id}})">{{ $data->retailName }}</option>
-                                                    @endforeach
-                                    </select>
+								<div class="col-md-3 m-3 ">
+												<form action="/sales/sales-by-retail/{id}" method="POST" enctype="multipart/form-data" id="retailform">
+																@csrf
+																<label for="exampleSelect1"><strong>Retails</strong> </label>
+																<select class="form-control" id="exampleSelect1" name="retail_id">
+																				<option disabled> <strong> Select a retail shop</strong></option>
+																				@foreach ($stocksdata['retails'] as $data)
+																								<option value="0">All Shops</option>
+																								<option value="{{ $data->id }}" onclick="submitretailform({{ $data->id }})">
+																												{{ $data->retailName }}</option>
+																				@endforeach
+																</select>
 
-                                </form>
-                    </div>
-                </div>
+												</form>
+								</div>
+				</div>
 
 				<div class="row">
 								<div class="col-md-6 col-lg-3">
 												<div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-basket fa-3x"></i>
 																<div class="info">
-																				<h5> Items In Store</h5>
+																				<h5> Required Items</h5>
 
 																				<p class="text-warning"><b>{{ $stocksdata['stocksitems'] }}</b></p>
 																</div>
 												</div>
 								</div>
 								<div class="col-md-6 col-lg-3">
-												<div class="widget-small info coloured-icon"><i class="icon fa fa-line-chart fa-3x"></i>
+												<div class="widget-small info coloured-icon"><i class="icon fa fa-money fa-3x"></i>
 																<div class="info">
-																				<h5> Estimated Revenue</h5>
+																				<h5> Estimated Cost</h5>
 																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }} ksh</b></p>
 																</div>
 												</div>
@@ -87,7 +101,7 @@
 								<div class="col-md-6 col-lg-3">
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
-                                                                    <h5>Average Stock</h5>
+																				<h5>Average Required Items</h5>
 																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }}</b></p>
 																</div>
 												</div>
@@ -99,52 +113,117 @@
 												<div class="tile">
 																<div class="tile-body">
 																				<div class="table-responsive">
-																								<table class="table table-hover table-bordered" id="sampleTable">
-																												<thead>
-																																<tr>
-																																				<th>Item Id</th>
-																																				<th>Item Name</th>
-																																				<th>Item Description</th>
-																																				<th>Item Amount</th>
-																																				<th>Buying Price</th>
-																																				<th>Date Sold</th>
-																																				<th>View</th>
-																																</tr>
-																												</thead>
-																												<tbody>
-																																@foreach ($stocksdata['allStocks']['Stocks'] as $stockitem)
-																																				<tr href="/sales-item/{{ $stockitem->id }}">
-																																								<a href="/sales-item/{{ $stockitem->id }}">
-																																												<td>
-																																																{{ $stockitem->stockNameId }}
-																																												</td>
-																																												<td>
-																																																{{ $stockitem->stockName }}
-																																												</td>
-																																												<td>
-																																																{{ $stockitem->stockSize }}
-																																												</td>
-																																												<td>
-																																																{{ $stockitem->stockAmount }}
-																																												</td>
-																																												<td>
-																																																{{ $stockitem->price }}
-																																												</td>
-																																												<td><a href="/stock-item/{{ $stockitem->itemName }}">
-																																																				{{ $stockitem->created_at }}</a>
+																								<form action="/requireditems/order" enctype="application/x-www-form-urlencoded" method="POST">
+																												@csrf
 
-																																												</td>
-																																												<td><a href="/stock-item/{{ $stockitem->stockName }}"><i class="fa fa-eye ">
-																																																								View</i></a></td>
-																																								</a>
+																												<div class="row m-3">
+																																<div class="animated-checkbox d-flex m-2">
+																																				<label>
+																																								<input type="checkbox" id="cbcheckall" onclick="check()"><span
+																																												class="label-text"><strong id="checkall">Select all</strong></span>
+																																				</label>
+																																</div>
+
+																																<div class=" col-sm-3">
+																																				<button class="btn btn-danger" type="Submit">Order Selected</button>
+
+																																</div>
+
+
+																												</div>
+
+																												<table class="table table-hover table-bordered" id="sampleTable">
+																																<thead>
+																																				<tr>
+																																								<th>Item Id</th>
+																																								<th>Item Name</th>
+																																								<th>Item Description</th>
+																																								<th>Item Amount</th>
+																																								<th>Buying Price</th>
+																																								<th>Date Sold</th>
+                                                                                                                                                                <th>Order</th>
+																																								<th>View</th>
 																																				</tr>
-																																@endforeach
-																												</tbody>
-																								</table>
+																																</thead>
+																																<tbody>
+																																				@foreach ($stocksdata['allStocks']['Stocks'] as $stockitem)
+																																								<tr href="/sales-item/{{ $stockitem->id }}">
+																																												<a href="/sales-item/{{ $stockitem->id }}">
+																																																<td>
+																																																				{{ $stockitem->stockNameId }}
+																																																</td>
+																																																<td>
+																																																				{{ $stockitem->stockName }}
+																																																</td>
+																																																<td>
+																																																				{{ $stockitem->stockSize }}
+																																																</td>
+																																																<td>
+																																																				{{ $stockitem->stockAmount }}
+																																																</td>
+																																																<td>
+																																																				{{ $stockitem->price }}
+																																																</td>
+																																																<td><a href="/stock-item/{{ $stockitem->itemName }}">
+																																																								{{ $stockitem->created_at }}</a>
+
+																																																</td>
+
+																																																@if (!$stockitem['isRequired'])
+																																																				<td><a href="/stock/Set-as-Required/{{ $stockitem['id'] }}"
+																																																												class="btn btn-info"><i class="fa fa-trash-o"
+																																																																aria-hidden="true">
+																																																																Mark as Required</i></a></td>
+																																																@else
+																																																				<td>
+																																																								<div class="animated-checkbox">
+																																																												<label>
+																																																																<input type="checkbox" id="cborder"
+																																																																				name="{{ $stockitem->stockName }}"
+																																																																				value="{{ $stockitem->id }}"><span
+																																																																				class="label-text">Order</span>
+																																																												</label>
+																																																								</div>
+																																																				</td>
+																																																@endif
+																																																<td><a
+																																																								href="/requireditem/requireditem-item/{{ $stockitem->stockName }}"><i
+																																																												class="fa fa-eye ">
+																																																												View</i></a></td>
+																																												</a>
+																																								</tr>
+																																				@endforeach
+																																</tbody>
+																												</table>
+																								</form>
 																				</div>
 																</div>
 												</div>
 								</div>
 				</div>
+				<script>
+				    function check() {
+				        if (document.getElementById("checkall").innerHTML == "Select all") {
 
+				            $('input[type="checkbox"]').each(function() {
+				                this.checked = true;
+				            });
+				            document.getElementById("checkall").innerHTML = "UnSelect all";
+
+				        } else {
+				            uncheck();
+				        }
+
+
+
+				    }
+
+				    function uncheck() {
+				        var checked = this.checked;
+				        $('input[type="checkbox"]').each(function() {
+				            this.checked = checked;
+				        });
+				        document.getElementById("checkall").innerHTML = "Select all";
+				    }
+				</script>
 @endsection

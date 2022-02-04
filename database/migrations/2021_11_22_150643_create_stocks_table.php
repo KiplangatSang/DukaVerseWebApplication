@@ -18,6 +18,8 @@ class CreateStocksTable extends Migration
             $table-> string('stockNameId');
             $table-> bigInteger('stockable_id');
             $table-> string('stockable_type');
+            $table-> bigInteger('requiredstockable_id');
+            $table-> string('requiredstockable_type');
             $table-> bigInteger('retailstockable_id');
             $table-> string('retailstockable_type');
             $table-> bigInteger('supplierstockable_id');
@@ -28,6 +30,7 @@ class CreateStocksTable extends Migration
             $table-> string('brand');
             $table-> double('price');
             $table-> unsignedBigInteger('totalCost');
+            $table->boolean('isRequired');
             $table->timestamps();
         });
     }

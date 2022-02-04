@@ -16,12 +16,15 @@ class CreateRequiredItemsTable extends Migration
         Schema::create('required_items', function (Blueprint $table) {
             $table->id();
             $table-> string('requiredItemId');
+            $table-> bigInteger('requiredable_id');
+            $table-> string('requiredable_type');
+            $table-> bigInteger('retailrequiredable_id');
+            $table-> string('retailrequiredable_type');
             $table-> string('requiredItem');
             $table-> unsignedBigInteger('requiredAmount');
             $table-> double('projectedCost');
             $table-> string('requiredStatus');
             $table->timestamps();
-
         });
     }
 
