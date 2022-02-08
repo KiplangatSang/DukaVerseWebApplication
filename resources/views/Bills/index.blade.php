@@ -1,157 +1,102 @@
-@extends('Layouts.app')
+@extends('layouts.loanslayout')
 @section('content')
+
+
 				<div class="app-title">
 								<div>
-												<h1><i class="fa fa-th-list"></i> Stock Table</h1>
-												<div class="row">
-																<div class="col">
-																				<p class="p-2">All Stock entered between </p>
-
-																</div>
-																<div class="d-flex justify-content-center ml-5">
-																				<form class="row form formcontrol" method="GET" action="/sales/sales-by-date"
-																								enctype="multipart/form-data" id="sales_date_form">
-																								@csrf
-																								<div class="col">
-																												<div class="tile-body">
-																																<input class="form-control  @error('startDate') is-invalid @enderror" name="startDate"
-																																				type="text" placeholder="Select Date" autocomplete="new-startDate">
-																																@error('startDate')
-																																				<span class="invalid-feedback" role="alert">
-																																								<strong>{{ $message }}</strong>
-																																				</span>
-																																@enderror
-																												</div>
-																								</div>
-																								<div class="col">
-																												<div class="tile-body">
-																																<input class="form-control  @error('endDate') is-invalid @enderror" id="endDate" type="text"
-																																				placeholder="Select Date" name="endDate" autocomplete="new-endDate">
-																																@error('endDate')
-																																				<span class="invalid-feedback" role="alert">
-																																								<strong>{{ $message }}</strong>
-																																				</span>
-																																@enderror
-																												</div>
-																								</div>
-
-																								<div class="tile-body">
-																												<button class="btn btnsecondary bg-success text-light" type="submit">View</button>
-																								</div>
-
-																				</form>
-																</div>
-												</div>
+												<h1><i class="fa fa-th-list"></i> Bills</h1>
+												<p>Bills due for Payment</p>
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-												<li class="breadcrumb-item">Stock</li>
-												<li class="breadcrumb-item active"><a href="#">Stock Items- Table</a></li>
+												<li class="breadcrumb-item">Bills</li>
+												<li class="breadcrumb-item active"><a href="#">Bills View</a></li>
 								</ul>
 				</div>
-
-				<div class="d-flex justify-content-center">
-								<div class="col-md-3 m-3 ">
-												<form action="/sales/sales-by-retail/{id}" method="POST" enctype="multipart/form-data" id="retailform">
-																@csrf
-																<label for="exampleSelect1"><strong>Retails</strong> </label>
-																<select class="form-control" id="exampleSelect1" name="retail_id">
-																				<option disabled> <strong> Select a retail shop</strong></option>
-																				@foreach ($ordersdata['retails'] as $data)
-																								<option value="0">All Shops</option>
-																								<option value="{{ $data->id }}" onclick="submitretailform({{ $data->id }})">
-																												{{ $data->retailName }}</option>
-																				@endforeach
-																</select>
-
-												</form>
-								</div>
-				</div>
-
 				<div class="row">
-								<div class="col-md-6 col-lg-3">
-												<div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-basket fa-3x"></i>
-																<div class="info">
-																				<h5> Items In Store</h5>
+								@if (session()->has('message'))
+												<div class="container-fluid alert alert-danger">
+																{{ session()->get('message') }}
+												</div>
+								@endif
 
-																				<p class="text-warning"><b>{{ $ordersdata['ordersitems'] }}</b></p>
-																</div>
+								@if (session()->has('success'))
+												<div class="container-fluid alert alert-success">
+																{{ session()->get('success') }}
 												</div>
-								</div>
-								<div class="col-md-6 col-lg-3">
-												<div class="widget-small info coloured-icon"><i class="icon fa fa-line-chart fa-3x"></i>
-																<div class="info">
-																				<h5> Estimated Revenue</h5>
-																				<p class="text-warning"><b>{{ $ordersdata['ordersitems'] }} ksh</b></p>
-																</div>
-												</div>
-								</div>
-								<div class="col-md-6 col-lg-3">
-												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
-																<div class="info">
-																				<h5>Average Stock</h5>
-																				<p class="text-warning"><b>{{ $ordersdata['ordersitems'] }}</b></p>
-																</div>
-												</div>
-								</div>
+								@endif
 
-				</div>
-				<div class="row">
 								<div class="col-md-12">
-												<div class="tile">
+
+												@if (count($billsdata) < 1)
+
+																<div class="container-fluid alert alert-success">
+																				<h3 class="text-display-4 text-info">No available Loans</h3>
+
+                                                                                <a href="/home" class="button btn btn-secondary">Back to Dashbord</a>
+                                                                            </div>
+												@endif
+
+
+
+												@foreach ($billsdata['billslist'] as $bill)
 																<div class="tile-body">
-																				<div class="table-responsive">
-																								<table class="table table-hover table-bordered" id="sampleTable">
-																												<thead>
-																																<tr>
-																																				<th>Item Id</th>
-																																				<th>Item Name</th>
-																																				<th>Item Description</th>
-																																				<th>Item Amount</th>
-																																				<th>Brand</th>
-																																				<th>Date Entered</th>
-																																				<th>View</th>
-																																</tr>
-																												</thead>
-																												<tbody>
-																																@foreach ($ordersdata['allOrders']['orders'] as $stockitem)
-																																				@foreach ($stockitem['ordered_items'] as $item)
+																				<div class="clearix"></div>
+																				<div class="col-md-12">
 
-																																								<tr>
-																																												<td>
-																																																{{ $stockitem->orderId }}
-																																												</td>
+																								<form method="GET" action="/request-loan/" id="loanForm">
 
-																																												<td>
-																																																{{ $item->itemName }}
-																																												</td>
-																																												<td>
-																																																{{ $item->itemDescription }}
-																																												</td>
-																																												<td>
-																																																{{ $item->itemAmount }}
-																																												</td>
-																																												<td>
-																																																{{ $item->itemBrand }}
-																																												</td>
-																																												<td>
-																																																{{ $stockitem->created_at }}
-																																												</td>
-																																												<td><a href="/orders/order-item/show/{{ $stockitem->id }}"><i
-																																																								class="fa fa-eye ">
-																																																								View</i></a></td>
+																												@csrf
+
+																												<div class="tile ">
+																																<h3 class="tile-title">{{ $bill->billName }} </h3>
+																																<div class="tile-body row">
 
 
-																																								</tr>
-																																				@endforeach
 
-																																@endforeach
-																												</tbody>
-																								</table>
+
+																																				<div class="form-group col-md-3">
+																																								<label class="control-label"><strong>Bill Type</strong></label>
+																																								<img class="app-sidebar__user-avatar d-flex w-25"
+																																												src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
+																																												alt="{{ $bill->billName }}">
+
+																																				</div>
+																																				<div class="form-group col-md-3">
+																																								<label class="control-label"><strong>Amount</strong> </label>
+																																								<h5 class="text-display-6 text-danger">Ksh {{ $bill->billAmount }}  <br>
+                                                                                                                                                                   </h3>
+																																				</div>
+																																				<div class="form-group col-md-3">
+																																								<label class="control-label"><strong>Bill Description</strong></label>
+																																								<h6 class="text-display-6 text-info">{{ $bill->billDescription }}</h6>
+
+
+																																				</div>
+																																				<div class="form-group col-md-3 align-self-end">
+
+																																								<a class="btn btn-info" href="#" id="loanAmountAlert"
+																																												onclick="submitform(@json($bill->id),@json($bill->min_loan_range),@json($bill->max_loan_range))">Pay
+																																												Now</a>
+
+
+																																				</div>
+
+
+
+																																</div>
+																								</form>
 																				</div>
 																</div>
-												</div>
+
 								</div>
+								@endforeach
+
+				</div>
+				</div>
+				</div>
+
+
 				</div>
 
 @endsection

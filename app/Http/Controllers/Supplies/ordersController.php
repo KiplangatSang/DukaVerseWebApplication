@@ -31,22 +31,27 @@ class OrdersController extends Controller
             return redirect('/retails/addretail')->with('message', 'Register Your Retail Shop First');
         }
 
-        $allOrders = null;
+        $allOrders = array();
         $ordersitems = null;
         $ordersCost = null;
 
         foreach ($retails as $retail) {
+            $orders = $retail->orders;
             $retailName = $retail->retailName;
-            $ordersitems = count($retail->orders);
-            //$stocksrevenue = $retail->stocks->sum('price');
-            $allOrders = array(
-                "orders"  => $retail->orders,
-            );
+            $ordersitems = count($orders);
+
+            foreach ($orders as $order) {
+                $order->ordered_items = json_decode( $order->ordered_items);
+                $order['retail'] = $retail;
+                $order->paymentStatus = $this->getStatus($order->paymentStatus);
+            }
+
+           // dd( $retail->orders['retail']);
+            $allOrders["orders"] = $orders;
+
         }
 
-        foreach ($allOrders['orders'] as $order) {
-            $order->ordered_items = json_decode( $order->ordered_items);
-        }
+
 
         $ordersdata = array(
             'allOrders' =>  $allOrders,
@@ -158,7 +163,7 @@ class OrdersController extends Controller
 
 
         $order = $allOrders['orders'];
-        dd($order->re);
+        //dd($order->re);
 
 
             $allOrders['orders']->ordered_items = json_decode(  $allOrders['orders']->ordered_items);
@@ -207,5 +212,20 @@ class OrdersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getStatus($id)
+    {
+        $status = "N/A";
+        if ($id == -1) {
+            $status = "Not Paid";
+
+        } elseif ($id == 0) {
+        $status = "Processed";
+        } elseif ($id == 1) {
+            $status = "Paid";
+        }
+
+        return $status;
     }
 }

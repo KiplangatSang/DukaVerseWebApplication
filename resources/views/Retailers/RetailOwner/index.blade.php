@@ -2,7 +2,7 @@
 @section('content')
 				<div class="app-title">
 								<div>
-												<h1><i class="fa fa-th-list"></i> Customers Table</h1>
+												<h1><i class="fa fa-th-list"></i> Stock Table</h1>
 												<div class="row">
 																<div class="col">
 																				<p class="p-2">All Stock entered between </p>
@@ -45,8 +45,8 @@
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-												<li class="breadcrumb-item">Customers</li>
-												<li class="breadcrumb-item active"><a href="#">Customers Table</a></li>
+												<li class="breadcrumb-item">Stock</li>
+												<li class="breadcrumb-item active"><a href="#">Stock Items- Table</a></li>
 								</ul>
 				</div>
 
@@ -57,7 +57,7 @@
 																<label for="exampleSelect1"><strong>Retails</strong> </label>
 																<select class="form-control" id="exampleSelect1" name="retail_id">
 																				<option disabled> <strong> Select a retail shop</strong></option>
-																				@foreach ($customerdata['retails'] as $data)
+																				@foreach ($ordersdata['retails'] as $data)
 																								<option value="0">All Shops</option>
 																								<option value="{{ $data->id }}" onclick="submitretailform({{ $data->id }})">
 																												{{ $data->retailName }}</option>
@@ -74,7 +74,7 @@
 																<div class="info">
 																				<h5> Items In Store</h5>
 
-																				<p class="text-warning"><b>{{ $customerdata['customercount'] }}</b></p>
+																				<p class="text-warning"><b>{{ $ordersdata['ordersitems'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -82,7 +82,7 @@
 												<div class="widget-small info coloured-icon"><i class="icon fa fa-line-chart fa-3x"></i>
 																<div class="info">
 																				<h5> Estimated Revenue</h5>
-																				<p class="text-warning"><b>{{ $customerdata['customercount'] }} ksh</b></p>
+																				<p class="text-warning"><b>{{ $ordersdata['ordersitems'] }} ksh</b></p>
 																</div>
 												</div>
 								</div>
@@ -90,7 +90,7 @@
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
 																				<h5>Average Stock</h5>
-																				<p class="text-warning"><b>{{ $customerdata['customercount'] }}</b></p>
+																				<p class="text-warning"><b>{{ $ordersdata['ordersitems'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -104,45 +104,46 @@
 																								<table class="table table-hover table-bordered" id="sampleTable">
 																												<thead>
 																																<tr>
-																																				<th>Customer Id</th>
-																																				<th>Customer Name</th>
-																																				<th>Customer Phone Number</th>
-																																				<th>Customer Email</th>
-																																				<th>Address</th>
+																																				<th>Item Id</th>
+																																				<th>Item Name</th>
+																																				<th>Item Description</th>
+																																				<th>Item Amount</th>
+																																				<th>Brand</th>
 																																				<th>Date Entered</th>
 																																				<th>View</th>
 																																</tr>
 																												</thead>
 																												<tbody>
-																																@foreach ($customerdata['customerlist'] as $customer)
+																																@foreach ($ordersdata['allOrders']['orders'] as $stockitem)
+																																				@foreach ($stockitem['ordered_items'] as $item)
 
 																																								<tr>
 																																												<td>
-																																																{{ $customer->id_number }}
+																																																{{ $stockitem->orderId }}
 																																												</td>
 
 																																												<td>
-																																																{{ $customer->name }}
+																																																{{ $item->itemName }}
 																																												</td>
 																																												<td>
-																																																{{ $customer->phone_number }}
+																																																{{ $item->itemDescription }}
 																																												</td>
 																																												<td>
-																																																{{ $customer->email }}
+																																																{{ $item->itemAmount }}
 																																												</td>
 																																												<td>
-																																																{{ $customer->address }}
+																																																{{ $item->itemBrand }}
 																																												</td>
 																																												<td>
-																																																{{ $customer->created_at }}
+																																																{{ $stockitem->created_at }}
 																																												</td>
-																																												<td><a href="/customers/show/{{ $customer->id }}"><i
+																																												<td><a href="/orders/order-item/show/{{ $stockitem->id }}"><i
 																																																								class="fa fa-eye ">
 																																																								View</i></a></td>
 
 
 																																								</tr>
-
+																																				@endforeach
 
 																																@endforeach
 																												</tbody>

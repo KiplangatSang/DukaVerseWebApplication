@@ -3,6 +3,7 @@
 namespace App\Supplies;
 
 use App\Retails\Retail;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Orders extends Model
@@ -15,7 +16,7 @@ return $this->morphedByMany(Retail::class,'orderable');
 }
 
 public function user(){
-    return $this->morphedByMany(Retail::class,'orderable');
+    return $this->morphedByMany(User::class,'orderable');
     }
 
 }

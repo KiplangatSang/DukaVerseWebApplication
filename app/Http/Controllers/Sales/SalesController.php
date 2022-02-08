@@ -103,7 +103,7 @@ class SalesController extends Controller
 
        // dd(now());
         $from = request()->input('startDate')." 00:00:00";
-        dd($from);
+       // dd($from);
 
 
 

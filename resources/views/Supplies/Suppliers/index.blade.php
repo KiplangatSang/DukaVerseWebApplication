@@ -2,10 +2,10 @@
 @section('content')
 				<div class="app-title">
 								<div>
-												<h1><i class="fa fa-th-list"></i> Customers Table</h1>
+												<h1><i class="fa fa-th-list"></i> Suppliers Table</h1>
 												<div class="row">
 																<div class="col">
-																				<p class="p-2">All Stock entered between </p>
+																				<p class="p-2">All Suppliers entered between </p>
 
 																</div>
 																<div class="d-flex justify-content-center ml-5">
@@ -45,8 +45,8 @@
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-												<li class="breadcrumb-item">Customers</li>
-												<li class="breadcrumb-item active"><a href="#">Customers Table</a></li>
+												<li class="breadcrumb-item">Stock</li>
+												<li class="breadcrumb-item active"><a href="#">Stock Items- Table</a></li>
 								</ul>
 				</div>
 
@@ -57,7 +57,7 @@
 																<label for="exampleSelect1"><strong>Retails</strong> </label>
 																<select class="form-control" id="exampleSelect1" name="retail_id">
 																				<option disabled> <strong> Select a retail shop</strong></option>
-																				@foreach ($customerdata['retails'] as $data)
+																				@foreach ($suppliersdata['retails'] as $data)
 																								<option value="0">All Shops</option>
 																								<option value="{{ $data->id }}" onclick="submitretailform({{ $data->id }})">
 																												{{ $data->retailName }}</option>
@@ -74,7 +74,7 @@
 																<div class="info">
 																				<h5> Items In Store</h5>
 
-																				<p class="text-warning"><b>{{ $customerdata['customercount'] }}</b></p>
+																				<p class="text-warning"><b>{{ count($suppliersdata['supplierslist']) }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -82,7 +82,7 @@
 												<div class="widget-small info coloured-icon"><i class="icon fa fa-line-chart fa-3x"></i>
 																<div class="info">
 																				<h5> Estimated Revenue</h5>
-																				<p class="text-warning"><b>{{ $customerdata['customercount'] }} ksh</b></p>
+																				<p class="text-warning"><b>{{ count($suppliersdata['supplierslist']) }} ksh</b></p>
 																</div>
 												</div>
 								</div>
@@ -90,7 +90,7 @@
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
 																				<h5>Average Stock</h5>
-																				<p class="text-warning"><b>{{ $customerdata['customercount'] }}</b></p>
+																				<p class="text-warning"><b>{{ count($suppliersdata['supplierslist']) }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -104,47 +104,45 @@
 																								<table class="table table-hover table-bordered" id="sampleTable">
 																												<thead>
 																																<tr>
-																																				<th>Customer Id</th>
-																																				<th>Customer Name</th>
-																																				<th>Customer Phone Number</th>
-																																				<th>Customer Email</th>
+																																				<th>Name</th>
+																																				<th>Phone Number</th>
+																																				<th>Email</th>
 																																				<th>Address</th>
+
 																																				<th>Date Entered</th>
 																																				<th>View</th>
 																																</tr>
 																												</thead>
 																												<tbody>
-																																@foreach ($customerdata['customerlist'] as $customer)
+																																@foreach ($suppliersdata['supplierslist'] as $supplier)
 
-																																								<tr>
-																																												<td>
-																																																{{ $customer->id_number }}
-																																												</td>
+																																				<tr>
+																																								<td>
+																																												{{ $supplier->name }}
+																																								</td>
 
-																																												<td>
-																																																{{ $customer->name }}
-																																												</td>
-																																												<td>
-																																																{{ $customer->phone_number }}
-																																												</td>
-																																												<td>
-																																																{{ $customer->email }}
-																																												</td>
-																																												<td>
-																																																{{ $customer->address }}
-																																												</td>
-																																												<td>
-																																																{{ $customer->created_at }}
-																																												</td>
-																																												<td><a href="/customers/show/{{ $customer->id }}"><i
-																																																								class="fa fa-eye ">
-																																																								View</i></a></td>
+																																								<td>
+																																												{{ $supplier->phone_number }}
+																																								</td>
+																																								<td>
+																																												{{ $supplier->email }}
+																																								</td>
+																																								<td>
+																																												{{ $supplier->address }}
+																																								</td>
+
+																																								<td>
+																																												{{ $supplier->created_at }}
+																																								</td>
+																																								<td><a href="/supplies/suppliers/show/{{ $supplier->id }}"><i
+																																																				class="fa fa-eye ">
+																																																				View</i></a></td>
 
 
-																																								</tr>
-
-
+																																				</tr>
 																																@endforeach
+
+
 																												</tbody>
 																								</table>
 																				</div>

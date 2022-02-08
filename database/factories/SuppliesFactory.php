@@ -10,6 +10,8 @@ $factory->define(Supplies::class, function (Faker $faker) {
     return [
 
         'supply_id' =>rand(200,2000),
+        'supplyable_id' =>rand(8,12),
+        'supplyable_type' => 'App\Retails\Retail',
         'supplier_name' => $faker->name,
         'supply_items' => $faker->name,
         'pay_status' => rand(-1,1),

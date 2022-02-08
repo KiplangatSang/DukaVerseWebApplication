@@ -121,7 +121,7 @@
 				</header>
 				<!-- Sidebar menu-->
 				<div class="app-sidebar__overlay " data-toggle="sidebar"></div>
-				<aside class="app-sidebar bg-success">
+				<aside class="app-sidebar">
 
 								<div class="app-sidebar__user"><img class="app-sidebar__user-avatar d-flex w-25"
 																src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
@@ -145,166 +145,166 @@
 												</div>
 								</div>
 								<ul class="app-menu ">
-												<li><a class="app-menu__item active bg-success" href="/home"><i
+												<li><a class="app-menu__item active " href="/home"><i
 																								class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a>
 												</li>
-												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Sales</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
-																<ul class="treeview-menu  bg-success">
-																				<li><a class="treeview-item   bg-success" href="/showallsales"><i
+																<ul class="treeview-menu">
+																				<li><a class="treeview-item   " href="/showallsales"><i
 																																class="icon fa fa-circle-o"></i>Sold Items</a></li>
-																				<li><a class="treeview-item  bg-success" href="/soldPaidItems" target="_blank" rel="noopener"><i
+																				<li><a class="treeview-item " href="/soldPaidItems" target="_blank" rel="noopener"><i
 																																class="icon fa fa-circle-o"></i> Paid Items</a></li>
-																				<li><a class="treeview-item  bg-success " href="/salesitemsoncredit"><i
+																				<li><a class="treeview-item  " href="/salesitemsoncredit"><i
 																																class="icon fa fa-circle-o "></i>Items On Credit</a></li>
-																				<li><a class="treeview-item   bg-success" href="/createsales"><i class="icon fa fa-circle-o "></i>
+																				<li><a class="treeview-item  " href="/createsales"><i class="icon fa fa-circle-o "></i>
 																												Add item sold</a></li>
 																</ul>
 												</li>
-												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Stock</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
-																<ul class="treeview-menu  bg-success">
-																				<li><a class="treeview-item   bg-success" href="/show-all-stock"><i
+																<ul class="treeview-menu ">
+																				<li><a class="treeview-item  " href="/show-all-stock"><i
 																																class="icon fa fa-circle-o"></i>All Stock</a></li>
-																				<li><a class="treeview-item  bg-success" href="/updateAStock" target="_blank" rel="noopener"><i
+																				<li><a class="treeview-item " href="/updateAStock" target="_blank" rel="noopener"><i
 																																class="icon fa fa-circle-o"></i> Update Stock</a></li>
-																				<li><a class="treeview-item  bg-success " href="/create-stock"><i
+																				<li><a class="treeview-item " href="/create-stock"><i
 																																class="icon fa fa-circle-o "></i>Add a stock</a></li>
 																</ul>
 												</li>
-												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Required Items</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
-																<ul class="treeview-menu  bg-success">
-																				<li><a class="treeview-item   bg-success" href="/requireditem/show-all-required-item"><i
+																<ul class="treeview-menu">
+																				<li><a class="treeview-item  " href="/requireditem/show-all-required-item"><i
 																																class="icon fa fa-circle-o"></i>All Required Items</a></li>
-																				<li><a class="treeview-item  bg-success" href="https://fontawesome.com/v4.7.0/icons/"
+																				<li><a class="treeview-item " href="https://fontawesome.com/v4.7.0/icons/"
 																												target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i>Order Required Items</a>
 																				</li>
-																				<li><a class="treeview-item   bg-success" href="/create-requireditems"><i
+																				<li><a class="treeview-item  " href="/create-requireditems"><i
 																																class="icon fa fa-circle-o "></i> Add Required Items</a></li>
 																</ul>
 												</li>
-												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Orders</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
-																<ul class="treeview-menu  bg-success">
-																				<li><a class="treeview-item   bg-success" href="bootstrap-components.html"><i
+																<ul class="treeview-menu ">
+																				<li><a class="treeview-item  " href="/orders/index"><i
 																																class="icon fa fa-circle-o"></i>All Orders</a></li>
-																				<li><a class="treeview-item  bg-success" href="https://fontawesome.com/v4.7.0/icons/"
+																				<li><a class="treeview-item " href="/orders/delivered/index"
 																												target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i> Delivered Orders</a>
 																				</li>
-																				<li><a class="treeview-item  bg-success " href="ui-cards.html"><i
+																				<li><a class="treeview-item  " href="/orders/pending/index"><i
 																																class="icon fa fa-circle-o "></i>Pending Orders</a></li>
-																				<li><a class="treeview-item   bg-success" href="widgets.html"><i
+																				<li><a class="treeview-item  " href="/orders/create"><i
 																																class="icon fa fa-circle-o "></i>Add Orders</a></li>
 																</ul>
 												</li>
-												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Customers</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
-																<ul class="treeview-menu  bg-success">
-																				<li><a class="treeview-item   bg-success" href="bootstrap-components.html"><i
-																																class="icon fa fa-circle-o"></i> Stock</a></li>
-																				<li><a class="treeview-item  bg-success" href="https://fontawesome.com/v4.7.0/icons/"
-																												target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i> Supplies</a></li>
-																				<li><a class="treeview-item  bg-success " href="ui-cards.html"><i
-																																class="icon fa fa-circle-o "></i> Required Items</a></li>
-																				<li><a class="treeview-item   bg-success" href="widgets.html"><i class="icon fa fa-circle-o "></i>
-																												Orders</a></li>
+																<ul class="treeview-menu ">
+																				<li><a class="treeview-item  " href="/customers/index"><i
+																																class="icon fa fa-circle-o"></i> Customer List</a></li>
+																				<li><a class="treeview-item " href="/customers/credit/index"
+																												target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i> Customers with credit</a></li>
+																				<li><a class="treeview-item  " href="ui-cards.html"><i
+																																class="icon fa fa-circle-o "></i> Customer Transactions</a></li>
+																				<li><a class="treeview-item  " href="/customers/create"><i class="icon fa fa-circle-o "></i>
+																												Add a Customer</a></li>
 																</ul>
 												</li>
-												<li class="treeview  bg-success"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview  "><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-edit"></i><span class="app-menu__label ">Employees</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  bg-success" href="/employees/showemployees"><i
+																				<li><a class="treeview-item " href="/employees/showemployees"><i
 																																class="icon fa fa-circle-o "></i> Employees List</a></li>
-																				<li><a class="treeview-item  bg-success" href="/employee/viewEmployee/sales"><i
+																				<li><a class="treeview-item " href="/employee/viewEmployee/sales"><i
 																																class="icon fa fa-circle-o"></i>Employee Sales</a></li>
-																				<li><a class="treeview-item  bg-success" href="form-samples.html"><i
+																				<li><a class="treeview-item" href="form-samples.html"><i
 																																class="icon fa fa-circle-o "></i>Requests</a></li>
-																				<li><a class="treeview-item  bg-success" href="/employee/viewEmployee/salaries"><i
+																				<li><a class="treeview-item " href="/employee/viewEmployee/salaries"><i
 																																class="icon fa fa-circle-o "></i>Salaries</a></li>
-																				<li><a class="treeview-item  bg-success" href="/employees/addemployee"><i
+																				<li><a class="treeview-item " href="/employees/addemployee"><i
 																																class="icon fa fa-circle-o "></i>Add Employee</a></li>
 																</ul>
 												</li>
-												<li class="treeview  bg-success"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-edit"></i><span class="app-menu__label ">Suppliers</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  bg-success" href="form-components.html"><i
-																																class="icon fa fa-circle-o "></i> Suppliers Information</a></li>
-																				<li><a class="treeview-item  bg-success" href="form-custom.html"><i
-																																class="icon fa fa-circle-o"></i> Supplies</a></li>
-																				<li><a class="treeview-item  bg-success" href="form-samples.html"><i
-																																class="icon fa fa-circle-o "></i>Finance</a></li>
-																				<li><a class="treeview-item  bg-success" href="form-notifications.html"><i
+																				<li><a class="treeview-item " href="/supplies/suppliers/index"><i
+																																class="icon fa fa-circle-o "></i> Suppliers </a></li>
+																				<li><a class="treeview-item " href="supplies/index"><i
+																																class="icon fa fa-circle-o"></i>Supplies</a></li>
+																				<li><a class="treeview-item  " href="supplies/payments/index"><i
+																																class="icon fa fa-circle-o "></i>Pending Payments</a></li>
+																				<li><a class="treeview-item  " href="supplies/suppliers/create"><i
 																																class="icon fa fa-circle-o "></i>Add Supplier</a></li>
 																</ul>
 												</li>
-												<li class="treeview"><a class="app-menu__item   bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Finance</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  bg-success" href="table-basic.html"><i
+																				<li><a class="treeview-item  " href="table-basic.html"><i
 																																class="icon fa fa-circle-o "></i> Sales</a></li>
-																				<li><a class="treeview-item  bg-success" href="table-data-table.html"><i
+																				<li><a class="treeview-item  " href="table-data-table.html"><i
 																																class="icon fa fa-circle-o "></i> Purchases</a></li>
-																				<li><a class="treeview-item  bg-success" href="table-basic.html"><i
+																				<li><a class="treeview-item  " href="table-basic.html"><i
 																																class="icon fa fa-circle-o "></i> Pending Credits</a></li>
-																				<li><a class="treeview-item  bg-success" href="table-data-table.html"><i
+																				<li><a class="treeview-item  " href="table-data-table.html"><i
 																																class="icon fa fa-circle-o "></i>Expenses</a></li>
-																				<li><a class="treeview-item  bg-success" href="table-basic.html"><i
+																				<li><a class="treeview-item  " href="table-basic.html"><i
 																																class="icon fa fa-circle-o "></i>Total profit</a></li>
-																				<li><a class="treeview-item  bg-success" href="table-data-table.html"><i
+																				<li><a class="treeview-item  " href="table-data-table.html"><i
 																																class="icon fa fa-circle-o "></i> Reports</a></li>
 																</ul>
 												</li>
-												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">Loans</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  bg-success" href="/get-available-loans"><i
+																				<li><a class="treeview-item " href="/get-available-loans"><i
 																																class="icon fa fa-circle-o"></i>Request A Loan</a></li>
-																				<li><a class="treeview-item  bg-success" href="#"><i class="icon fa fa-circle-o"></i>Pay A
+																				<li><a class="treeview-item " href="#"><i class="icon fa fa-circle-o"></i>Pay A
 																												loan</a></li>
 																</ul>
 												</li>
-												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">Bills</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  bg-success" href="blank-page.html"><i
+																				<li><a class="treeview-item " href="/bills/index"><i
 																																class="icon fa fa-circle-o"></i>All Bills</a></li>
-																				<li><a class="treeview-item  bg-success" href="page-login.html"><i
+																				<li><a class="treeview-item " href="/bills/payment/index"><i
 																																class="icon fa fa-circle-o"></i>Pay Bill</a></li>
-																				<li><a class="treeview-item  bg-success" href="page-lockscreen.html"><i
+																				<li><a class="treeview-item " href="/bills/create"><i
 																																class="icon fa fa-circle-o"></i>Add a Bill</a></li>
 																</ul>
 												</li>
-												<li class="treeview"><a class="app-menu__item  bg-success" href="#" data-toggle="treeview"><i
+												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">Retail</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  bg-success" href="blank-page.html"><i
+																				<li><a class="treeview-item " href="blank-page.html"><i
 																																class="icon fa fa-circle-o"></i>Retail Owner</a></li>
-																				<li><a class="treeview-item  bg-success" href="page-login.html"><i
+																				<li><a class="treeview-item " href="page-login.html"><i
 																																class="icon fa fa-circle-o"></i>Retail Information</a></li>
-																				<li><a class="treeview-item  bg-success" href="/retails/addretail"><i
+																				<li><a class="treeview-item " href="/retails/addretail"><i
 																																class="icon fa fa-circle-o"></i>Add a Retail</a></li>
 																</ul>
 												</li>
-												<li><a class="app-menu__item  bg-success" href="docs.html"><i
+												<li><a class="app-menu__item" href="/settigs/index"><i
 																								class="app-menu__icon fa fa-file-code-o"></i><span class="app-menu__label">Settings</span></a>
 												</li>
-												<li><a class="app-menu__item  bg-success" href="docs.html"><i
+												<li><a class="app-menu__item" href="docs.html"><i
 																								class="app-menu__icon fa fa-file-code-o"></i><span class="app-menu__label">Storm5
 																								Account</span></a></li>
-												<li><a class="app-menu__item  bg-success" href="docs.html"><i
+												<li><a class="app-menu__item" href="docs.html"><i
 																								class="app-menu__icon fa fa-file-code-o"></i><span class="app-menu__label">Help</span></a>
 												</li>
 

@@ -1,0 +1,15 @@
+
+  .gradual-control {
+    border-bottom: 2px solid #eee !important;
+    border: none;
+    font-weight: 600;
+    margin: 0;
+    font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    line-height: 1;
+    color: #000000;
+    text-align: left;
+    background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+}

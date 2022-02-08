@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Bills\BillController;
+use App\Http\Controllers\Customers\CustomerController;
 use App\Http\Controllers\Employees\EmployeeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\payments\mpesa\MpesaController;
@@ -9,9 +11,11 @@ use App\Http\Controllers\Loans\LoansController;
 use App\Http\Controllers\Payments\CardPayments\CardPaymentsController;
 use App\Http\Controllers\Retails\RetailsController;
 use App\Http\Controllers\Sales\SalesController;
+use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\stock\requiredItemsController;
 use App\Http\Controllers\stock\StockController;
 use App\Http\Controllers\supplies\OrdersController;
+use App\Http\Controllers\Supplies\SuppliersController;
 use App\Retails\Retail;
 use Illuminate\Support\Facades\Auth;
 
@@ -101,14 +105,6 @@ Route::get('/orders/create', [OrdersController::class, 'create']);
 Route::get('/orders/order-item/show/{id}', [OrdersController::class, 'show']);
 Route::get('/orders/delete', [OrdersController::class, 'delete']);
 
-
-
-
-
-
-
-
-
 //loans
 Route::get('/get-available-loans', [LoansController::class, 'index'])->name('loanitems');
 Route::get('/loans/show-my-loans', [LoansController::class, 'showAppliedLoans'])->name('getMyLoans');
@@ -138,20 +134,6 @@ Route::get('/employee/viewEmployee/salaries', [EmployeeController::class, 'Salar
 Route::get('/employee/viewEmployee/sales/{emp_id}', [EmployeeController::class, 'Sales']);
 Route::get('/employee/delete/{emp_id}', [EmployeeController::class, 'delete']);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //terms and conditions
 Route::get('/terms_and_conditions', function () {
     return view('termsandconditions');
@@ -166,7 +148,71 @@ Route::get('/terms_and_conditions', function () {
 //retails
 Route::get('/retails/retails-list',  [RetailsController::class, 'create']);
 Route::get('/retails/addretail',  [RetailsController::class, 'create']);
+Route::get('/retails/show',  [RetailsController::class, 'show']);
+
 
 //register a retail
 Route::post('/register/add-retail',  [RetailsController::class, 'addARetail']);
+
+
+//customers
+Route::get('/customers/index',  [CustomerController::class, 'index']);
+Route::get('/customers/create',  [CustomerController::class, 'create']);
+Route::post('/customers/store',  [CustomerController::class, 'store']);
+Route::get('/customers/show/{id}',  [CustomerController::class, 'show']);
+Route::get('/customers/edit/{id}',  [CustomerController::class, 'edit']);
+Route::post('/customers/update',  [CustomerController::class, 'update']);
+Route::post('/customers/delete/{id}',  [CustomerController::class, 'destroy']);
+
+
+
+//customer credit
+Route::get('/customers/credit/index',  [CustomerCreditController::class, 'index']);
+
+
+
+
+//bills
+Route::get('/bills/index',  [BillController::class, 'index']);
+Route::get('/bills/create',  [BillController::class, 'create']);
+Route::post('/bills/store',  [BillController::class, 'store']);
+Route::get('/bills/show',  [BillController::class, 'show']);
+Route::get('/bills/edit',  [BillController::class, 'edit']);
+Route::post('/bills/update',  [BillController::class, 'update']);
+
+//bill payment
+Route::get('/bills/payment/index',  [BillPaymentController::class, 'index']);
+
+
+
+//suppliers
+Route::get('/supplies/suppliers/index',  [SuppliersController::class, 'index']);
+Route::get('/supplies/suppliers/create',  [SuppliersController::class, 'create']);
+Route::post('/supplies/suppliers/store',  [SuppliersController::class, 'store']);
+Route::get('/supplies/suppliers/show/{id}',  [SuppliersController::class, 'show']);
+Route::get('/supplies/suppliers/edit/{id}',  [SuppliersController::class, 'edit']);
+Route::post('/supplies/suppliers/update',  [SuppliersController::class, 'update']);
+Route::post('/supplies/suppliers/delete/{id}',  [SuppliersController::class, 'delete']);
+
+//supplies payment
+Route::get('supplies/payments/index',  [SuppliersPaymentController::class, 'index']);
+
+
+//settings
+Route::get('/settings/index',  [SettingsController::class, 'index']);
+Route::get('/settings/edit',  [SettingsController::class, 'edit']);
+Route::get('/settings/update',  [SettingsController::class, 'update']);
+Route::get('/settings/show',  [SettingsController::class, 'show']);
+Route::get('/settings/delete',  [SettingsController::class, 'destroy']);
+
+//settings
+Route::get('/support',  [SuppliersPaymentController::class, 'index']);
+Route::get('/support/edit',  [SuppliersPaymentController::class, 'edit']);
+Route::get('/support/update',  [SuppliersPaymentController::class, 'update']);
+Route::get('/support/show',  [SuppliersPaymentController::class, 'show']);
+Route::get('/support/delete',  [SuppliersPaymentController::class, 'destroy']);
+Route::get('/support/index', function () {
+    return view('Support.index');
+});
+
 

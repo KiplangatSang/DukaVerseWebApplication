@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatesCustomerablesTable extends Migration
+class CreatesRetailownerablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatesCustomerablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('customerables', function (Blueprint $table) {
-            $table->unsignedBigInteger('customers_id');
-            $table->unsignedBigInteger('customerable_id');
-            $table->string('customerable_type');
+        Schema::create('retailownerables', function (Blueprint $table) {
+            $table->unsignedBigInteger('retail_owner_id');
+            $table->unsignedBigInteger('retailownerables_id');
+            $table->unsignedBigInteger('retailownerables_type');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreatesCustomerablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customerables');
+        Schema::dropIfExists('retailownerables');
     }
 }
