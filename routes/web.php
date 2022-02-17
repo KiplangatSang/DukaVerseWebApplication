@@ -1,14 +1,19 @@
 <?php
 
+use App\Http\Controllers\Banks\EquityBankController;
 use App\Http\Controllers\Bills\BillController;
+use App\Http\Controllers\Bills\BillPaymentController;
 use App\Http\Controllers\Customers\CustomerController;
+use App\Http\Controllers\Customers\CustomerCreditController;
 use App\Http\Controllers\Employees\EmployeeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Http\Controllers\FcmCloudMessagingController;
+use App\Http\Controllers\Loans\LoanPaymentController;
 use App\Http\Controllers\Loans\LoansApplicationsController;
 use App\Http\Controllers\Loans\LoansController;
 use App\Http\Controllers\Payments\CardPayments\CardPaymentsController;
+use App\Http\Controllers\payments\CardPayments\StripeController;
 use App\Http\Controllers\Retails\RetailsController;
 use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\Settings\SettingsController;
@@ -16,6 +21,8 @@ use App\Http\Controllers\stock\requiredItemsController;
 use App\Http\Controllers\stock\StockController;
 use App\Http\Controllers\supplies\OrdersController;
 use App\Http\Controllers\Supplies\SuppliersController;
+use App\Repositories\B2BPayments\ipay;
+use App\Repositories\Payments\B2BPayments\ipay as B2BPaymentsIpay;
 use App\Retails\Retail;
 use Illuminate\Support\Facades\Auth;
 
@@ -112,14 +119,46 @@ Route::get('/request-loan/{loan_id}/{amount}', [LoansController::class, 'applyLo
 Route::get('/loans/pay-a-loan/{loanapplication_id}', [LoansApplicationsController::class, 'payLoanRequest'])->name('LoanApplication');
 Route::get('/loans/view-applied-loan/{loan_id}/{loanapplication_id}', [LoansApplicationsController::class, 'showAppliedLoanItem']);
 
+//loanpayments
+Route::get('/loans/payment/index/{loanapplication_id}',  [LoanPaymentController::class, 'index']);
+Route::get('/loans/payment/show/{id}',  [LoanPaymentController::class, 'show']);
+
 
 //payments
 Route::get('/payments/cardpayments', [CardPaymentsController::class, 'index']);
+
+//stripe
+Route::get('stripe', [StripeController::class, 'stripe']);
+Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
+
+//MPESA
 Route::get('/payments/mpesapayments', [MpesaController::class, 'index']);
 Route::post('/payments/mpesapayments/simulatepayments', [MpesaController::class, 'simulateTransaction']);
 Route::post('/payments/mpesapayments/stkpush', [MpesaController::class, 'stkPush']);
-
 Route::post('/stkpush', [MpesaController::class, 'stkPushResponse']);
+
+//Equity
+Route::get('/payments/equity', [EquityBankController::class, 'index']);
+
+//ipay
+Route::get('/ipay/pay/initiate', function () {
+    $payment = new B2BPaymentsIpay();
+    $payment->initiatorRequest();
+
+});
+
+Route::get('/ipay/pay/mobilemoney', function () {
+    $payment = new B2BPaymentsIpay();
+    $payment->mobileMoneyTransact();
+
+});
+
+Route::get('/ipay/pay/search', function () {
+    $payment = new B2BPaymentsIpay();
+    $payment->searchTransaction();
+
+});
+
 
 
 //employees
@@ -161,14 +200,17 @@ Route::get('/customers/create',  [CustomerController::class, 'create']);
 Route::post('/customers/store',  [CustomerController::class, 'store']);
 Route::get('/customers/show/{id}',  [CustomerController::class, 'show']);
 Route::get('/customers/edit/{id}',  [CustomerController::class, 'edit']);
-Route::post('/customers/update',  [CustomerController::class, 'update']);
-Route::post('/customers/delete/{id}',  [CustomerController::class, 'destroy']);
+Route::post('/customers/update/{id}',  [CustomerController::class, 'update']);
+Route::get('/customers/delete/{id}',  [CustomerController::class, 'destroy']);
 
 
 
 //customer credit
-Route::get('/customers/credit/index',  [CustomerCreditController::class, 'index']);
-
+Route::get('/customers/credit/index/{cust_id}',  [CustomerCreditController::class, 'index']);
+Route::get('/customers/credit/show/{id}',  [CustomerCreditController::class, 'show']);
+Route::get('/customers/credit/edit/{id}',  [CustomerCreditController::class, 'edit']);
+Route::post('/customers/credit/update/{id}',  [CustomerCreditController::class, 'update']);
+Route::get('/customers/credit/delete/{id}',  [CustomerCreditController::class, 'destroy']);
 
 
 
@@ -176,12 +218,20 @@ Route::get('/customers/credit/index',  [CustomerCreditController::class, 'index'
 Route::get('/bills/index',  [BillController::class, 'index']);
 Route::get('/bills/create',  [BillController::class, 'create']);
 Route::post('/bills/store',  [BillController::class, 'store']);
-Route::get('/bills/show',  [BillController::class, 'show']);
+Route::post('/bills/show/{id}',  [BillController::class, 'show']);
 Route::get('/bills/edit',  [BillController::class, 'edit']);
 Route::post('/bills/update',  [BillController::class, 'update']);
 
 //bill payment
-Route::get('/bills/payment/index',  [BillPaymentController::class, 'index']);
+Route::get('/bills/payment/index/{bill_id}',  [BillPaymentController::class, 'index']);
+Route::get('/bills/payment/create',  [BillPaymentController::class, 'create']);
+Route::post('/bills/payment/update/{id}',  [BillPaymentController::class, 'update']);
+Route::get('/bills/payment/show/{id}',  [BillPaymentController::class, 'show']);
+Route::get('/bills/payment/delete/{id}',  [BillPaymentController::class, 'delete']);
+
+//bill payment history
+Route::get('/bills/payment/history/index',  [BillPaymentHistory::class, 'index']);
+Route::get('/bills/payment/history/delete',  [BillPaymentHistory::class, 'delete']);
 
 
 

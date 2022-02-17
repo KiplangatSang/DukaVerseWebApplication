@@ -2,24 +2,24 @@ body,html{
     height: 100%;
     margin: 0;
     background: #7F7FD5;
-   background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
-    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+   background: -webkit-linear-gradient(to right, #ffff, #86A8E7, #7F7FD5);
+    background: linear-gradient(to right, #ffff, #86A8E7, #7F7FD5);
 }
 
 
 
 .chat{
-    margin-top: auto;
+    margin-top: 20px;
     margin-bottom: auto;
 }
 
 .card{
-    height: 500px;
-    border-radius: 15px !important;
+    height: 650px;
+    border-radius: 20px !important;
     background-color: rgba(0,0,0,0.4) !important;
 }
 .contacts_body{
-    padding:  0.75rem 0 !important;
+    padding:  0.50rem 0 !important;
     overflow-y: auto;
     white-space: nowrap;
 }
@@ -128,10 +128,10 @@ background-color: #c23616 !important;
 .user_info{
 margin-top: auto;
 margin-bottom: auto;
-margin-left: 15px;
+margin-left: 5px;
 }
 .user_info span{
-font-size: 20px;
+font-size: 15px;
 color: white;
 }
 .user_info p{
@@ -222,6 +222,6 @@ background-color: rgba(0,0,0,0.2);
 }
 @media(max-width: 576px){
 .contacts_card{
-margin-bottom: 15px !important;
+margin-bottom: 10px !important;
 }
 }

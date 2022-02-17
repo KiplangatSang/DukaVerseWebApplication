@@ -1,6 +1,4 @@
 @extends('Layouts.homelayout')
-
-
 @section('content')
 
 				<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0d628a">

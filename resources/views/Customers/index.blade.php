@@ -1,6 +1,18 @@
 @extends('Layouts.app')
 @section('content')
+				@if (session()->has('message'))
+								<div class="container-fluid alert alert-danger">
+												{{ session()->get('message') }}
+								</div>
+				@endif
+
+				@if (session()->has('success'))
+								<div class="container-fluid alert alert-success">
+												{{ session()->get('success') }}
+								</div>
+				@endif
 				<div class="app-title">
+
 								<div>
 												<h1><i class="fa fa-th-list"></i> Customers Table</h1>
 												<div class="row">
@@ -116,32 +128,31 @@
 																												<tbody>
 																																@foreach ($customerdata['customerlist'] as $customer)
 
-																																								<tr>
-																																												<td>
-																																																{{ $customer->id_number }}
-																																												</td>
+																																				<tr>
+																																								<td>
+																																												{{ $customer->id_number }}
+																																								</td>
 
-																																												<td>
-																																																{{ $customer->name }}
-																																												</td>
-																																												<td>
-																																																{{ $customer->phone_number }}
-																																												</td>
-																																												<td>
-																																																{{ $customer->email }}
-																																												</td>
-																																												<td>
-																																																{{ $customer->address }}
-																																												</td>
-																																												<td>
-																																																{{ $customer->created_at }}
-																																												</td>
-																																												<td><a href="/customers/show/{{ $customer->id }}"><i
-																																																								class="fa fa-eye ">
-																																																								View</i></a></td>
+																																								<td>
+																																												{{ $customer->name }}
+																																								</td>
+																																								<td>
+																																												{{ $customer->phone_number }}
+																																								</td>
+																																								<td>
+																																												{{ $customer->email }}
+																																								</td>
+																																								<td>
+																																												{{ $customer->address }}
+																																								</td>
+																																								<td>
+																																												{{ $customer->created_at }}
+																																								</td>
+																																								<td><a href="/customers/show/{{ $customer->id }}"><i class="fa fa-eye ">
+																																																				View</i></a></td>
 
 
-																																								</tr>
+																																				</tr>
 
 
 																																@endforeach

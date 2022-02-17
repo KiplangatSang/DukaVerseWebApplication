@@ -1,11 +1,11 @@
 @extends('layouts.login')
 @section('content')
    <section class="material-half-bg" >
-      <div class="cover" style="background-color: #820fc0"></div>
+      <div class="cover"></div>
     </section>
     <section class="login-content " >
       <div class="logo ">
-        <h1>Retail Storm5</h1>
+        <h1><strong>Retail Storm5</strong></h1>
       </div>
       <div class="login-box">
         <form  class="login-form" method="POST" action="{{ route('login') }}">
@@ -58,11 +58,6 @@
               </div>
           </div>
         </form>
-
-
-
-
-
 
         <form class="forget-form" method="POST" action="{{ route('password.email') }}">
             @csrf

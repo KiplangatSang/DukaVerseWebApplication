@@ -24,7 +24,7 @@
 
 <body class="app sidebar-mini">
 				<!-- Navbar-->
-				<header class="app-header"><a class="app-header__logo" href="index.html">Storm5</a>
+				<header class="app-header"><a class="app-header__logo" href="/home">Storm5</a>
 								<!-- Sidebar toggle button-->
 								<a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
 								<!-- Navbar Right Menu-->
@@ -378,16 +378,14 @@
 				        ]
 				    };
 				    var pdata = [{
-
-
 				            value: 40,
-				            color: "#46BFBD",
+				            color: "#ff0000",
 				            highlight: "#5AD3D1",
 				            label: "Complete"
 				        },
 				        {
 				            value: 60,
-				            color: "#F7464A",
+				            color: "#7a97cc",
 				            highlight: "#000000",
 				            label: "In-Progress"
 				        }

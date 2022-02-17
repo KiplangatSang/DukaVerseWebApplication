@@ -43,10 +43,10 @@
 																				<div class="app-sidebar__user col-md-8">
 																								<div class="tile-body row d-flex justify-content-center">
 
-																												<a class="mr-3" href="/employee/edit/{{$customerdata['customer']->id}}"><button
+																												<a class="mr-3" href="/customers/edit/{{$customerdata['customer']->id}}"><button
 																																				class="btn btn-primary"> Update Customer
 																																</button></a>
-																												<a class="mr-3" href="$customerdata['customer']->id"><button class="btn btn-success "> Show Customer Credit
+																												<a class="mr-3" href="/customers/credit/index/{{$customerdata['customer']->id}}"><button class="btn btn-success "> Show Customer Credit
 																																</button></a>
 
 																												<a class="mr-3" href="#"><button class="btn btn-info "> Notify Customer

@@ -1,36 +1,49 @@
 @extends('layouts.app')
 @section('content')
+				@if (session()->has('message'))
+								<div class="container-fluid alert alert-danger">
+												{{ session()->get('message') }}
+								</div>
+				@endif
+
+				@if (session()->has('success'))
+								<div class="container-fluid alert alert-success">
+												{{ session()->get('success') }}
+								</div>
+				@endif
 				<div class="app-title">
 								<div>
-												<h1><i class="fa fa-edit"></i>Employee Registration</h1>
-												<p>Register Employee</p>
+												<h1><i class="fa fa-edit"></i>Customer Credit Registration</h1>
+												<p>Update Customer Credit</p>
 								</div>
 								<ul class="app-breadcrumb breadcrumb">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-												<li class="breadcrumb-item">Employees </li>
-												<li class="breadcrumb-item"><a href="#">Employee</a></li>
+												<li class="breadcrumb-item">Customer </li>
+												<li class="breadcrumb-item"><a href="#">Customer Credit</a></li>
 								</ul>
 				</div>
 				<div class="row">
+
 								<div class="col">
 												<div class="tile">
-																<h3 class="tile-title">Fill in the form to register a Employee</h3>
+																<h3 class="tile-title">Fill in the form to Update Customer Credit</h3>
 																<div class="tile-body">
-																				<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/employee/updateEmployeeData/{{$empdata['emp']->id}}">
+																				<form class="form-horizontal" method="POST" enctype="multipart/form-data"
+																								action="/customers/credit/update/{{ $custCreditdata['creditItems']->id }}">
 
 																								@csrf
 																								<div class="form-group col">
 
-
 																												<label for="exampleSelect1">Retail Name</label>
-																												<select class="form-control" id="exampleSelect1" name="retail_id" value="{{$empdata['emp']->empRole}}">
-																																@foreach ($empdata['Retail'] as $data)
+																												<select class="form-control @error('retailID') is-invalid @enderror" id="exampleSelect1" name="retailID"
+																																value="{{ $custCreditdata['retail']->id }}">
+																																@foreach ($custCreditdata['retails'] as $data)
 
 																																				<option value="{{ $data->id }}">{{ $data->retailName }}</option>
 																																@endforeach
 																												</select>
 
-																												@error('retail_id')
+																												@error('retailID')
 																																<span class="invalid-feedback" role="alert">
 																																				<strong>{{ $message }}</strong>
 																																</span>
@@ -43,12 +56,12 @@
 																<div class="form-group col">
 
 
-																				<label for="exampleSelect1">Employee Name</label>
-																				<input class="form-control  @error('emp_name') is-invalid @enderror" type="text"
-																								placeholder="Enter Employee Name" name="emp_name" value="{{ $empdata['emp']->empName }}"
-																								autocomplete="emp_name" required>
+																				<label for="exampleSelect1">Item Name</label>
+																				<input class="form-control  @error('itemName') is-invalid @enderror" type="text"
+																								placeholder="Enter Credit Item's Name" name="itemName"
+																								value="{{ $custCreditdata['creditItems']->itemName }}" autocomplete="itemName" required>
 
-																				@error('emp_name')
+																				@error('itemName')
 																								<span class="invalid-feedback" role="alert">
 																												<strong>{{ $message }}</strong>
 																								</span>
@@ -59,31 +72,14 @@
 
 
 																<div class="form-group col">
-																				<div class="form-group">
-																								<label for="exampleSelect1">Role</label>
-																								<select class="form-control" id="exampleSelect1" name="emp_role" value="{{$empdata['emp']->empName}}">
-																												<option value="Sales">Sales</option>
-																												<option value="Managerial">Managerial</option>
-																												<option value="Accounts">Account</option>
-																								</select>
-                                                                                                @error('emp_role')
-																												<span class="invalid-feedback" role="alert">
-																																<strong>{{ $message }}</strong>
-																												</span>
-																								@enderror
-																				</div>
-																</div>
-
-
-
-																<div class="form-group col">
-																				<label class="control-label ">Employee ID/Passport Number</label>
+																				<label class="control-label ">Credit Item Description</label>
 																				<div>
-																								<input class="form-control  @error('emp_ID') is-invalid @enderror" type="text"
-																												placeholder="Enter Employee ID/Passport Number" name="emp_ID" value="{{$empdata['emp']->empNationalId}}"
-																												autocomplete="emp_ID" required>
+																								<input class="form-control  @error('itemDescription') is-invalid @enderror" type="text"
+																												placeholder="Enter Credit Item Description" name="itemDescription"
+																												value="{{ $custCreditdata['creditItems']['itemDescription'] }}" autocomplete="itemDescription"
+																												required>
 
-																								@error('emp_ID')
+																								@error('itemDescription')
 																												<span class="invalid-feedback" role="alert">
 																																<strong>{{ $message }}</strong>
 																												</span>
@@ -93,13 +89,13 @@
 																</div>
 
 																<div class="form-group col">
-																				<label class="control-label ">Phone Number</label>
+																				<label class="control-label ">Credit Item Amount</label>
 																				<div>
-																								<input class="form-control  @error('emp_phoneno') is-invalid @enderror" type="phone"
-																												placeholder="Enter Employee Phone Number" name="emp_phoneno" value="{{ $empdata['emp']->empPhoneno }}"
-																												autocomplete="emp_phoneno" required>
+																								<input class="form-control  @error('amount') is-invalid @enderror" type="phone"
+																												placeholder="Enter Customer Phone Number" name="amount"
+																												value="{{ $custCreditdata['creditItems']['amount'] }}" autocomplete="amount" required>
 
-																								@error('emp_phoneno')
+																								@error('amount')
 																												<span class="invalid-feedback" role="alert">
 																																<strong>{{ $message }}</strong>
 																												</span>
@@ -109,13 +105,14 @@
 																</div>
 
 																<div class="form-group col">
-																				<label class="control-label ">Email</label>
+																				<label class="control-label ">Due Amount</label>
 																				<div>
-																								<input class="form-control  @error('emp_email') is-invalid @enderror" type="email"
-																												placeholder="Enter Employee Email" name="emp_email" value="{{$empdata['emp']->empEmail }}"
-																												autocomplete="emp_email" required>
+																								<input class="form-control  @error('requiredAmount') is-invalid @enderror" type="requiredAmount"
+																												placeholder="Enter Customer Email" name="requiredAmount"
+																												value="{{ $custCreditdata['creditItems']['requiredAmount'] }}" autocomplete="requiredAmount"
+																												required>
 
-																								@error('emp_email')
+																								@error('requiredAmount')
 																												<span class="invalid-feedback" role="alert">
 																																<strong>{{ $message }}</strong>
 																												</span>
@@ -124,24 +121,24 @@
 																				</div>
 																</div>
 
+																<div class="form-group col">
+																				<label class="control-label ">Paid Amount</label>
+																				<div>
+																								<input class="form-control  @error('amountPaid') is-invalid @enderror" type="amountPaid"
+																												placeholder="Enter Paid Amount" name="amountPaid"
+																												value="{{ $custCreditdata['creditItems']['amountPaid'] }}" autocomplete="amountPaid"
+																												required>
 
+																								@error('amountPaid')
+																												<span class="invalid-feedback" role="alert">
+																																<strong>{{ $message }}</strong>
+																												</span>
+																								@enderror
+
+																				</div>
+																</div>
 																<hr>
 
-																<div class="form-group col">
-																				<label class="control-label ">Salary</label>
-																				<div>
-																								<input class="form-control  @error('emp_salary') is-invalid @enderror" type="Number"
-																												placeholder="Enter Employee Salary" name="emp_salary" value="{{ $empdata['emp']->salary }}"
-																												autocomplete="emp_salary" required>
-
-																								@error('emp_salary')
-																												<span class="invalid-feedback" role="alert">
-																																<strong>{{ $message }}</strong>
-																												</span>
-																								@enderror
-
-																				</div>
-																</div>
 
 												</div>
 
@@ -152,7 +149,7 @@
 																<div class="row">
 																				<div class="col-md-8 col-md-offset-3">
 																								<button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update
-																												Employee</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="/home"><i
+																												Credit Item</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="/home"><i
 																																class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
 																				</div>
 																</div>

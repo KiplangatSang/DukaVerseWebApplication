@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             BillsSeeder::class,
             SuppliesSeeder::class,
             SuppliersSeeder::class,
+            CustomerCreditSeeder::class,
 
         ]);
     }
