@@ -11,6 +11,7 @@
     --red: #dc3545;
     --orange: #fd7e14;
     --yellow: #ffc107;
+    --deepyellow: #ffda6c;
     --green: #17c740;
     --teal: #20c997;
     --cyan: #17a2b8;
@@ -67,7 +68,7 @@ body {
     margin: 0;
     font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         "Helvetica Neue", Arial, sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: 400;
     line-height: 1;
     color: #000000;
@@ -171,13 +172,13 @@ sup {
 }
 
 a {
-    color: #009688;
+    color: #000296;
     text-decoration: none;
     background-color: transparent;
 }
 
 a:hover {
-    color: #19f0da;
+    color: #6419f0;
     text-decoration: underline;
 }
 
@@ -1828,22 +1829,22 @@ pre code {
 .table-primary td,
 .table-primary thead th,
 .table-primary tbody + tbody {
-    border-color: #7ac8c1;
+    border-color: #030852;
 }
 
 .table-hover .table-primary:hover {
-    background-color: #a6dbd6;
+    background-color: #c5b8f1;
 }
 
 .table-hover .table-primary:hover > td,
 .table-hover .table-primary:hover > th {
-    background-color: #a6dbd6;
+    background-color: #c5b8f1;
 }
 
 .table-secondary,
 .table-secondary > th,
 .table-secondary > td {
-    background-color: #d6d8db;
+    background-color: #c5b8f1;
 }
 
 .table-secondary th,
@@ -12331,8 +12332,8 @@ body.stop-scrolling {
 
 .sweet-alert .sa-error-container .icon {
     display: inline-block;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background-color: #ea7d7d;
     color: white;
@@ -15513,7 +15514,8 @@ be a descendant of the grid when it is being dragged.
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    background-color: #4561f5;
+    background: -webkit-linear-gradient(to right, green, #e5e910, white);
+    background: linear-gradient(to right, green, #e5e910, white);
     z-index: 1030;
     padding-right: 15px;
 }
@@ -15534,7 +15536,7 @@ be a descendant of the grid when it is being dragged.
     -webkit-box-flex: 1;
     -ms-flex: 1 0 auto;
     flex: 1 0 auto;
-    color: #040505;
+    color: red;
     text-align: center;
     font-family: "Niconne";
     padding: 0 15px;
@@ -15550,7 +15552,7 @@ be a descendant of the grid when it is being dragged.
         flex: 0 0 auto;
         display: block;
         width: 230px;
-        background-color: #0066d3;
+        background-color: green;
     }
 }
 
@@ -15612,7 +15614,7 @@ be a descendant of the grid when it is being dragged.
     display: block;
     padding: 15px;
     line-height: 20px;
-    color: #fff;
+    color: #000;
     -webkit-transition: background-color 0.3s ease;
     -o-transition: background-color 0.3s ease;
     transition: background-color 0.3s ease;
@@ -15646,7 +15648,7 @@ be a descendant of the grid when it is being dragged.
     padding: 5px 10px;
     padding-right: 30px;
     border-radius: 2px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 255);
     -webkit-transition: background-color 0.3s ease;
     -o-transition: background-color 0.3s ease;
     transition: background-color 0.3s ease;
@@ -15756,8 +15758,8 @@ be a descendant of the grid when it is being dragged.
     overflow: auto;
     z-index: 10;
     background-color: #138496;
-    background: -webkit-linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
-    background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
+    background: -webkit-linear-gradient(to right,  #e5e910, #e0acc5, #dfeec4);
+    background: linear-gradient(to right,  #e5e910, #e0acc5, #dfeec4);
     -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
     box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
     -webkit-transition: left 0.3s ease, width 0.3s ease;
@@ -15770,8 +15772,8 @@ be a descendant of the grid when it is being dragged.
 }
 
 .app-sidebar::-webkit-scrollbar-thumb {
-    background: -webkit-linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
-    background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
+    background: -webkit-linear-gradient(to right, #e5e910, #ee0e33, #ff25be);
+    background: linear-gradient(to right,  #e5e910, #ee0e33, #ff25be);
 }
 
 @media print {
@@ -15980,7 +15982,7 @@ be a descendant of the grid when it is being dragged.
         overflow: visible;
         background: #0d1214;
         border-left-color: #009688;
-        color: #fff;
+        color: #ffffff;
     }
     .sidebar-mini.sidenav-toggled .treeview:hover .app-menu__label {
         opacity: 1;
@@ -16047,7 +16049,7 @@ be a descendant of the grid when it is being dragged.
 
 .btn .icon,
 .btn .fa {
-    font-size: 14px;
+    font-size: 10px;
     margin-right: 5px;
     vertical-align: middle;
 }
@@ -16635,17 +16637,17 @@ be a descendant of the grid when it is being dragged.
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    min-width: 85px;
+    min-width: 40px;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
     background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px 0 0 4px;
-    font-size: 2.5rem;
+    border-radius: 2px 0 0 4px;
+    font-size: 1.5rem;
 }
 
 .widget-small .info {
@@ -16680,7 +16682,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .widget-small.primary.coloured-icon .icon {
-    background-color: #009688;
+    background-color: green;
     color: #fff;
 }
 

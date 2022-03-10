@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Bills\Bills;
+use App\Loans\Loans;
 use App\Retails\Retail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -61,6 +63,13 @@ class User extends Authenticatable
         return $this->morphMany(Storm5Employees::class,'storm5employeeable');
     }
 
+    public function loans(){
+        return $this->morphMany(Loans::class,'loanable');
+    }
+
+    public function bills(){
+        return $this->morphMany(Bills::class,'billable');
+    }
     // public function Sales(){
     //     return $this->hasOne(Roles::class);
     // }

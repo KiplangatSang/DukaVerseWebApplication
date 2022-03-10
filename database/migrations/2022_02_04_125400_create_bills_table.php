@@ -20,7 +20,8 @@ class CreateBillsTable extends Migration
             $table->string('billName');
             $table->longText('billDescription');
             $table->string('billAmount');
-            $table->string('billPaymentStatus');
+            $table->string('billPaymentDuration')->nullable();
+            $table->string('billPaymentStatus')->nullable();
             $table->timestamps();
         });
     }

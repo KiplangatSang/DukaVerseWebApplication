@@ -1,4 +1,4 @@
-@extends('layouts.loanslayout')
+@extends('Admin.Layouts.app')
 @section('content')
 
 

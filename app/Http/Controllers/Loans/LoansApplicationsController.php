@@ -55,8 +55,6 @@ class LoansApplicationsController extends Controller
             'loan' =>$loan,
             'loanapplication' =>  $loanApplication,
             'styling'=>$styling,
-
-
         );
 
         return view('Loans.appliedloanitem',compact('appliedLoan'));

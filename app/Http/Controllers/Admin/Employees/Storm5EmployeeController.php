@@ -2,20 +2,32 @@
 
 namespace App\Http\Controllers\Admin\Employees;
 
+use App\Admin\Employees\Storm5Employees;
 use App\Http\Controllers\Controller;
-use App\Storm5Employees;
 use Exception;
 use Illuminate\Http\Request;
 
 class Storm5EmployeeController extends Controller
 {
+
+    protected $user;
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {  $user = auth()->user();
+        $emplist = Storm5Employees::all();
+        $empdata = array(
+            'emplist' => $emplist,
+        );
 
          return view('Admin.Employees.index',compact('empdata'));
     }
@@ -28,8 +40,6 @@ class Storm5EmployeeController extends Controller
     public function create()
     {
         //
-
-
         return view('Admin.Employees.create');
 
     }
@@ -90,7 +100,6 @@ class Storm5EmployeeController extends Controller
 
         return redirect("/admin/employees/index");
     }
-
     /**
      * Display the specified resource.
      *
@@ -99,6 +108,11 @@ class Storm5EmployeeController extends Controller
      */
     public function show($id)
     {
+        $emp = Storm5Employees::where('id',$id)->first();
+
+        $empdata = array(
+            'emp' => $emp,
+        );
         //
         return view('Admin.Employees.show',compact('empdata'));
     }
@@ -112,6 +126,13 @@ class Storm5EmployeeController extends Controller
     public function edit($id)
     {
         //
+        $emp = Storm5Employees::where('id',$id)->first();
+
+        $empdata = array(
+            'emp' => $emp,
+        );
+
+
         return view('Admin.Employees.edit',compact('empdata'));
 
     }
@@ -126,7 +147,23 @@ class Storm5EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return redirect("/admin/employees/edit");
+
+        Storm5Employees::where('id',$id)->update([
+            'empName'=>$request->emp_name,
+            'empEmail' => $request->emp_email,
+                'empPhoneno'=>$request->emp_phoneno,
+                'empNationalId' => $request->emp_ID,
+                'pin' => date('Y'),
+                'empRole' => $request->emp_role,
+                'userName' => $request->emp_name,
+                'dateEmployed' => now(),
+                'salary' => $request->emp_salary,
+        ]
+    );
+
+
+
+        return redirect("/admin/employees/show".$id)->with('success','Update done successfully');
     }
 
     /**
@@ -141,4 +178,5 @@ class Storm5EmployeeController extends Controller
         Storm5Employees::destroy($id);
         return redirect("/admin/employees/index");
     }
+
 }

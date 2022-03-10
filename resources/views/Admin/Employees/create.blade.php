@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('Admin.Layouts.app')
 @section('content')
 				<div class="app-title">
 								<div>
@@ -137,9 +137,9 @@
 
 																				<label for="exampleSelect1">Branch Name</label>
 																				<select class="form-control" id="exampleSelect1" name="retail_id">
-																								@foreach ($empdata['Retail'] as $data)
+																								{{-- @foreach ($empdata['Retail'] as $data)
 																												<option value="{{ $data->id }}">{{ $data->retailName }}</option>
-																								@endforeach
+																								@endforeach --}}
 																				</select>
 
 																				@error('retail_id')
@@ -155,9 +155,9 @@
 
 																				<label for="exampleSelect1">County </label>
 																				<select class="form-control" id="exampleSelect1" name="retail_id">
-																								@foreach ($empdata['Retail'] as $data)
+																								{{-- @foreach ($empdata['Retail'] as $data)
 																												<option value="{{ $data->id }}">{{ $data->retailName }}</option>
-																								@endforeach
+																								@endforeach --}}
 																				</select>
 
 																				@error('retail_id')
@@ -172,9 +172,7 @@
 
 																				<label for="exampleSelect1">Constituency Name</label>
 																				<select class="form-control" id="exampleSelect1" name="retail_id">
-																								@foreach ($empdata['Retail'] as $data)
-																												<option value="{{ $data->id }}">{{ $data->retailName }}</option>
-																								@endforeach
+
 																				</select>
 
 																				@error('retail_id')
@@ -189,9 +187,7 @@
 
 																				<label for="exampleSelect1">Office Name</label>
 																				<select class="form-control" id="exampleSelect1" name="retail_id">
-																								@foreach ($empdata['Retail'] as $data)
-																												<option value="{{ $data->id }}">{{ $data->retailName }}</option>
-																								@endforeach
+
 																				</select>
 
 																				@error('retail_id')

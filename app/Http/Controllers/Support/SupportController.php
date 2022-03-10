@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Support;
 
 use App\Http\Controllers\Controller;
+use App\Support\Support;
 use Illuminate\Http\Request;
 
 class SupportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +21,11 @@ class SupportController extends Controller
     public function index()
     {
         //
+      $supports = Support::all();
+      $data = array();
+      $data['supports'] = $supports;
+
+      return view('Admin.Support.index',compact('data'));
     }
 
     /**
@@ -25,6 +36,8 @@ class SupportController extends Controller
     public function create()
     {
         //
+
+        return view('Admin.Support.create',compact('data'));
     }
 
     /**
@@ -36,6 +49,8 @@ class SupportController extends Controller
     public function store(Request $request)
     {
         //
+        return redirect('/admin/support/index');
+
     }
 
     /**
@@ -47,6 +62,11 @@ class SupportController extends Controller
     public function show($id)
     {
         //
+        $support = Support::where('id',$id)->first();
+        $data = array();
+        $data['support'] = $support;
+
+        return view('Admin.Support.show',compact('data'));
     }
 
     /**
@@ -58,6 +78,11 @@ class SupportController extends Controller
     public function edit($id)
     {
         //
+        $support = Support::where('id',$id)->first();
+        $data = array();
+        $data['support'] = $support;
+
+        return view('Admin.Support.edit',compact('data'));
     }
 
     /**
@@ -70,6 +95,9 @@ class SupportController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+
+        return redirect('/admin/support/show'.$id);
     }
 
     /**
@@ -81,5 +109,7 @@ class SupportController extends Controller
     public function destroy($id)
     {
         //
+        Support::destroy($id);
+        return redirect('/admin/support/show'.$id);
     }
 }

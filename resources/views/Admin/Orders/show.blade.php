@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('Admin.Layouts.app')
 @section('content')
 				<div class="app-title">
 								<div>
@@ -14,8 +14,8 @@
 																								@csrf
 																								<div class="col">
 																												<div class="tile-body">
-																																<input class="form-control  @error('startDate') is-invalid @enderror" name="startDate"
-																																				type="text" placeholder="Select Date" autocomplete="new-startDate">
+																																<input class="form-control  @error('startDate') is-invalid @enderror" name="startDate" id="startDate"
+																																				type="text" placeholder="Select Date" autocomplete="off">
 																																@error('startDate')
 																																				<span class="invalid-feedback" role="alert">
 																																								<strong>{{ $message }}</strong>
@@ -26,7 +26,7 @@
 																								<div class="col">
 																												<div class="tile-body">
 																																<input class="form-control  @error('endDate') is-invalid @enderror" id="endDate" type="text"
-																																				placeholder="Select Date" name="endDate" autocomplete="new-endDate">
+																																				placeholder="Select Date" name="endDate" autocomplete="off">
 																																@error('endDate')
 																																				<span class="invalid-feedback" role="alert">
 																																								<strong>{{ $message }}</strong>
@@ -57,11 +57,11 @@
 																<label for="exampleSelect1"><strong>Retails</strong> </label>
 																<select class="form-control" id="exampleSelect1" name="retail_id">
 																				<option disabled> <strong> Select a retail shop</strong></option>
-																				@foreach ($ordersdata['retails'] as $data)
+																				{{-- @foreach ($ordersdata['retails'] as $data)
 																								<option value="0">All Shops</option>
 																								<option value="{{ $data->id }}" onclick="submitretailform({{ $data->id }})">
 																												{{ $data->retailName }}</option>
-																				@endforeach
+																				@endforeach --}}
 																</select>
 
 												</form>
@@ -117,27 +117,30 @@
 
 																																				@foreach ($ordersdata['allOrders']['orders']['ordered_items'] as $item)
 
-																																								<tr>
+																																								{{-- {{dd($ordersdata['allOrders']['orders']['ordered_items'])}} --}}
+                                                                                                                                                                <tr>
 																																												<td>
 																																																{{ $ordersdata['allOrders']['orders']->orderId }}
 																																												</td>
 
 																																												<td>
-																																																{{ $item->itemName }}
+																																																{{ $item }}
 																																												</td>
 																																												<td>
-																																																{{ $item->itemDescription }}
+																																																{{ $item}}
 																																												</td>
 																																												<td>
-																																																{{ $item->itemAmount }}
+																																																{{ $item}}
 																																												</td>
 																																												<td>
-																																																{{ $item->itemBrand }}
+																																																{{ $item }}
 																																												</td>
 																																												<td>
 																																																{{ $ordersdata['allOrders']['orders']->created_at }}
 																																												</td>
-
+                                                                                                                                                                                <td><a href="/admin/orders/orderitem/show/{{ $ordersdata['allOrders']['orders']->orderId }}"><i
+                                                                                                                                                                                    class="fa fa-eye ">
+                                                                                                                                                                                    View</i></a></td>
 
 
 																																								</tr>

@@ -22,11 +22,11 @@ class CreateLoansTable extends Migration
             $table->double('min_loan_range');
             $table->double('max_loan_range');
             $table->longText('loan_description');
-            $table->integer('repayment_status');
-            $table->double('active_loan_users');
-            $table->double('active_loan_repayments');
-            $table->double('passive_loan_users');
-            $table->double('passive_loan_repayments');
+            $table->integer('repayment_status')->nullable();
+            $table->double('active_loan_users')->nullable();
+            $table->double('active_loan_repayments')->nullable();
+            $table->double('passive_loan_users')->nullable();
+            $table->double('passive_loan_repayments')->nullable();
             $table->timestamps();
         });
     }

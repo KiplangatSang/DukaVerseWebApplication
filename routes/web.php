@@ -1,5 +1,32 @@
 <?php
 
+use App\Http\Controllers\Admin\Bills\AdminBillController;
+use App\Http\Controllers\Admin\Bills\AdminBillsHistoryController;
+use App\Http\Controllers\Admin\Bills\AdminBillsPaymentController;
+use App\Http\Controllers\Admin\Customers\AdminCustomerController;
+use App\Http\Controllers\Admin\Customers\CustomerController as CustomersCustomerController;
+use App\Http\Controllers\Admin\Employees\Storm5EmployeeController;
+use App\Http\Controllers\Admin\Finance\AdminExpensesController;
+use App\Http\Controllers\Admin\Finance\AdminFinanceController;
+use App\Http\Controllers\Admin\Finance\AdminProfitController;
+use App\Http\Controllers\Admin\Finance\AdminRevenueController;
+use App\Http\Controllers\Admin\Finance\AdminSalesController;
+use App\Http\Controllers\Admin\Finance\FinanceController;
+use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\Loans\AdminLoansController;
+use App\Http\Controllers\Admin\Loans\ApprovedLoanController;
+use App\Http\Controllers\Admin\Loans\LoansController as LoansLoansController;
+use App\Http\Controllers\Admin\Loans\LoansProcessingController;
+use App\Http\Controllers\Admin\Loans\PaidLoanController;
+use App\Http\Controllers\Admin\Locations\AdminLocationsController;
+use App\Http\Controllers\Admin\Locations\LocationsController;
+use App\Http\Controllers\Admin\Orders\AdminOrderController;
+use App\Http\Controllers\Admin\Orders\OrderController;
+use App\Http\Controllers\Admin\Profiles\AdminProfileController;
+use App\Http\Controllers\Admin\Profiles\ProfileController;
+use App\Http\Controllers\Admin\Supplies\AdminSupplierController;
+use App\Http\Controllers\Admin\Supplies\SuppliersController as SuppliesSuppliersController;
+use App\Http\Controllers\Admin\Support\AdminSupportController;
 use App\Http\Controllers\Banks\EquityBankController;
 use App\Http\Controllers\Bills\BillController;
 use App\Http\Controllers\Bills\BillPaymentController;
@@ -9,6 +36,7 @@ use App\Http\Controllers\Employees\EmployeeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Http\Controllers\FcmCloudMessagingController;
+use App\Http\Controllers\Finance\AdminSalesController as FinanceAdminSalesController;
 use App\Http\Controllers\Loans\LoanPaymentController;
 use App\Http\Controllers\Loans\LoansApplicationsController;
 use App\Http\Controllers\Loans\LoansController;
@@ -23,6 +51,7 @@ use App\Http\Controllers\supplies\OrdersController;
 use App\Http\Controllers\Supplies\SuppliersController;
 use App\Repositories\B2BPayments\ipay;
 use App\Repositories\Payments\B2BPayments\ipay as B2BPaymentsIpay;
+use App\Repositories\RoutesRepository;
 use App\Retails\Retail;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,17 +66,219 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+Route::get('/home', function () {
+    $routes = new RoutesRepository();
+
+  return redirect($routes->userRedirectRoute());
+})->middleware('auth');
+
+Route::get('/admin/home', function () {
+    return view('Admin.home');
+})->middleware('auth');;
+
+Route::get('/user/home', [HomeController::class, 'index'])->middleware('auth');;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/stk', function () {
-    return view('stk');
-});
 
-Route::get('/houses', function () {
-    return view('houses');
-});
+
+//+++++++++++++++++++++++ Admin  APi ++++++++++++++++++++++++++++++++
+
+#suppliers
+Route::post('/admin/suppliers/index', [AdminSupplierController::class, 'index']);
+
+Route::get('/admin/suppliers/create', [AdminCustomerController::class, 'create']);
+Route::post('/admin/suppliers/store', [AdminCustomerController::class, 'store']);
+Route::post('/admin/suppliers/edit/{id}', [AdminSupplierController::class, 'edit']);
+Route::post('/admin/suppliers/update/{id}', [AdminSupplierController::class, 'update']);
+Route::post('/admin/suppliers/show/{id}', [AdminSupplierController::class, 'show']);
+Route::post('/admin/suppliers/delete/{id}', [AdminSupplierController::class, 'destroy']);
+
+#profile
+
+Route::get('/admin/profile/user/index', [AdminProfileController::class, 'index']);
+Route::get('/admin/profile/create', [AdminCustomerController::class, 'create']);
+Route::post('/admin/profile/store', [AdminCustomerController::class, 'store']);
+Route::get('/admin/profile/user/edit/{id}', [AdminProfileController::class, 'edit']);
+Route::post('/admin/profile/user/update/{id}', [AdminProfileController::class, 'update']);
+Route::get('/admin/profile/user/show/{id}', [AdminProfileController::class, 'show']);
+Route::post('/admin/profile/user/delete/{id}', [AdminProfileController::class, 'destroy']);
+
+
+#customers
+Route::get('/admin/customers/index', [AdminCustomerController::class, 'index']);
+Route::get('/admin/customers/create', [AdminCustomerController::class, 'create']);
+Route::post('/admin/customers/store', [AdminCustomerController::class, 'store']);
+Route::get('/admin/customers/edit/{id}', [AdminCustomerController::class, 'edit']);
+Route::post('/admin/customers/update/{id}', [AdminCustomerController::class, 'update']);
+Route::get('/admin/customers/show/{id}', [AdminCustomerController::class, 'show']);
+Route::post('/admin/customers/delete/{id}', [AdminCustomerController::class, 'destroy']);
+
+#Employees
+
+Route::get('/admin/employees/index', [Storm5EmployeeController::class, 'index']);
+Route::get('/admin/employees/create', [Storm5EmployeeController::class, 'create']);
+Route::post('/admin/employees/store', [Storm5EmployeeController::class, 'store']);
+Route::get('/admin/employees/edit/{id}', [Storm5EmployeeController::class, 'edit']);
+Route::post('/admin/employees/update/{id}', [Storm5EmployeeController::class, 'update']);
+Route::get('/admin/employees/show/{id}', [Storm5EmployeeController::class, 'show']);
+Route::post('/admin/employees/delete/{id}', [Storm5EmployeeController::class, 'destroy']);
+
+#Loans
+Route::get('/admin/loans/index', [AdminLoansController::class, 'index']);
+Route::get('/admin/loans/create', [AdminLoansController::class, 'create']);
+Route::post('/admin/loans/store', [AdminLoansController::class, 'store']);
+Route::get('/admin/loans/edit/{id}', [AdminLoansController::class, 'edit']);
+Route::post('/admin/loans/update/{id}', [AdminLoansController::class, 'update']);
+Route::get('/admin/loans/show/{id}', [AdminLoansController::class, 'show']);
+Route::post('/admin/loans/delete/{id}', [AdminLoansController::class, 'destroy']);
+
+//processing loan
+Route::get('/admin/loans/appliedloans/index', [LoansProcessingController::class, 'allLoans']);
+Route::get('/admin/loans/appliedloans/index/{id}', [LoansProcessingController::class, 'index']);
+Route::get('/admin/loans/appliedloans/create', [LoansProcessingController::class, 'create']);
+Route::post('/admin/loans/appliedloans/store', [LoansProcessingController::class, 'store']);
+Route::get('/admin/loans/appliedloans/edit/{id}', [LoansProcessingController::class, 'edit']);
+Route::post('/admin/loans/appliedloans/update/{id}', [LoansProcessingController::class, 'update']);
+Route::get('/admin/loans/appliedloans/show/{id}', [LoansProcessingController::class, 'show']);
+Route::post('/admin/loans/appliedloans/delete/{id}', [LoansProcessingController::class, 'destroy']);
+
+//approved loans
+Route::get('/admin/loans/approved/index', [ApprovedLoanController::class, 'index']);
+Route::get('/admin/loans/approved/create', [ApprovedLoanController::class, 'create']);
+Route::post('/admin/loans/approved/store', [ApprovedLoanController::class, 'store']);
+Route::get('/admin/loans/approved/edit/{id}', [ApprovedLoanController::class, 'edit']);
+Route::post('/admin/loans/approved/update/{id}', [ApprovedLoanController::class, 'update']);
+Route::get('/admin/loans/approved/show/{id}', [ApprovedLoanController::class, 'show']);
+Route::post('/admin/loans/approved/delete/{id}', [ApprovedLoanController::class, 'destroy']);
+
+//paid loans
+Route::get('/admin/loans/paid/index', [PaidLoanController::class, 'index']);
+Route::get('/admin/loans/paid/create', [PaidLoanController::class, 'create']);
+Route::post('/admin/loans/paid/store', [PaidLoanController::class, 'store']);
+Route::get('/admin/loans/paid/edit/{id}', [PaidLoanController::class, 'edit']);
+Route::post('/admin/loans/paid/update/{id}', [PaidLoanController::class, 'update']);
+Route::get('/admin/loans/paid/show/{id}', [PaidLoanController::class, 'show']);
+Route::post('/admin/loans/paid/delete/{id}', [PaidLoanController::class, 'destroy']);
+
+
+#Finance
+
+Route::get('/admin/finance/index', [AdminFinanceController::class, 'index']);
+Route::get('/admin/finance/create', [AdminFinanceController::class, 'create']);
+Route::post('/admin/finance/store', [AdminFinanceController::class, 'store']);
+Route::get('/admin/finance/edit/{id}', [AdminFinanceController::class, 'edit']);
+Route::post('/admin/finance/update/{id}', [AdminFinanceController::class, 'update']);
+Route::get('/admin/finance/show/{id}', [AdminFinanceController::class, 'show']);
+Route::post('/admin/finance/delete/{id}', [AdminFinanceController::class, 'destroy']);
+
+#Profit Finance
+
+Route::get('/admin/finance/profit/index', [AdminProfitController::class, 'index']);
+Route::get('/admin/finance/profit/create', [AdminProfitController::class, 'create']);
+Route::post('/admin/finance/profit/store', [AdminProfitController::class, 'store']);
+Route::get('/admin/finance/profit/edit/{id}', [AdminProfitController::class, 'edit']);
+Route::post('/admin/finance/profit/update/{id}', [AdminProfitController::class, 'update']);
+Route::get('/admin/finance/profit/show/{id}', [AdminProfitController::class, 'show']);
+Route::post('/admin/finance/profit/delete/{id}', [AdminProfitController::class, 'destroy']);
+
+#Sales Finance
+
+Route::get('/admin/finance/sales/index', [AdminSalesController::class, 'index']);
+Route::get('/admin/finance/sales/create', [AdminSalesController::class, 'create']);
+Route::post('/admin/finance/sales/store', [AdminSalesController::class, 'store']);
+Route::get('/admin/finance/sales/edit/{id}', [AdminSalesController::class, 'edit']);
+Route::post('/admin/finance/sales/update/{id}', [AdminSalesController::class, 'update']);
+Route::get('/admin/finance/sales/show/{id}', [AdminSalesController::class, 'show']);
+Route::post('/admin/finance/sales/delete/{id}', [AdminSalesController::class, 'destroy']);
+
+#Revenue Finance
+
+Route::get('/admin/finance/revenue/index', [AdminRevenueController::class, 'index']);
+Route::get('/admin/finance/revenue/create', [AdminRevenueController::class, 'create']);
+Route::post('/admin/finance/revenue/store', [AdminRevenueController::class, 'store']);
+Route::get('/admin/finance/revenue/edit/{id}', [AdminRevenueController::class, 'edit']);
+Route::post('/admin/finance/revenue/update/{id}', [AdminRevenueController::class, 'update']);
+Route::get('/admin/finance/revenue/show/{id}', [AdminRevenueController::class, 'show']);
+Route::post('/admin/finance/revenue/delete/{id}', [AdminRevenueController::class, 'destroy']);
+#Expenses Finance
+
+Route::get('/admin/finance/expenses/index', [AdminExpensesController::class, 'index']);
+Route::get('/admin/finance/expenses/create', [AdminExpensesController::class, 'create']);
+Route::post('/admin/finance/expenses/store', [AdminExpensesController::class, 'store']);
+Route::get('/admin/finance/expenses/edit/{id}', [AdminExpensesController::class, 'edit']);
+Route::post('/admin/finance/expenses/update/{id}', [AdminExpensesController::class, 'update']);
+Route::get('/admin/finance/expenses/show/{id}', [AdminExpensesController::class, 'show']);
+Route::post('/admin/finance/expenses/delete/{id}', [AdminExpensesController::class, 'destroy']);
+
+
+// locations
+
+Route::get('/admin/locations/index', [AdminLocationsController::class, 'index']);
+
+Route::get('/admin/locations/create', [AdminLocationsController::class, 'create']);
+Route::post('/admin/locations/store', [AdminLocationsController::class, 'store']);
+Route::get('/admin/locations/edit/{id}', [AdminLocationsController::class, 'edit']);
+Route::post('/admin/locations/update/{id}', [AdminLocationsController::class, 'update']);
+Route::get('/admin/locations/show/{id}', [AdminLocationsController::class, 'show']);
+Route::post('/admin/locations/delete/{id}', [AdminLocationsController::class, 'destroy']);
+
+// Orders
+
+Route::get('/admin/orders/index', [AdminOrderController::class, 'index']);
+
+Route::get('/admin/orders/create', [AdminOrderController::class, 'create']);
+Route::post('/admin/orders/store', [AdminOrderController::class, 'store']);
+Route::get('/admin/orders/edit/{id}', [AdminOrderController::class, 'edit']);
+Route::post('/admin/orders/update/{id}', [AdminOrderController::class, 'update']);
+Route::get('/admin/orders/show/{id}', [AdminOrderController::class, 'show']);
+Route::post('/admin/orders/delete/{id}', [AdminOrderController::class, 'destroy']);
+
+// Support
+
+Route::get('/admin/support/index', [AdminSupportController::class, 'index']);
+
+Route::get('/admin/support/create', [AdminSupportController::class, 'create']);
+Route::post('/admin/support/store', [AdminSupportController::class, 'store']);
+Route::get('/admin/support/edit/{id}', [AdminSupportController::class, 'edit']);
+Route::post('/admin/support/update/{id}', [AdminSupportController::class, 'update']);
+Route::get('/admin/support/show/{id}', [AdminSupportController::class, 'show']);
+Route::post('/admin/support/delete/{id}', [AdminSupportController::class, 'destroy']);
+
+// Bills
+
+Route::get('/admin/bills/index', [AdminBillController::class, 'index']);
+
+Route::get('/admin/bills/create', [AdminBillController::class, 'create']);
+Route::post('/admin/bills/store', [AdminBillController::class, 'store']);
+Route::get('/admin/bills/edit/{id}', [AdminBillController::class, 'edit']);
+Route::post('/admin/bills/update/{id}', [AdminBillController::class, 'update']);
+Route::get('/admin/bills/show/{id}', [AdminBillController::class, 'show']);
+Route::post('/admin/bills/delete/{id}', [AdminBillController::class, 'destroy']);
+
+// Bills Payment
+
+//bill payment
+Route::get('/admin/bills/payment/index',  [AdminBillsPaymentController::class, 'allBills']);
+Route::get('/admin/bills/payment/index/{bill_id}',  [AdminBillsPaymentController::class, 'index']);
+Route::get('/admin/bills/payment/create',  [AdminBillsPaymentController::class, 'create']);
+Route::post('/admin/bills/payment/update/{id}',  [AdminBillsPaymentController::class, 'update']);
+Route::get('/admin/bills/payment/show/{id}',  [AdminBillsPaymentController::class, 'show']);
+Route::get('/admin/bills/payment/delete/{id}',  [AdminBillsPaymentController::class, 'delete']);
+
+//bill payment history
+Route::get('/admin/bills/payment/history/index',  [AdminBillsHistoryController::class, 'index']);
+Route::get('/admin/bills/payment/history/delete',  [AdminBillsHistoryController::class, 'delete']);
+
+
+
+
+
+
+
+
 
 Route::post('get-token', [MpesaController::class, 'getAccessToken']);
 
@@ -61,7 +292,7 @@ Route::patch('/fcm-token', [FcmCloudMessagingController::class, 'updateToken'])-
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 //sales
 Route::get('/createsales', [SalesController::class, 'showCreateSales']);

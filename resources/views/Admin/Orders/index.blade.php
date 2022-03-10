@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('Admin.Layouts.app')
 @section('content')
 				<div class="app-title">
 								<div>
@@ -15,7 +15,7 @@
 																								<div class="col">
 																												<div class="tile-body">
 																																<input class="form-control  @error('startDate') is-invalid @enderror" name="startDate"
-																																				type="text" placeholder="Select Date" autocomplete="new-startDate" id="startDate">
+                                                                                                                                id="startDate"	type="text" placeholder="Select Date" autocomplete="off" >
 																																@error('startDate')
 																																				<span class="invalid-feedback" role="alert">
 																																								<strong>{{ $message }}</strong>
@@ -26,7 +26,7 @@
 																								<div class="col">
 																												<div class="tile-body">
 																																<input class="form-control  @error('endDate') is-invalid @enderror" id="endDate" type="text"
-																																				placeholder="Select Date" name="endDate" autocomplete="new-endDate">
+																																				placeholder="Select Date" name="endDate" autocomplete="off">
 																																@error('endDate')
 																																				<span class="invalid-feedback" role="alert">
 																																								<strong>{{ $message }}</strong>
@@ -122,7 +122,7 @@
 																																												</td>
 
 																																												<td>
-																																															<a href="/retails/show">{{  $order->retail->retailName }}</a>
+																																															<a href="/retails/show">{{$order->orderId }}</a>
 																																												</td>
 
 																																												<td>
@@ -135,7 +135,7 @@
 																																												<td>
 																																																{{ $order->orderDate }}
 																																												</td>
-																																												<td><a href="/orders/order-item/show/{{ $order->id }}"><i
+																																												<td><a href="/admin/orders/show/{{ $order->id }}"><i
 																																																								class="fa fa-eye ">
 																																																								View</i></a></td>
 

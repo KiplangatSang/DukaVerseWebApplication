@@ -7,17 +7,17 @@ class IpayPayments
 // base url
  static $baseUrl = "https://apis.ipayafrica.com/b2b/v1/";
 
-public function ipayData()
+public function ipayData($amount,$account,$phone_no)
 {   $fields = array(
   "live"=> "0",
   "oid"=> "112ABcADQnppAPdd",
   "inv"=> "112ABcADQnppAPdd",
   "reference" =>  "112ABcADQnppAPdd",
-  "account" => "112ABcADQnppAPdd",
-  "amount"=> "900",
+  "account" => $account,
+  "amount"=> $amount,
   "narration" => "test",
   "curr" =>"ksh",
-  "tel"=> "254714680763",
+  "tel"=> $phone_no,
   "eml"=> "kajuej@gmailo.com",
   "vid"=> "demo",
   "curr"=> "KES",
@@ -62,11 +62,11 @@ curl_setopt_array(
 
 //sending money
 
-public function sendMoney()
+public function sendMoney($amount,$account,$phone_no)
 {
     // available channels = mpesapaybill $ mpesatill
     $channel = "pesalink";
-    $data = $this->ipayData();
+    $data = $this->ipayData($amount,$account,$phone_no);
 
     $vid = $data['vid'];
     $reference = $data['reference'];
@@ -101,9 +101,9 @@ public function sendMoney()
 
 }
 
-public function transactionStatus()
+public function transactionStatus($amount,$account,$phone_no)
 {
-    $data = $this->ipayData();
+    $data = $this->ipayData($amount,$account,$phone_no);
 
     $vid = $data['vid'];
     $reference = $data['reference'];

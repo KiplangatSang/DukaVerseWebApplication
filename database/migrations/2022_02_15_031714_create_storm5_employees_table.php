@@ -15,7 +15,6 @@ class CreateStorm5EmployeesTable extends Migration
     {
         Schema::create('storm5_employees', function (Blueprint $table) {
             $table->id();
-            $table->id();
             $table->bigInteger('storm5employeeable_id');
             $table->longText('storm5employeeable_type');
             $table->string('empName');

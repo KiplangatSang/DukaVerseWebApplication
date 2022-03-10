@@ -24,12 +24,21 @@ public function compose(View $view){
     }
 
 
+    $usersData = array(28, 480, 40, 190, 860);
+    $loansData = array(400, 100, 700, 800, 400);
+    $salesData = array(60, 300, 600, 10, 50);
+    $creditData = array(28, 480, 40, 190, 860);
+    $revenueData = array( 480, 28, 860,40, 190);
 
-    $salesData = array(28, 480, 40, 190, 860);
+
 
     $data = array(
        'retailimage'=> $retailimage ,
-       'salesData'=> $salesData
+       'usersData'=> $usersData,
+       'loansData'=> $loansData,
+       'salesData'=> $salesData,
+       'creditData'=> $creditData,
+       'revenueData'=> $revenueData,
 
     );
 

@@ -15,7 +15,7 @@
 																								<div class="col">
 																												<div class="tile-body">
 																																<input class="form-control  @error('startDate') is-invalid @enderror" name="startDate"
-																																				type="text" placeholder="Select Date" autocomplete="new-startDate">
+                                                                                                                                id="startDate"		type="text" placeholder="Select Date" autocomplete="off">
 																																@error('startDate')
 																																				<span class="invalid-feedback" role="alert">
 																																								<strong>{{ $message }}</strong>
@@ -26,7 +26,7 @@
 																								<div class="col">
 																												<div class="tile-body">
 																																<input class="form-control  @error('endDate') is-invalid @enderror" id="endDate" type="text"
-																																				placeholder="Select Date" name="endDate" autocomplete="new-endDate">
+																																				placeholder="Select Date" name="endDate" autocomplete="off">
 																																@error('endDate')
 																																				<span class="invalid-feedback" role="alert">
 																																								<strong>{{ $message }}</strong>

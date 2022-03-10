@@ -1,95 +1,153 @@
-@extends('layouts.loanslayout')
+@extends('Admin.Layouts.app')
 @section('content')
+				@if (session()->has('message'))
+								<div class="container-fluid alert alert-danger">
+												{{ session()->get('message') }}
+								</div>
+				@endif
 
-
+				@if (session()->has('success'))
+								<div class="container-fluid alert alert-success">
+												{{ session()->get('success') }}
+								</div>
+				@endif
 				<div class="app-title">
+
 								<div>
-												<h1><i class="fa fa-th-list"></i> Bills</h1>
-												<p>Bills due for Payment</p>
+												<h1><i class="fa fa-th-list"></i> Storm5 Customers Table</h1>
+												<div class="row">
+																<div class="col">
+																				<p class="p-2">All Stock entered between </p>
+
+																</div>
+																<div class="d-flex justify-content-center ml-5">
+																				<form class="row form formcontrol" method="GET" action="/sales/sales-by-date"
+																								enctype="multipart/form-data" id="sales_date_form">
+																								@csrf
+																								<div class="col">
+																												<div class="tile-body">
+																																<input class="form-control  @error('startDate') is-invalid @enderror" name="startDate"
+                                                                                                                                id="startDate"		type="text" placeholder="Select Date" autocomplete="off">
+																																@error('startDate')
+																																				<span class="invalid-feedback" role="alert">
+																																								<strong>{{ $message }}</strong>
+																																				</span>
+																																@enderror
+																												</div>
+																								</div>
+																								<div class="col">
+																												<div class="tile-body">
+																																<input class="form-control  @error('endDate') is-invalid @enderror" id="endDate" type="text"
+																																				placeholder="Select Date" name="endDate" autocomplete="off">
+																																@error('endDate')
+																																				<span class="invalid-feedback" role="alert">
+																																								<strong>{{ $message }}</strong>
+																																				</span>
+																																@enderror
+																												</div>
+																								</div>
+
+																								<div class="tile-body">
+																												<button class="btn btnsecondary bg-success text-light" type="submit">View</button>
+																								</div>
+
+																				</form>
+																</div>
+												</div>
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-												<li class="breadcrumb-item">Bills</li>
-												<li class="breadcrumb-item active"><a href="#">Bills View</a></li>
+												<li class="breadcrumb-item">Customers</li>
+												<li class="breadcrumb-item active"><a href="#">Customers Table</a></li>
 								</ul>
 				</div>
+
+				<div class="d-flex justify-content-center">
+
+				</div>
+
 				<div class="row">
-								@if (session()->has('message'))
-												<div class="container-fluid alert alert-danger">
-																{{ session()->get('message') }}
-												</div>
-								@endif
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-basket fa-3x"></i>
+																<div class="info">
+																				<h5> Items In Store</h5>
 
-								@if (session()->has('success'))
-												<div class="container-fluid alert alert-success">
-																{{ session()->get('success') }}
-												</div>
-								@endif
-
-								<div class="col-md-12">
-
-												@if (count($billsdata) < 1)
-
-																<div class="container-fluid alert alert-success">
-																				<h3 class="text-display-4 text-info">No available Loans</h3>
-
-																				<a href="/home" class="button btn btn-secondary">Back to Dashbord</a>
+																				<p class="text-warning"><b>{{ $customerdata['customercount'] }}</b></p>
 																</div>
-												@endif
+												</div>
+								</div>
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small info coloured-icon"><i class="icon fa fa-line-chart fa-3x"></i>
+																<div class="info">
+																				<h5> Estimated Revenue</h5>
+																				<p class="text-warning"><b>{{ $customerdata['customercount'] }} ksh</b></p>
+																</div>
+												</div>
+								</div>
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
+																<div class="info">
+																				<h5>Average Stock</h5>
+																				<p class="text-warning"><b>{{ $customerdata['customercount'] }}</b></p>
+																</div>
+												</div>
+								</div>
 
-
-
-												@foreach ($billsdata['billslist'] as $bill)
+				</div>
+				<div class="row">
+								<div class="col-md-12">
+												<div class="tile">
 																<div class="tile-body">
-																				<div class="clearix"></div>
-																				<div class="col-md-12">
+																				<div class="table-responsive">
+																								<table class="table table-hover table-bordered" id="sampleTable">
+																												<thead>
+																																<tr>
+																																				<th>Customer Id</th>
+																																				<th>Customer Name</th>
+																																				<th>Customer Phone Number</th>
+																																				<th>Customer Email</th>
+																																				<th>Address</th>
+																																				<th>Date Entered</th>
+																																				<th>View</th>
+																																</tr>
+																												</thead>
+																												<tbody>
+																																@foreach ($customerdata['customerlist'] as $customer)
 
-																								<form method="POST" action="/bills/show/{{ $bill->id }}" id="loanForm">
+																																				<tr>
+																																								<td>
+																																												{{ $customer->id_number }}
+																																								</td>
 
-																												@csrf
-
-																												<div class="tile ">
-																																<h3 class="tile-title">{{ $bill->billName }} </h3>
-																																<div class="tile-body row">
-																																				<div class="form-group col-md-3">
-																																								<label class="control-label"><strong>Bill Type</strong></label>
-																																								<img class="app-sidebar__user-avatar d-flex w-25"
-																																												src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
-																																												alt="{{ $bill->billName }}">
-
-																																				</div>
-																																				<div class="form-group col-md-3">
-																																								<label class="control-label"><strong>Amount</strong> </label>
-																																								<h5 class="text-display-6 text-danger">Ksh {{ $bill->billAmount }} <br>
-																																												</h3>
-																																				</div>
-																																				<div class="form-group col-md-3">
-																																								<label class="control-label"><strong>Bill Description</strong></label>
-																																								<h6 class="text-display-6 text-info">{{ $bill->billDescription }}</h6>
-
-
-																																				</div>
-																																				<div class="form-group col-md-3 align-self-end">
-
-																																								<button class="btn btn-success" type="submit">Pay
-																																												Bill</button>
-																																				</div>
+																																								<td>
+																																												{{ $customer->name }}
+																																								</td>
+																																								<td>
+																																												{{ $customer->phone_number }}
+																																								</td>
+																																								<td>
+																																												{{ $customer->email }}
+																																								</td>
+																																								<td>
+																																												{{ $customer->address }}
+																																								</td>
+																																								<td>
+																																												{{ $customer->created_at }}
+																																								</td>
+																																								<td><a href="/admin/customers/show/{{ $customer->id }}"><i class="fa fa-eye ">
+																																																				View</i></a></td>
 
 
+																																				</tr>
 
-																																</div>
-																								</form>
+
+																																@endforeach
+																												</tbody>
+																								</table>
 																				</div>
 																</div>
-
+												</div>
 								</div>
-								@endforeach
-
-				</div>
-				</div>
-				</div>
-
-
 				</div>
 
 @endsection

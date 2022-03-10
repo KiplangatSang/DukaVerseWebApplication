@@ -2,13 +2,13 @@
 @section('content')
 				<div class="app-title">
 								<div>
-												<h1><i class="fa fa-edit"></i>Employees</h1>
-												<p>View Employee</p>
+												<h1><i class="fa fa-edit"></i>Supplies</h1>
+												<p>View Supply</p>
 								</div>
 								<ul class="app-breadcrumb breadcrumb">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-												<li class="breadcrumb-item">Employees </li>
-												<li class="breadcrumb-item"><a href="#">Employee</a></li>
+												<li class="breadcrumb-item">Supplies </li>
+												<li class="breadcrumb-item"><a href="#">View Supply</a></li>
 								</ul>
 				</div>
 				<div class="row">
@@ -28,7 +28,7 @@
 
 																<div class="d-flex justify-content-center">
 
-																				<h3 class="tile-title">{{ $empdata['emp']->empName }}</h3>
+																				<h3 class="tile-title">{{ $suppliesdata['supplies']->empName }}</h3>
 																</div>
 																<div class="row">
 																				<div class="app-sidebar__user col-md-4">
@@ -44,14 +44,14 @@
 																								<div class="tile-body row d-flex justify-content-center">
 
 																												<a class="mr-3" href="/employee/updateEmployee/{{ $empdata['emp']->id }}"><button
-																																				class="btn btn-primary"> Update Employee
+																																				class="btn btn-primary"> Show Supplier
 																																</button></a>
-																												<a class="mr-3" href="#"><button class="btn btn-success "> Show  Sales
+																												<a class="mr-3" href="#"><button class="btn btn-success "> Show  All Supplies
 																																</button></a>
 
-																												<a class="mr-3" href="#"><button class="btn btn-info "> Show  Salaries
+																												<a class="mr-3" href="#"><button class="btn btn-info "> Show  Finance
 																																</button></a>
-																												<a class="mr-3" href="/employee/delete/{{ $empdata['emp']->id }}"><button class="btn btn-danger "> Delete Employee
+																												<a class="mr-3" href="/employee/delete/{{ $empdata['emp']->id }}"><button class="btn btn-danger "> Delete Supply
 																																</button></a>
 																								</div>
 

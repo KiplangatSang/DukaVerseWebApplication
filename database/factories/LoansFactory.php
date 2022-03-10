@@ -11,11 +11,9 @@ use Illuminate\Support\Str;
 $factory->define(Loans::class, function (Faker $faker) {
     return [
         //
-
-
-        'loanable_id'=> Str::random(1,100000),
-        'loanable_type'=> Str::random(1,100000),
-        'loan_type'=> Str::random(1,100000),
+        'loanable_id'=> rand(1,2),
+        'loanable_type'=> "App/User",
+        'loan_type'=> Str::random(10),
         'min_loan_range'=> rand(1000,100000),
         'max_loan_range'=> rand(10000,1000000),
         'repayment_status'=>rand(-1,1),

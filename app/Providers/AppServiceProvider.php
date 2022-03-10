@@ -44,6 +44,6 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
 
-        View::composer(['Retailers.*','Layouts.app','Loans.*','Layouts.cardpaymentslayout','Employees.*','Sales.*','Stock.*','Customers.*','Bills.*','Suppliers.*','Support.*'], SalesComposer::class);
+        View::composer(['Retailers.*','Layouts.app','Loans.*','Layouts.cardpaymentslayout','Employees.*','Sales.*','Stock.*','Customers.*','Bills.*','Suppliers.*','Support.*','Admin.*' ], SalesComposer::class);
     }
 }

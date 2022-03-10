@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('Admin.Layouts.app')
 @section('content')
 
 
@@ -70,15 +70,13 @@
 																																				<div class="form-group col-md-3">
 																																								<label class="control-label"><strong>Loan Description</strong></label>
 																																								<h6 class="text-display-6 text-info">{{ $loan->loan_description }}</h3>
-																																												<h6 class="text-display-6 text-danger">Applicable after 6 months of actively
-																																																using Storm5.</h3>
+
 
 																																				</div>
 																																				<div class="form-group col-md-3 align-self-end">
 
-																																								<a class="btn btn-info" href="#" id="loanAmountAlert"
-																																												onclick="submitform(@json($loan->id),@json($loan->min_loan_range),@json($loan->max_loan_range))">Apply
-																																												Now</a>
+																																								<a class="btn btn-info" href="/admin/loans/appliedloans/index/{{ $loan->id }}" id="loanAmountAlert">
+																																												View Applicants</a>
 
 
 																																				</div>

@@ -1,7 +1,6 @@
-@extends('layouts.app')
+@extends('Layouts.app')
 
 @section('content')
-
 				<div class="app-title">
 								<div>
 												<h1><i class="fa fa-dashboard"></i> Dashboard</h1>
@@ -12,11 +11,12 @@
 												<li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
 								</ul>
 				</div>
+
 				@can('view-retaildata', Auth::user())
 								<div class="row">
 												<div class="col-md-6 col-lg-3">
 
-																<div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+																<div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-2x"></i>
 																				<div class="info">
 
 																								<h4>Employees</h4>
@@ -27,7 +27,7 @@
 
 												</div>
 												<div class="col-md-6 col-lg-3">
-																<div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-3x"></i>
+																<div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-2x"></i>
 																				<div class="info">
 																								<h4>Supplies</h4>
 																								<p><b>25</b></p>
@@ -35,7 +35,7 @@
 																</div>
 												</div>
 												<div class="col-md-6 col-lg-3">
-																<div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+																<div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-2x"></i>
 																				<div class="info">
 																								<h4>Orders</h4>
 																								<p><b>10</b></p>
@@ -43,15 +43,16 @@
 																</div>
 												</div>
 												<div class="col-md-6 col-lg-3">
-																<div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
+																<div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-2x"></i>
 																				<div class="info">
 																								<h4>Stars</h4>
 																								<p><b>500</b></p>
 																				</div>
 																</div>
 												</div>
-								@endcan
+
 				</div>
+                @endcan
 				<div class="row">
 								@if (session()->has('message'))
 												<div class="container-fluid alert alert-danger">
@@ -91,5 +92,4 @@
 												</div>
 								</div>
 				</div>
-
 @endsection
