@@ -1,12 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
-
-
-
-
 <head>
-
 				<title>Storm5</title>
 				<meta charset="utf-8">
 				<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -357,10 +352,7 @@
 				                pointStrokeColor: "#fff",
 				                pointHighlightFill: "#fff",
 				                pointHighlightStroke: "rgba(220,220,220,1)",
-
-				                data: @json($data['salesData'])
-
-
+				                data: @json($data['salesData']),
 				            },
 				            {
 				                label: "My Second dataset",

@@ -22,6 +22,8 @@ use App\Http\Controllers\Admin\Locations\AdminLocationsController;
 use App\Http\Controllers\Admin\Locations\LocationsController;
 use App\Http\Controllers\Admin\Orders\AdminOrderController;
 use App\Http\Controllers\Admin\Orders\OrderController;
+use App\Http\Controllers\Admin\Payments\BankPayment\AdminBankPaymentController;
+use App\Http\Controllers\Admin\Payments\Mpesa\AdminMpesaController;
 use App\Http\Controllers\Admin\Profiles\AdminProfileController;
 use App\Http\Controllers\Admin\Profiles\ProfileController;
 use App\Http\Controllers\Admin\Supplies\AdminSupplierController;
@@ -74,17 +76,54 @@ Route::get('/home', function () {
 
 Route::get('/admin/home', function () {
     return view('Admin.home');
-})->middleware('auth');;
+})->middleware('auth');
 
 Route::get('/user/home', [HomeController::class, 'index'])->middleware('auth');;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('LandingPage.landingpage');
 });
 
 
 
 //+++++++++++++++++++++++ Admin  APi ++++++++++++++++++++++++++++++++
+
+//payments
+Route::get('/payments/cardpayments', [CardPaymentsController::class, 'index']);
+
+//stripe
+Route::get('/stripe', [StripeController::class, 'stripe']);
+Route::get('/stripe/post', [StripeController::class, 'stripePost'])->name('stripe.post');
+
+//MPESA
+Route::get('/admin/payments/mpesapayments', [AdminMpesaController::class, 'index']);
+Route::post('/admin/payments/mpesapayments/simulatepayments', [AdminMpesaController::class, 'simulateTransaction']);
+Route::post('/admin/payments/mpesapayments/stkpush', [AdminMpesaController::class, 'stkPush']);
+Route::post('/admin/stkpush', [AdminMpesaController::class, 'stkPushResponse']);
+
+//Banks
+Route::get('/admin/payments/equity', [EquityBankController::class, 'index']);
+Route::get('/admin/payments/bank/{bank_id}', [AdminBankPaymentController::class, 'index']);
+
+
+//ipay
+Route::get('/admin/ipay/pay/initiate', function () {
+    $payment = new B2BPaymentsIpay();
+    $payment->initiatorRequest();
+
+});
+
+Route::get('/admin/ipay/pay/mobilemoney', function () {
+    $payment = new B2BPaymentsIpay();
+    $payment->mobileMoneyTransact();
+
+});
+
+Route::get('/admin/ipay/pay/search', function () {
+    $payment = new B2BPaymentsIpay();
+    $payment->searchTransaction();
+
+});
 
 #suppliers
 Route::post('/admin/suppliers/index', [AdminSupplierController::class, 'index']);
@@ -265,7 +304,7 @@ Route::get('/admin/bills/payment/index',  [AdminBillsPaymentController::class, '
 Route::get('/admin/bills/payment/index/{bill_id}',  [AdminBillsPaymentController::class, 'index']);
 Route::get('/admin/bills/payment/create',  [AdminBillsPaymentController::class, 'create']);
 Route::post('/admin/bills/payment/update/{id}',  [AdminBillsPaymentController::class, 'update']);
-Route::get('/admin/bills/payment/show/{id}',  [AdminBillsPaymentController::class, 'show']);
+Route::get('/admin/bills/payment/show/{id}/{bill_id}',[AdminBillsPaymentController::class, 'show']);
 Route::get('/admin/bills/payment/delete/{id}',  [AdminBillsPaymentController::class, 'delete']);
 
 //bill payment history
@@ -273,8 +312,11 @@ Route::get('/admin/bills/payment/history/index',  [AdminBillsHistoryController::
 Route::get('/admin/bills/payment/history/delete',  [AdminBillsHistoryController::class, 'delete']);
 
 
+#End Admin API
 
 
+
+//+++++++++++++++++++++++ Client  APi ++++++++++++++++++++++++++++++++#############################
 
 
 

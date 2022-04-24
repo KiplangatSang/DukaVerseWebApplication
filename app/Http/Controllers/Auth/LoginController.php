@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class LoginController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------
@@ -36,5 +39,19 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function apiLogin(Request $request)
+    {
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            $user = Auth::user();
+            $success['token'] =  $user-> accessToken;
+            $success['user'] =  $user;
+
+            return $this->sendResponse($success, 'User login successfully.');
+        }
+        else{
+            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+        }
     }
 }

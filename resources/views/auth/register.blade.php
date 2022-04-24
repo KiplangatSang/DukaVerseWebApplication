@@ -1,5 +1,4 @@
 @extends('layouts.login')
-
 @section('content')
 
 				<div class="vh-100 bg-image "
@@ -39,6 +38,17 @@
 																																												</span>
 																																								@enderror
 																																				</div>
+                                                                                                                                                <div class="form-outline mb-2">
+                                                                                                                                                    <input type="phoneno" id="phoneno"
+                                                                                                                                                                    class="form-control form-control-lg  @error('phoneno') is-invalid @enderror"
+                                                                                                                                                                    name="phoneno" value="{{ old('phoneno') }}" required autocomplete="email" />
+                                                                                                                                                    <label class="form-label" for="email">Your Phone Number</label>
+                                                                                                                                                    @error('phoneno')
+                                                                                                                                                                    <span class="invalid-feedback" role="alert">
+                                                                                                                                                                                    <strong>{{ $message }}</strong>
+                                                                                                                                                                    </span>
+                                                                                                                                                    @enderror
+                                                                                                                                    </div>
 
 																																				<div class="form-outline mb-2">
 																																								<input type="password" id="password"

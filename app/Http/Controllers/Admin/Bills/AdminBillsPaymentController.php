@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\ThirdPartyRepository;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AdminBillsPaymentController extends Controller
 {
@@ -78,17 +79,34 @@ class AdminBillsPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,$bill_id)
     {
+       // dd($bill_id);
+
+    $bill = Bills::where('id',$bill_id)->first();
+
+
+    $payment = array(
+        'payAmount' => $bill->billAmount,
+        'payDescription' => $bill->billName,
+    );
+    Session::put(
+            'payment' ,$payment
+    );
+
         //
     if($id == "MPESA"){
-        return redirect('/payments/mpesapayments');
+
+        return redirect('/admin/payments/mpesapayments');
 
     }elseif($id == "KCB"){
 
-    }elseif($id == "EQUITY"){
+        return redirect('/admin/payments/bank/KCB');
 
-    }else{
+    }elseif($id == "EQUITY"){
+        return redirect('/admin/payments/bank/EQUITY');
+    }
+    else{
 
         return back()->with('message', "Sorry!! Error processing Request");
     }

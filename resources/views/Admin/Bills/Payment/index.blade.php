@@ -47,12 +47,10 @@
 																																@foreach ($billPaymentData['thirdPartyImages']['MoneyPayments'] as $key => $value)
 																																				<div class="form-group col-md-6">
 
-																																								<a href="/bills/payment/show/{{ $key }}" class="">
+																																								<a href="/admin/bills/payment/show/{{ $key }}/{{ $billPaymentData['bill']->id }}" >
 																																												<div class=" tile col-md-6  d-flex justify-content-center">
 																																																<img class="app-sidebar__user-avatar d-flex w-50" src="{{ $value }}"
 																																																				alt="{{ $key }}">
-
-
 																																																<h4 class="text-diplay-4">{{ $key }}</h4>
 
 

@@ -24,6 +24,14 @@ class CreateUsersTable extends Migration
             $table-> unsignedBigInteger('userpin')->default(1234);
             $table-> boolean('isOwner')->default(false);
             $table-> boolean('isEmployee')->default(true);
+            $table->boolean('isAdmin')->default(false);
+            $table->integer('role')->default(1);
+            $table->boolean('isSuspended')->default(false);
+            $table->string('api_token');
+            $table->string('month');
+            $table->integer('year');
+
+
             $table->rememberToken();
             $table->timestamps();
         });

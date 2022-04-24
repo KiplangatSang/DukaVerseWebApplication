@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FcmCloudMessagingController;
@@ -33,3 +35,7 @@ Route::get('curl_download', [FcmCloudMessagingController::class,'curldownload'])
 Route::post('make-updateToken', [FcmCloudMessagingController::class,'updateToken']);
 Route::post('sendNotification', [FcmCloudMessagingController::class,'sendNotification']);
 Route::post('delete-Tokendata', [FcmCloudMessagingController::class,'deleterecords']);
+
+//auth
+Route::post('/user/register', [RegisterController::class,'apiRegister']);
+Route::post('/user/login', [LoginController::class,'apiLogin']);

@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
-class RegisterController extends Controller
+class RegisterController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------
@@ -54,6 +57,7 @@ class RegisterController extends Controller
             'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phoneno'=>'required',
             'terms_and_conditions'=>'required',
         ]);
     }
@@ -69,8 +73,55 @@ class RegisterController extends Controller
         return User::create([
             'username' => $data['username'],
             'email' => $data['email'],
+            'phoneno' => $data['phoneno'],
             'password' => Hash::make($data['password']),
             'terms_and_conditions'=>$data['terms_and_conditions'],
+            'api_token' => Str::random(60),
+            'month' => date('M'),
+            'year' => date('Y'),
         ]);
+    }
+
+    protected function apiRegister(Request $request)
+    {
+        $input = $request->only('username',
+        'email',
+        'password',
+        'phoneno',
+        'terms_and_conditions');
+
+        $validator = Validator::make($request->all(), [
+            'username' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', ],
+            'c_password' => ['required|same:password', 'string', 'min:8', ],
+            'phoneno'=>'required',
+            'terms_and_conditions'=>'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $user = User::firstOrCreate([
+            'username' => $request['username'],
+            'email' => $request['email']],
+            [
+            'password' => Hash::make($request['password']),
+            'phoneno'=>$request['phoneno'],
+            'terms_and_conditions'=>$request['terms_and_conditions'],
+            'api_token' => Str::random(60),
+            'month' => date('M'),
+            'year' => date('Y'),
+        ]);
+
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+       // $user = User::create($input);
+        //$success['token'] =  $user->createToken('MyApp')->accessToken;
+        $success['user'] =  User::whereIn('email',$user)->first();
+
+
+        return $this->sendResponse($success, 'User registered successfully.');
     }
 }

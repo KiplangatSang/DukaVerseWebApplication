@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\payments\mpesa;
+namespace App\Http\Controllers\Admin\Payments\Mpesa;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 
-class MpesaController extends Controller
+class AdminMpesaController extends Controller
 {
+    //
+
     static $phone_number;
 
     public function __construct()
@@ -33,9 +32,9 @@ class MpesaController extends Controller
         );
 
 
-       return view('payments.mpesapayments',compact('mpesadata'));
+       return view('Admin.Payments.mpesapayments',compact('mpesadata'));
        }else{
-          return back()->with('message',"Could not process request");
+          return back($status = 404, $headers = [], $fallback = false );
        }
     }
 

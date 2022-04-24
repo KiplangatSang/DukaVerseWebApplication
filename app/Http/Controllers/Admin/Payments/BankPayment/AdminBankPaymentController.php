@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\payments\mpesa;
+namespace App\Http\Controllers\Admin\Payments\BankPayment;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 
-class MpesaController extends Controller
+class AdminBankPaymentController extends Controller
 {
+    //
+
     static $phone_number;
 
     public function __construct()
     {
         $this->middleware('auth');
-       // $this->phone = Auth::user()->phonenumber;
+
     }
 
     public function index(){
@@ -26,16 +25,16 @@ class MpesaController extends Controller
 
         $amount = $payment['payAmount'];
         $account = $payment['payDescription'];
-        $mpesadata = array(
+        $paymentdata = array(
             'phone_number'=> $phone_number,
             'amount'=> $amount,
             'account'=> $account,
         );
 
 
-       return view('payments.mpesapayments',compact('mpesadata'));
+       return view('Admin.Payments.cardpayments',compact('paymentdata'));
        }else{
-          return back()->with('message',"Could not process request");
+          return back($status = 404, $headers = [], $fallback = false );
        }
     }
 
@@ -61,15 +60,6 @@ class MpesaController extends Controller
     }
 /* get from   safaricom app*/
     public function makeHttp($url,$body){
-
-     // dd($body);
-
-    // dd( $this ->getAccessToken());
-
-    // {
-    //     "access_token": "3PAPCKzoby8PVMrfpQVj0IWUbl4D",
-    //     "expires_in": "3599"
-    //   }
 
         $curl = curl_init();
          curl_setopt_array(
