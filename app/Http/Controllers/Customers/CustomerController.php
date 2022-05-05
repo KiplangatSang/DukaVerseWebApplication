@@ -40,7 +40,7 @@ class CustomerController extends Controller
             'retails' =>$retail,
         );
 
-        return view('Customers.index',compact('customerdata'));
+        return view('client.customers.index',compact('customerdata'));
     }
 
     /**
@@ -59,7 +59,7 @@ class CustomerController extends Controller
         $custdata = array(
             'Retail' => $retail
         );
-        return view('Customers.create',compact('custdata'));
+        return view('client.customers.create',compact('custdata'));
     }
 
     /**
@@ -128,7 +128,7 @@ class CustomerController extends Controller
             'customer' => $customerlist,
         );
 
-        return view('Customers.show',compact('customerdata'));
+        return view('client.customers.show',compact('customerdata'));
     }
 
     /**
@@ -158,7 +158,7 @@ class CustomerController extends Controller
 
 
 
-        return view('Customers.edit',compact('custdata'));
+        return view('client.customers.edit',compact('custdata'));
     }
 
     /**

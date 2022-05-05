@@ -19,9 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table-> unsignedBigInteger('phoneno');
+            $table->string('phoneno');
             $table->string('terms_and_conditions')->nullable();
-            $table-> unsignedBigInteger('userpin')->default(1234);
+            $table-> unsignedBigInteger('userpin')->nullable()->default(1234);
             $table-> boolean('isOwner')->default(false);
             $table-> boolean('isEmployee')->default(true);
             $table->boolean('isAdmin')->default(false);
@@ -30,8 +30,6 @@ class CreateUsersTable extends Migration
             $table->string('api_token');
             $table->string('month');
             $table->integer('year');
-
-
             $table->rememberToken();
             $table->timestamps();
         });

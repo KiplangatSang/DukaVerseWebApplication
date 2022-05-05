@@ -120,8 +120,6 @@ class RegisterController extends BaseController
        // $user = User::create($input);
         //$success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['user'] =  User::whereIn('email',$user)->first();
-
-
         return $this->sendResponse($success, 'User registered successfully.');
     }
 }

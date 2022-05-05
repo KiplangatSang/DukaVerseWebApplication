@@ -22,7 +22,7 @@ class CardPaymentsController extends Controller
     {
         //
 
-    return view('payments.cardpayments');
+    return view('client.payments.cardpayments');
     }
 
     /**

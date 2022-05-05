@@ -34,7 +34,7 @@ class BillPaymentController extends Controller
 
           // dd($loanPaymentData);
 
-        return view('Bills.Payment.index',compact('billPaymentData'));
+        return view('client.bills.payment.index',compact('billPaymentData'));
 
     }
 

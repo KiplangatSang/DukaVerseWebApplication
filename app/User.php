@@ -20,7 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username', 'email', 'password', 'month',
-        'year', 'remember_token','api_token','phoneno',
+        'year', 'remember_token','api_token','phoneno','userpin',
     ];
 
     /**
@@ -52,7 +52,7 @@ class User extends Authenticatable
     }
 
 
-    public function Retails(){
+    public function retails(){
         return $this->morphMany(Retail::class,'retailable');
     }
 

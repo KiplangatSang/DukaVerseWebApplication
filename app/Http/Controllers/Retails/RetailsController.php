@@ -18,7 +18,7 @@ class RetailsController extends Controller
     //
     public function create()
     {
-        return view('Retailers.addretail');
+        return view('client.retailers.addretail');
     }
 
     public function addARetail(Request $request)

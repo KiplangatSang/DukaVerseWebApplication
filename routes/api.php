@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FcmCloudMessagingController;
 use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Http\Controllers\payments\mpesa\MpesaResponseController;
+use App\Http\Controllers\User\PinController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +40,8 @@ Route::post('delete-Tokendata', [FcmCloudMessagingController::class,'deleterecor
 //auth
 Route::post('/user/register', [RegisterController::class,'apiRegister']);
 Route::post('/user/login', [LoginController::class,'apiLogin']);
+Route::middleware('auth:api')->post('/user/pin','User\PinController@makePin');
+Route::middleware('auth:api')->post('/user/updatePin','User\PinController@updatePin');
+
+
+

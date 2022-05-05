@@ -28,7 +28,7 @@ class LoansController extends Controller
         //
         $loans = Loans::all();
         // dd($loans);
-        return view('Loans.loanitems', compact('loans'));
+        return view('client.loans.loanitems', compact('loans'));
     }
 
 
@@ -58,7 +58,7 @@ class LoansController extends Controller
 
 
 
-        return view('Loans.loan', compact('loans'));
+        return view('client.loans.loan', compact('loans'));
     }
 
     public function applyLoan($loan_id, $amount)

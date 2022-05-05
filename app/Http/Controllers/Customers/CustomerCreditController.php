@@ -47,7 +47,7 @@ class CustomerCreditController extends Controller
             'retails' =>$retail,
         );
 
-        return view('Customers.credit.index',compact('custCreditdata'));
+        return view('client.customers.credit.index',compact('custCreditdata'));
     }
 
     /**
@@ -98,7 +98,7 @@ class CustomerCreditController extends Controller
             'retails' =>$retail,
         );
 
-        return view('Customers.credit.show',compact('custCreditdata'));
+        return view('client.customers.credit.show',compact('custCreditdata'));
     }
 
     /**
@@ -128,7 +128,7 @@ class CustomerCreditController extends Controller
             'retail'=>$retail,
         );
 
-        return view('Customers.credit.edit',compact('custCreditdata'));
+        return view('client.customers.credit.edit',compact('custCreditdata'));
     }
 
     /**

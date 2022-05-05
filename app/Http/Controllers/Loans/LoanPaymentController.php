@@ -34,7 +34,7 @@ class LoanPaymentController extends Controller
         );
 
           // dd($loanPaymentData);
-       return view('Loans.loanpayments',compact('loanPaymentData'));
+       return view('client.loans.loanpayments',compact('loanPaymentData'));
 
 
     }

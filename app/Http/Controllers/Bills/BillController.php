@@ -34,7 +34,7 @@ class BillController extends Controller
             'billslist' => $billslist,
         );
 
-        return view('Bills.index',compact('billsdata'));
+        return view('client.bills.index',compact('billsdata'));
     }
 
     /**
@@ -45,7 +45,7 @@ class BillController extends Controller
     public function create()
     {
         //
-        return view('Bills.create');
+        return view('client.bills.create');
     }
 
     /**
@@ -96,7 +96,7 @@ class BillController extends Controller
             'customer' => $billslist,
         );
 
-        return view('Bills.edit',compact('billsdata'));
+        return view('client.bills.edit',compact('billsdata'));
     }
 
     /**

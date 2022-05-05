@@ -33,7 +33,7 @@ class MpesaController extends Controller
         );
 
 
-       return view('payments.mpesapayments',compact('mpesadata'));
+       return view('client.payments.mpesapayments',compact('mpesadata'));
        }else{
           return back()->with('message',"Could not process request");
        }

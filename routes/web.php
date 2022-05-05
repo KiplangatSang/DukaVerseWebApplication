@@ -44,13 +44,20 @@ use App\Http\Controllers\Loans\LoansApplicationsController;
 use App\Http\Controllers\Loans\LoansController;
 use App\Http\Controllers\Payments\CardPayments\CardPaymentsController;
 use App\Http\Controllers\payments\CardPayments\StripeController;
+use App\Http\Controllers\Reports\PDFPrinterController;
 use App\Http\Controllers\Retails\RetailsController;
+use App\Http\Controllers\Sales\DailySaleController;
+use App\Http\Controllers\Sales\EmployeeSaleController;
+use App\Http\Controllers\Sales\MonthlySaleController;
+use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\Sales\SalesController;
+use App\Http\Controllers\Sales\YearlySaleController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\stock\requiredItemsController;
 use App\Http\Controllers\stock\StockController;
 use App\Http\Controllers\supplies\OrdersController;
 use App\Http\Controllers\Supplies\SuppliersController;
+use App\Jobs\SendEmailJob;
 use App\Repositories\B2BPayments\ipay;
 use App\Repositories\Payments\B2BPayments\ipay as B2BPaymentsIpay;
 use App\Repositories\RoutesRepository;
@@ -75,13 +82,25 @@ Route::get('/home', function () {
 })->middleware('auth');
 
 Route::get('/admin/home', function () {
-    return view('Admin.home');
+    return view('admin.home');
 })->middleware('auth');
 
 Route::get('/user/home', [HomeController::class, 'index'])->middleware('auth');;
 
 Route::get('/', function () {
-    return view('LandingPage.landingpage');
+    return view('landingpage.landingpage');
+});
+
+Route::get('/pdf',[PDFPrinterController::class, 'printPDF']);
+Route::get('email-test', function(){
+
+	$details['email'] = '17g01acs047@anu.ac.ke';
+    if(dispatch(new SendEmailJob($details))){
+        dd('done');
+    }else{
+        dd('failed');
+    }
+
 });
 
 
@@ -337,8 +356,52 @@ Auth::routes();
 //Route::get('/home', 'HomeController@index')->name('home');
 
 //sales
+Route::get('/client/sales/index', [SaleController::class, 'index']);
+Route::get('/client/sales/create', [SaleController::class, 'create']);
+Route::post('/client/sales/store', [SaleController::class, 'store']);
+Route::get('/client/sales/show/{id}', [SaleController::class, 'show']);
+Route::get('/client/sales/edit/{id}', [SaleController::class, 'edit']);
+Route::post('/client/sales/update/{id}', [SaleController::class, 'updte']);
+Route::post('/client/sales/delete/{id}', [SaleController::class, 'deletes']);
+
+// daily sales
+Route::get('/client/sales/daily/index', [DailySaleController::class, 'index']);
+Route::get('/client/sales/daily/create', [DailySaleController::class, 'create']);
+Route::post('/client/sales/daily/store', [DailySaleController::class, 'store']);
+Route::get('/client/sales/daily/show/{id}', [DailySaleController::class, 'show']);
+Route::get('/client/sales/daily/edit/{id}', [DailySaleController::class, 'edit']);
+Route::post('/client/sales/daily/update/{id}', [DailySaleController::class, 'updte']);
+Route::post('/client/sales/daily/delete/{id}', [DailySaleController::class, 'deletes']);
+
+// monthly sales
+Route::get('/client/sales/monthly/index', [MonthlySaleController::class, 'index']);
+Route::get('/client/sales/monthly/create', [MonthlySaleController::class, 'create']);
+Route::post('/client/sales/monthly/store', [MonthlySaleController::class, 'store']);
+Route::get('/client/sales/monthly/show/{id}', [MonthlySaleController::class, 'show']);
+Route::get('/client/sales/monthly/edit/{id}', [MonthlySaleController::class, 'edit']);
+Route::post('/client/sales/monthly/update/{id}', [MonthlySaleController::class, 'updte']);
+Route::post('/client/sales/monthly/delete/{id}', [MonthlySaleController::class, 'deletes']);
+
+// yearly sales
+Route::get('/client/sales/yearly/index', [YearlySaleController::class, 'index']);
+Route::get('/client/sales/yearly/create', [YearlySaleController::class, 'create']);
+Route::post('/client/sales/yearly/store', [YearlySaleController::class, 'store']);
+Route::get('/client/sales/yearly/show/{id}', [YearlySaleController::class, 'show']);
+Route::get('/client/sales/yearly/edit/{id}', [YearlySaleController::class, 'edit']);
+Route::post('/client/sales/yearly/update/{id}', [YearlySaleController::class, 'updte']);
+Route::post('/client/sales/yearly/delete/{id}', [YearlySaleController::class, 'deletes']);
+
+// employee sales
+Route::get('/client/sales/employee/index', [EmployeeSaleController::class, 'index']);
+Route::get('/client/sales/employee/create', [EmployeeSaleController::class, 'create']);
+Route::post('/client/sales/employee/store', [EmployeeSaleController::class, 'store']);
+Route::get('/client/sales/employee/show/{id}', [EmployeeSaleController::class, 'show']);
+Route::get('/client/sales/employee/edit/{id}', [EmployeeSaleController::class, 'edit']);
+Route::post('/client/sales/employee/update/{id}', [EmployeeSaleController::class, 'updte']);
+Route::post('/client/sales/employee/delete/{id}', [EmployeeSaleController::class, 'deletes']);
+
 Route::get('/createsales', [SalesController::class, 'showCreateSales']);
-Route::post('/create-sales-item', [SalesController::class, 'create']);
+Route::post('/create-sales-item', [SalesController::class, 'store']);
 Route::get('/updatesales',[SalesController::class, 'update']);
 Route::get('/showallsales',[SalesController::class, 'index'] );
 Route::get('/sales-item/{id}',[SalesController::class, 'show'] );

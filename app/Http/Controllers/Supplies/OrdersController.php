@@ -61,7 +61,7 @@ class OrdersController extends Controller
         );
 
         //dd( $salesdata);
-        return view("Orders.index", compact('ordersdata'));
+        return view("client.orders.index", compact('ordersdata'));
     }
 
     /**
@@ -177,7 +177,7 @@ class OrdersController extends Controller
         );
 
         //dd( $salesdata);
-        return view("Orders.showorders", compact('ordersdata'));
+        return view("client.orders.showorders", compact('ordersdata'));
     }
 
     /**

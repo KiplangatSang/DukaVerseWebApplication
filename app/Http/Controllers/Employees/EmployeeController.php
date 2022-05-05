@@ -25,7 +25,7 @@ class EmployeeController extends Controller
         $empdata = array(
             'emplist' => $emplist,
         );
-        return view('Employees.emplist', compact('empdata'));
+        return view('client.employees.emplist', compact('empdata'));
     }
 
     public function create()
@@ -40,7 +40,7 @@ class EmployeeController extends Controller
             'Retail' => $retail
         );
 
-        return view('Employees.addemp', compact('empdata'));
+        return view('client.employees.addemp', compact('empdata'));
     }
 
     public function newEmployee(Request $request)
@@ -96,7 +96,7 @@ class EmployeeController extends Controller
         $empdata = array(
             'emp' => $emp,
         );
-        return view('Employees.showemployee',compact('empdata'));
+        return view('client.employees.showemployee',compact('empdata'));
         //dd($emp);
     }
 
@@ -112,7 +112,7 @@ class EmployeeController extends Controller
             'emp' => $emp,
             'Retail' => $retail,
         );
-        return view('Employees.updateemployee',compact('empdata'));
+        return view('client.employees.updateemployee',compact('empdata'));
         }
 
         public function updateEmployee($emp_id,Request $request)

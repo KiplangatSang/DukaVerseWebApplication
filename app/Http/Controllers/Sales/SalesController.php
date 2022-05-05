@@ -16,41 +16,7 @@ class SalesController extends Controller
     }
 
     public function index(){
-        $user = auth()->user();
-        //$retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
-        $retail = $user->Retails()->get();
-        if(count($retail) < 1){
-            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
-        }
-
-
-        $retails = auth()->user()->Retails()->get();
-
-        $allSales = null;
-        $salesitems = null;
-        $salesrevenue = null;
-        $meansales = null;
-
-        foreach($retails as $retail){
-           $retailName = $retail->retailName;
-             $salesitems = count($retail->sales);
-                $salesrevenue = $retail->sales->sum('price');
-                $meansales = $retail->sales->Avg('itemAmount');
-            $allSales = array(
-               "Sales"  => $retail->sales,
-
-            );
-        }
-        $salesdata = array(
-            'allSales' =>  $allSales,
-           'salesitems' => $salesitems,
-           'salesrevenue' => $salesrevenue,
-           'meansales' => $meansales,
-           'retails' => $retails,
-        );
-
-         //dd( $salesdata);
-        return view("Sales.showsolditems",compact('salesdata'));
+       
     }
 
 
@@ -84,7 +50,7 @@ class SalesController extends Controller
 
 
          dd( $salesdata);
-         return view("Sales.showsolditems",compact('salesdata'));
+         return view("client.sales.showsolditems",compact('salesdata'));
     }
 
 
@@ -135,7 +101,7 @@ class SalesController extends Controller
 
 
          //dd( $salesdata);
-         return view("Sales.showsolditems",compact('salesdata'));
+         return view("client.sales.showsolditems",compact('salesdata'));
     }
 
 
@@ -160,12 +126,12 @@ class SalesController extends Controller
 
     public function showCreateSales(){
        // $allSales = Sales::All();
-        return view("sales.createsolditems");
+        return view("client.sales.createsolditems");
     }
 
     public function showAll(){
         //$allSales = Sales::All();
-        return view('sales.showsolditems');
+        return view('client.sales.showsolditems');
     }
 
 
@@ -184,7 +150,7 @@ class SalesController extends Controller
                        'salesrevenue' => $salesrevenue,
                        'meansales' => $meansales
                     );
-         return view('sales.showpaidsolditems',compact('salesdata'));
+         return view('client.sales.showpaidsolditems',compact('salesdata'));
     }
     public function showSoldItemsOnCredit(){
         $allSales = Sales::where('itemAmount','150')
@@ -201,7 +167,7 @@ class SalesController extends Controller
            'salesrevenue' => $salesrevenue,
            'meansales' => $meansales
         );
-         return view('sales.showsolditemsoncredit',compact('salesdata'));
+         return view('client.sales.showsolditemsoncredit',compact('salesdata'));
     }
     public function show($id){
         $allSales = Sales::where('itemName',$id)
@@ -212,7 +178,7 @@ class SalesController extends Controller
         );
 
                    // dd($allSales);
-        return view('Sales.showsaleitem',compact('salesdata'));
+        return view('client.sales.showsaleitem',compact('salesdata'));
     }
     public function delete($sale_id){
         Sales::destroy($sale_id);

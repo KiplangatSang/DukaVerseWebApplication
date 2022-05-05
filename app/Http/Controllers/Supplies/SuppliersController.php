@@ -29,7 +29,7 @@ class SuppliersController extends Controller
             'retails' => $retail,
         );
 
-        return view('Supplies.Suppliers.index', compact('suppliersdata'));
+        return view('client.supplies.suppliers.index', compact('suppliersdata'));
     }
 
     /**
@@ -40,7 +40,7 @@ class SuppliersController extends Controller
     public function create()
     {
         //
-        return view('Supplies.Suppliers.create');
+        return view('client.supplies.suppliers.create');
     }
 
     /**
@@ -82,7 +82,7 @@ class SuppliersController extends Controller
             'supplierslist' => $supplierslist,
         );
 
-        return view('Supplies.Suppliers.show', compact('suppliersdata'));
+        return view('supplies.suppliers.show', compact('suppliersdata'));
     }
 
     /**
@@ -101,7 +101,7 @@ class SuppliersController extends Controller
             'supplierslist' => $supplierslist,
         );
 
-        return view('Supplies.Suppliers.edit', compact('suppliersdata'));
+        return view('client.supplies.suppliers.edit', compact('suppliersdata'));
     }
 
     /**

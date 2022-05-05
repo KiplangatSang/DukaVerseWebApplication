@@ -92,4 +92,53 @@
 												</div>
 								</div>
 				</div>
+                <script type="text/javascript" src="{{ asset('assets/js/plugins/chart.js') }}"></script>
+				<script type="text/javascript">
+				    var data = {
+				        labels: ["January", "February", "March", "April", "May"],
+				        datasets: [{
+				                label: "My First dataset",
+				                fillColor: "rgba(220,220,220,0.2)",
+				                strokeColor: "rgba(220,220,220,1)",
+				                pointColor: "rgba(220,220,220,1)",
+				                pointStrokeColor: "#fff",
+				                pointHighlightFill: "#fff",
+				                pointHighlightStroke: "rgba(220,220,220,1)",
+				                data: @json($data['salesData']),
+				            },
+				            {
+				                label: "My Second dataset",
+				                fillColor: "rgba(151,187,205,0.2)",
+				                strokeColor: "rgba(151,187,205,1)",
+				                pointColor: "rgba(151,187,205,1)",
+				                pointStrokeColor: "#fff",
+				                pointHighlightFill: "#fff",
+				                pointHighlightStroke: "rgba(151,187,205,1)",
+				                data: @json($data['salesData'])
+
+
+
+				            }
+				        ]
+				    };
+				    var pdata = [{
+				            value: 40,
+				            color: "#ff0000",
+				            highlight: "#5AD3D1",
+				            label: "Complete"
+				        },
+				        {
+				            value: 60,
+				            color: "#7a97cc",
+				            highlight: "#000000",
+				            label: "In-Progress"
+				        }
+				    ]
+
+				    var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+				    var lineChart = new Chart(ctxl).Line(data);
+
+				    var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+				    var pieChart = new Chart(ctxp).Pie(pdata);
+				</script>
 @endsection

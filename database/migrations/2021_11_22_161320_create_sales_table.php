@@ -23,6 +23,7 @@ class CreateSalesTable extends Migration
             $table-> string('itemName');
             $table-> string('itemSize');
             $table-> unsignedBigInteger('itemAmount');
+            $table-> boolean('onCredit')->default(false);
             $table-> double('price');
             $table->timestamps();
         });

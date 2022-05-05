@@ -13,7 +13,7 @@ class RoutesRepository
       // routes to redirect on login
     public function userRedirectRoute(){
          $route = null ;
-       if(auth()->user()->isEmployee){
+       if(auth()->user()->isAdmin){
          $route ='/admin/home';
        } else{
         $route ='/user/home';

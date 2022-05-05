@@ -51,7 +51,7 @@ class StockController extends Controller
         );
 
         //dd( $salesdata);
-        return view("Stock.ItemsInStore.showitemsinstore", compact('stocksdata'));
+        return view("client.stock.ItemsInStore.showitemsinstore", compact('stocksdata'));
     }
 
     /**
@@ -61,7 +61,7 @@ class StockController extends Controller
      */
     public function create()
     {
-        return view('stock.itemsinstore.createitemsinstore');
+        return view('client.stock.itemsinstore.createitemsinstore');
         //
     }
 
@@ -92,7 +92,7 @@ class StockController extends Controller
         );
 
 
-        return view('stock.ItemsInStore.showiteminstore', compact('stocksdata'));
+        return view('client.stock.ItemsInStore.showiteminstore', compact('stocksdata'));
         //
     }
 
@@ -138,17 +138,17 @@ class StockController extends Controller
 
     public function showRetailStock()
     {
-        return view('stock.showitemsinstore');
+        return view('client.stock.showitemsinstore');
     }
 
     public function createAStock()
     {
-        return view('stock.createitemsinstore');
+        return view('client.stock.createitemsinstore');
     }
 
 
     public function updateAStock()
     {
-        return view('stock.showitemsinstore');
+        return view('client.stock.showitemsinstore');
     }
 }

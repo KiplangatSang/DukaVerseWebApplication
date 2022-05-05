@@ -55,7 +55,7 @@ class RequiredItemsController extends Controller
 
         //dd( $salesdata);
 
-        return view('Stock.RequiredItems.showrequiredstock', compact('stocksdata'));
+        return view('client.stock.requireditems.showrequiredstock', compact('stocksdata'));
     }
 
 
@@ -81,7 +81,7 @@ class RequiredItemsController extends Controller
     {
         //
 
-        return view('stock.RequiredItems.createRequiredItem');
+        return view('client.stock.requireditems.createRequiredItem');
     }
 
     /**
@@ -112,7 +112,7 @@ class RequiredItemsController extends Controller
         );
 
 
-        return view('stock.RequiredItems.showrequireditem', compact('stocksdata'));
+        return view('client.stock.requireditems.showrequireditem', compact('stocksdata'));
         //
     }
 
@@ -171,7 +171,7 @@ class RequiredItemsController extends Controller
         $stocksdata = array(
             'allStocks' =>  $allStocks,
         );
-        return view('stock.RequiredItems.orderrequiredstock', compact('stocksdata'));
+        return view('client.stock.requireditems.orderrequiredstock', compact('stocksdata'));
         //dd($requiredItems);
     }
 
@@ -200,7 +200,7 @@ class RequiredItemsController extends Controller
             'allStocks' =>  $allStocks,
         );
 
-        return view('stock.RequiredItems.orderrequiredstock', compact('stocksdata'));
+        return view('client.stock.requireditems.orderrequiredstock', compact('stocksdata'));
         //dd($requiredItems);
     }
 
