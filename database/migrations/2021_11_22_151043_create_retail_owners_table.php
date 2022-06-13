@@ -16,10 +16,12 @@ class CreateRetailOwnersTable extends Migration
         Schema::create('retail_owners', function (Blueprint $table) {
             $table->id();
             $table-> string('retailOwnerId');
+            $table-> string('retails_id');
             $table-> string('retailOwnerName');
-            $table-> string('pin');
-            $table-> string('phoneno');
-            $table-> string('email');
+            $table-> string('users_id');
+            $table-> string('national_id')->nullable();
+            $table-> string('kra')->nullable();
+            $table-> string('alternate_phone_no')->nullable();
             $table->timestamps();
         });
     }

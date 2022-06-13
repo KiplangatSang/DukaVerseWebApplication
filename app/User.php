@@ -4,7 +4,9 @@ namespace App;
 
 use App\Bills\Bills;
 use App\Loans\Loans;
+use App\Profiles\profiles;
 use App\Retails\Retail;
+use App\Retails\SessionRetail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -56,23 +58,18 @@ class User extends Authenticatable
         return $this->morphMany(Retail::class,'retailable');
     }
 
-    public function LoanApplication(){
-        return $this->morphMany(LoanApplication::class,'loanapplicable');
-    }
-
     public function storm5Employees(){
         return $this->morphMany(Storm5Employees::class,'storm5employeeable');
-    }
-
-    public function loans(){
-        return $this->morphMany(Loans::class,'loanable');
     }
 
     public function bills(){
         return $this->morphMany(Bills::class,'billable');
     }
-    // public function Sales(){
-    //     return $this->hasOne(Roles::class);
-    // }
+    public function sessionRetail(){
+        return $this->morphOne(SessionRetail::class,"retailable");
+    }
 
+    public function profiles(){
+        return $this->hasOne(profiles::class);
+    }
 }

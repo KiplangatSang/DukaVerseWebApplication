@@ -1,6 +1,6 @@
 <?php
 
-use App\Customer\CustomerCredit;
+use App\Customers\CustomerCredit;
 use Illuminate\Database\Seeder;
 
 class CustomerCreditSeeder extends Seeder

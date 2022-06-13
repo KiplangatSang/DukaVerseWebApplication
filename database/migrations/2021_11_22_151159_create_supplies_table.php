@@ -16,9 +16,9 @@ class CreateSuppliesTable extends Migration
         Schema::create('supplies', function (Blueprint $table) {
             $table->id();
             $table->string('supply_id');
+            $table->integer('supplier_id');
             $table->unsignedBigInteger('supplyable_id');
             $table->string('supplyable_type');
-            $table->string('supplier_name');
             $table->longText('supply_items');
             $table->integer('pay_status');
             $table->integer('payment_balance');

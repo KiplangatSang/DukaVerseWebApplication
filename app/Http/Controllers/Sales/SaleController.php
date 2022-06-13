@@ -2,62 +2,63 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Http\Controllers\Controller;
-use App\Repositories\RetailRepository;
+use App\Http\Controllers\BaseController;
+use App\Repositories\RevenueRepository;
 use App\Repositories\SalesRepository;
+use App\Repositories\StockRepository;
 use App\Sales\Sales;
-use App\User;
-use GuzzleHttp\Middleware;
+use App\Stock\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-class SaleController extends Controller
+class SaleController extends BaseController
 {
 
-    private $retailrepo;
     private $salesrepo;
     private $retail;
+    protected  $TRANSACTIONSTRLEN = 20;
 
     public function __construct()
     {
         $this->middleware('auth');
-
-        if (auth()->check())
-            return  auth()->user();
-
-
     }
 
     public function salesRepository()
     {
         # code...
-        $user =auth()->user();
-        $this->retailrepo =  new RetailRepository($user);
-        $this->retail = $this->retailrepo->retails();
+        $this->retail = $this->getRetail();
         if (!$this->retail)
-            return redirect('/retails/addretail')->with('message', __('retail.create'));
+            return false;
 
-        $this->salesrepo = new SalesRepository($this->retail);
+        return  new SalesRepository($this->retail);
     }
 
     public function index()
     {
-        $this->salesRepository();
+        $this->salesrepo = $this->salesRepository();
+        if (!$this->salesrepo) {
+            return redirect('/home')->with('message', __('retail.select'));
+        }
 
-        $retailName = $this->retail->retailName;
-        $allSales = $this->salesrepo->getAllSales();
+        $allSales = $this->salesrepo->getDisctictSoldItems();
+
         $solditemscount = count($allSales);
-        $salesTotalPrice = $this->retail->sales->sum('price');
+        $salesTotalPrice = $this->retail->sales()->sum('price');
         $salesrevenue = $this->salesrepo->getRevenue();
-        $meansales = $this->retail->sales->Avg('itemAmount');
+        $meansales = $this->retail->sales()->Avg('itemAmount');
+        $growth = $this->salesrepo->getProfitPercentage();
+        $growth = round($growth, 2);
+
         $salesdata = array(
             'allSales' =>  $allSales,
             'solditemscount' => $solditemscount,
+            'salesTotalPrice' => $salesTotalPrice,
             'salesrevenue' => $salesrevenue,
             'meansales' => $meansales,
-            'retail' => $this->retail,
+            'growth' => $growth,
         );
 
-       // dd( $salesdata);
+        // dd( $salesdata);
         return view("client.sales.index", compact('salesdata'));
     }
 
@@ -68,8 +69,15 @@ class SaleController extends Controller
      */
     public function create()
     {
+        $this->salesRepository();
+        $stockdata = array(
+            "allStock"  => $this->retail->stocks()->get(),
+
+        );
+
+
         //
-        return view("client.sales.create");
+        return view("client.sales.create", compact('stockdata'));
     }
 
     /**
@@ -81,17 +89,22 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         //
+        $retail = $this->getRetail();
         request()->validate(
-            ['itemNameId'=> 'required',
-            'itemName' => 'required',
-            'description' => 'required',
-           'itemAmount' => 'required',
-           'itemImage' => ['required','image'],
-          'price'=>'required'
+            [
+                'itemNameId' => 'required',
+                'itemName' => 'required',
+                'description' => 'required',
+                'itemAmount' => 'required',
+                'itemImage' => ['required', 'image'],
+                'price' => 'required'
             ]
         );
 
-        Sales::create($request->all());
+        $this->salesRepository()->saveSalesItem($request->all());
+
+        $revenueRepo = new  RevenueRepository($retail);
+        $revenueRepo->saveRevenue($request->price);
 
         return redirect("/client/sales/index");
     }
@@ -106,14 +119,14 @@ class SaleController extends Controller
     {
         $this->salesRepository();
         //
-        $allSales = $this->salesrepo->getSaleItem('id',$id);
-$salesdata = array(
-'allSales' =>  $allSales,
-);
+        $soldItemName = Sales::where('id', $id)->first()->itemName;
+        $allSales = $this->salesrepo->getSaleItem('itemName', $soldItemName);
+        $salesdata = array(
+            'allSales' =>  $allSales,
+        );
 
-       // dd($allSales);
-return view('client.sales.show',compact('salesdata'));
-
+        // dd($allSales);
+        return view('client.sales.show', compact('salesdata'));
     }
 
     /**
@@ -149,4 +162,110 @@ return view('client.sales.show',compact('salesdata'));
     {
         //
     }
+
+    public function getSalesItems($key)
+    {
+        # code...
+        $item = null;
+        $salesRepo = $this->salesRepository();;
+        $item = $salesRepo->getStockById($key);
+        if (!$item)
+            return;
+
+        $transactionItem["name"] = $item->stockNameId;
+        $transactionItem["amount"] = 1;
+
+        $transactionResult = $this->saveTransaction($transactionItem);
+
+        if (!$transactionResult)
+            return false;
+
+        $item['transaction_id'] = $transactionResult;
+        return $item;
+    }
+
+    public function getPrompItems($key)
+    {
+        # code...
+        $hint = array(
+            "item" => "",
+            "image" => "",
+        );
+        $stockRepo = new StockRepository($this->getRetail());
+        $q = $key;
+
+
+        $a = $stockRepo->getAllStock();
+
+        // lookup all hints from array if $q is different from ""
+        if ($q !== "") {
+            $q = strtolower($q);
+            $len = strlen($q);
+            foreach ($a as $name) {
+                // return $name->stockNameId;
+                if (stristr($q, substr($name->stockNameId, 0, $len))) {
+                    if ($hint === "") {
+                        $hint = $name->stockNameId;
+                        $hint['image'] = $name->stockImage;
+                    } else {
+                        // dd("bfore ".$hint);
+                        $hint['item'] .= ", $name->stockNameId";
+                        $hint['image'] = $name->stockImage;
+                        //dd("after ".$hint);
+                    }
+                }
+            }
+        }
+        //dd($hint);
+        return $hint;
+    }
+
+    //payments section
+
+    public function makePayment($number, $amount)
+    {
+        # code...
+        if ($amount < 1 || $amount == null)
+            return false;
+        if (strlen($number) < 9 || $number == null)
+            return false;
+
+        $result['status'] = true;
+        $result['body'] = "Kiplangat Sang";
+
+        return  $result;
+    }
+
+    public function saveTransaction($items)
+    {
+        # code...
+        $new_items = array();
+        $old_items = array();
+        $transId = Str::random($this->TRANSACTIONSTRLEN);
+
+        $transController = new SaleTransactionController();
+        $activeTrns = $transController->getActiveTransaction();
+
+
+        if ($activeTrns) {
+            $transId = $transController->getActiveTransaction()->transaction_id;
+            $old_items = $transController->getActiveTransaction()->transaction_items;
+            //cast items to array
+            $old_items = (array)json_decode($old_items);
+        }
+        //push items to the old array
+        array_push($old_items, $items);
+
+
+        $result = $transController->storeTransactionItems($transId, $old_items);
+
+        if (!$result)
+            return false;
+        //dd(count($old_items));
+        return $transId;
+    }
+
+
+    //@todo remove sold item
+   // removeStockItem($id)
 }

@@ -3,15 +3,15 @@
 {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 
 <head>
-				<title>Storm5</title>
+				<title>DukaVerse</title>
 				<meta charset="utf-8">
 				<meta http-equiv="X-UA-Compatible" content="IE=edge">
 				<meta name="viewport" content="width=device-width, initial-scale=1">
 
 				<!-- Main CSS-->
 				<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
-				<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/cardpayments.css') }}">
-
+				{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/cardpayments.css') }}"> --}}
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 				<!-- Font-icon css-->
 				<link rel="stylesheet" type="text/css"
 								href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -20,7 +20,9 @@
 
 <body class="app sidebar-mini">
 				<!-- Navbar-->
-				<header class="app-header"><a class="app-header__logo" href="/home">Storm5</a>
+
+				<header class="app-header"><a class="app-header__logo"
+												href="/home">{{ $data['retail']->retail_name ?? env('app_name') }} </a>
 								<!-- Sidebar toggle button-->
 								<a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
 								<!-- Navbar Right Menu-->
@@ -118,25 +120,33 @@
 				<!-- Sidebar menu-->
 				<div class="app-sidebar__overlay " data-toggle="sidebar"></div>
 				<aside class="app-sidebar">
-
-								<div class="app-sidebar__user"><img class="app-sidebar__user-avatar d-flex w-25"
-																src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
-																alt="User Image">
+								<div class="app-sidebar__user bg-dark">
+												<a href="/client/retails/profile"><img class="app-sidebar__user-avatar d-flex w-50"
+																				src="/storage/RetailPictures/{{ $data['retail']->retail_profile ?? 'noprofile.png' }}"
+																				alt="User Image"></a>
 												<div>
-																<p class="app-sidebar__user-name">
-																				{{ $data['retailimage']->retailName ?? (Auth::user()->username ?? 'guest') }}</p>
-
+																<a href="/client/retails/profile" class="text-light">
+																				<p class="app-sidebar__user-name">
+																								{{  (Auth::user()->username ?? 'guest') }}</p>
+																</a>
+																<br>
 
 																@if (Auth::user()->isOnwer)
-																				<p class="app-sidebar__user-designation">Retail Owner</p>
+																				<a href="/client/retails/profile" class="text-light">
+																								<p class="app-sidebar__user-designation">Retail Owner</p>
+																				</a>
 																@else
 																				@if (Auth::user()->isEmployee)
-																								<p class="app-sidebar__user-designation">Employee</p>
+																								<a href="/client/retails/profile" class="text-light">
+																												<p class="app-sidebar__user-designation">Employee</p>
+																								</a>
 																				@else
 																								<p class="app-sidebar__user-designation">Guest</p>
 																				@endif
 
 																@endif
+																<br>
+																<p class="app-sidebar__user-designation">{{ $data['retail']->complete }}% Complete</p>
 
 												</div>
 								</div>
@@ -145,68 +155,72 @@
 																								class="app-menu__label">Dashboard</span></a>
 												</li>
 												<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Sales</span><i
+																								class="app-menu__icon fa fa-shopping-bag"></i><span class="app-menu__label">Sales</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item   " href="/client/sales/index"><i class="icon fa fa-circle-o"></i>Sold
 																												Items</a></li>
-																				<li><a class="treeview-item " href="/soldPaidItems"><i
-																																class="icon fa fa-circle-o"></i> Paid Items</a></li>
+																				<li><a class="treeview-item " href="/soldPaidItems"><i class="icon fa fa-circle-o"></i> Paid
+																												Items</a></li>
 																				<li><a class="treeview-item  " href="/salesitemsoncredit"><i class="icon fa fa-circle-o "></i>Items
 																												On Credit</a></li>
+																				<li><a class="treeview-item  " href="/client/sales/employee/index"><i
+																																class="icon fa fa-circle-o "></i>Employee Sales
+																								</a></li>
 																				<li><a class="treeview-item  " href="/client/sales/create"><i class="icon fa fa-circle-o "></i>
 																												Add item sold</a></li>
 																</ul>
 												</li>
-
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Stock</span><i
+																								class="app-menu__icon fa fa-shopping-basket"></i><span class="app-menu__label">Stock</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu ">
 																				<li><a class="treeview-item  " href="/show-all-stock"><i class="icon fa fa-circle-o"></i>All
 																												Stock</a></li>
-																				<li><a class="treeview-item " href="/updateAStock"><i
-																																class="icon fa fa-circle-o"></i> Update Stock</a></li>
+																				<li><a class="treeview-item " href="/updateAStock"><i class="icon fa fa-circle-o"></i> Update
+																												Stock</a></li>
 																				<li><a class="treeview-item " href="/create-stock"><i class="icon fa fa-circle-o "></i>Add a
 																												stock</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Required Items</span><i
+																								class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">Required Items</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item  " href="/requireditem/show-all-required-item"><i
 																																class="icon fa fa-circle-o"></i>All Required Items</a></li>
-																				<li><a class="treeview-item " href="https://fontawesome.com/v4.7.0/icons/"
-																												rel="noopener"><i class="icon fa fa-circle-o"></i>Order Required Items</a>
+																				<li><a class="treeview-item " href="https://fontawesome.com/v4.7.0/icons/" rel="noopener"><i
+																																class="icon fa fa-circle-o"></i>Order Required Items</a>
 																				</li>
 																				<li><a class="treeview-item  " href="/create-requireditems"><i class="icon fa fa-circle-o "></i>
 																												Add Required Items</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Orders</span><i
+																								class="app-menu__icon fa fa-cart-plus"></i><span class="app-menu__label">Orders</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu ">
-																				<li><a class="treeview-item  " href="/orders/index"><i class="icon fa fa-circle-o"></i>All
+																				<li><a class="treeview-item  " href="/client/orders/index"><i class="icon fa fa-circle-o"></i>All
 																												Orders</a></li>
-																				<li><a class="treeview-item " href="/orders/delivered/index" ><i
-																																class="icon fa fa-circle-o"></i> Delivered Orders</a>
+																				<li><a class="treeview-item " href="/client/orders/delivered/index"><i
+																																class="icon fa fa-circle-o"></i>
+																												Delivered Orders</a>
 																				</li>
-																				<li><a class="treeview-item  " href="/orders/pending/index"><i
+																				<li><a class="treeview-item  " href="/client/orders/pending/index"><i
 																																class="icon fa fa-circle-o "></i>Pending Orders</a></li>
-																				<li><a class="treeview-item  " href="/orders/create"><i class="icon fa fa-circle-o "></i>Add
+																				<li><a class="treeview-item  " href="/client/orders/create"><i
+																																class="icon fa fa-circle-o "></i>Add
 																												Orders</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Customers</span><i
+																								class="app-menu__icon fa fa-address-card-o"></i><span class="app-menu__label">Customers</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu ">
 																				<li><a class="treeview-item  " href="/customers/index"><i class="icon fa fa-circle-o"></i>
 																												Customer List</a></li>
-																				<li><a class="treeview-item " href="/customers/credit/index"><i
-																																class="icon fa fa-circle-o"></i> Customers with credit</a></li>
+																				<li><a class="treeview-item " href="/customers/credit/index"><i class="icon fa fa-circle-o"></i>
+																												Customers with credit</a></li>
 																				<li><a class="treeview-item  " href="ui-cards.html"><i class="icon fa fa-circle-o "></i> Customer
 																												Transactions</a></li>
 																				<li><a class="treeview-item  " href="/customers/create"><i class="icon fa fa-circle-o "></i>
@@ -214,10 +228,10 @@
 																</ul>
 												</li>
 												<li class="treeview  "><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-edit"></i><span class="app-menu__label ">Employees</span><i
+																								class="app-menu__icon fa fa-etsy"></i><span class="app-menu__label ">Employees</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item " href="/employees/showemployees"><i class="icon fa fa-circle-o "></i>
+																				<li><a class="treeview-item " href="/client/employee/index"><i class="icon fa fa-circle-o "></i>
 																												Employees List</a></li>
 																				<li><a class="treeview-item " href="/employee/viewEmployee/sales"><i
 																																class="icon fa fa-circle-o"></i>Employee Sales</a></li>
@@ -225,17 +239,17 @@
 																																class="icon fa fa-circle-o "></i>Requests</a></li>
 																				<li><a class="treeview-item " href="/employee/viewEmployee/salaries"><i
 																																class="icon fa fa-circle-o "></i>Salaries</a></li>
-																				<li><a class="treeview-item " href="/employees/addemployee"><i
+																				<li><a class="treeview-item " href="/client/employee/create"><i
 																																class="icon fa fa-circle-o "></i>Add Employee</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-edit"></i><span class="app-menu__label ">Suppliers</span><i
+																								class="app-menu__icon fa fa-cart-arrow-down"></i><span class="app-menu__label ">Supplies</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item " href="/supplies/suppliers/index"><i
 																																class="icon fa fa-circle-o "></i> Suppliers </a></li>
-																				<li><a class="treeview-item " href="supplies/index"><i
+																				<li><a class="treeview-item " href="/client/supplies/index"><i
 																																class="icon fa fa-circle-o"></i>Supplies</a></li>
 																				<li><a class="treeview-item  " href="supplies/payments/index"><i
 																																class="icon fa fa-circle-o "></i>Pending Payments</a></li>
@@ -262,7 +276,7 @@
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">Loans</span><i
+																								class="app-menu__icon fa fa-credit-card-alt"></i><span class="app-menu__label">Loans</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item" href="/get-available-loans"><i
@@ -277,7 +291,7 @@
 												</li>
 
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">Bills</span><i
+																								class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Bills</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item " href="/bills/index"><i class="icon fa fa-circle-o"></i>All Bills</a>
@@ -289,22 +303,25 @@
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">Retail</span><i
+																								class="app-menu__icon fa fa-home"></i><span class="app-menu__label">Retail</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item " href="blank-page.html"><i class="icon fa fa-circle-o"></i>Retail
+																				<li><a class="treeview-item " href="/client/retails/retailowner/show"><i
+																																class="icon fa fa-circle-o"></i>Retail
 																												Owner</a></li>
-																				<li><a class="treeview-item " href="page-login.html"><i class="icon fa fa-circle-o"></i>Retail
+																				<li><a class="treeview-item " href="/client/retails/show"><i
+																																class="icon fa fa-circle-o"></i>Retail
 																												Information</a></li>
-																				<li><a class="treeview-item " href="/retails/addretail"><i class="icon fa fa-circle-o"></i>Add a
+																				<li><a class="treeview-item " href="/client/retails/create"><i class="icon fa fa-circle-o"></i>Add
+																												a
 																												Retail</a></li>
 																</ul>
 												</li>
-												<li><a class="app-menu__item" href="/settigs/index"><i class="app-menu__icon fa fa-file-code-o"></i><span
+												<li><a class="app-menu__item" href="/settigs/index"><i class="app-menu__icon fa fa-cogs"></i><span
 																								class="app-menu__label">Settings</span></a>
 												</li>
-												<li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon fa fa-file-code-o"></i><span
-																								class="app-menu__label">Storm5
+												<li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon fa fa-server"></i><span
+																								class="app-menu__label">DukaVerse
 																								Account</span></a></li>
 												<li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon fa fa-file-code-o"></i><span
 																								class="app-menu__label">Help</span></a>
@@ -313,6 +330,8 @@
 								</ul>
 				</aside>
 				<main class="app-content bg-white">
+								@include('inc.messages')
+
 								@yield('content')
 				</main>
 				{{-- <script type="text/javascript">
@@ -345,11 +364,6 @@
 				<!-- The javascript plugin to display page loading on top-->
 				<script src="{{ asset('assets/js/plugins/pace.min.js') }}"></script>
 				<!-- Page specific javascripts-->
-			
-
-
-
-
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/bootstrap-datepicker.min.js') }}"></script>
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/dropzone.js') }}"></script>
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/select2.min.js') }}"></script>
@@ -383,20 +397,6 @@
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/bootstrap-datepicker.min.js') }}"></script>
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/dropzone.js') }}"></script>
 				<script type="text/javascript">
-				    $('#sl').on('click', function() {
-				        $('#tl').loadingBtn();
-				        $('#tb').loadingBtn({
-				            text: "Signing In"
-				        });
-				    });
-
-				    $('#el').on('click', function() {
-				        $('#tl').loadingBtnComplete();
-				        $('#tb').loadingBtnComplete({
-				            html: "Sign In"
-				        });
-				    });
-
 				    $('#startDate').datepicker({
 				        format: "yyyy-mm-dd",
 				        autoclose: true,

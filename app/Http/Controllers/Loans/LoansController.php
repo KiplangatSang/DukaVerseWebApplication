@@ -28,7 +28,7 @@ class LoansController extends Controller
         //
         $loans = Loans::all();
         // dd($loans);
-        return view('client.loans.loanitems', compact('loans'));
+        return view('client.loans.loanitems.index', compact('loans'));
     }
 
 

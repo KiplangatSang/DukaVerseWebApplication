@@ -9,4 +9,8 @@ class RequiredItems extends Model
     //
 
     protected $guarded =[];
+
+    public function requiredable(){
+        return $this->morphTo();
+      }
 }

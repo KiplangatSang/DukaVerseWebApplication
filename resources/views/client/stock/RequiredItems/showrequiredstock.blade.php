@@ -1,16 +1,5 @@
-@extends('Layouts.app')
+@extends('layouts.app')
 @section('content')
-				@if (session()->has('message'))
-								<div class="container-fluid alert alert-danger">
-												{{ session()->get('message') }}
-								</div>
-				@endif
-
-				@if (session()->has('success'))
-								<div class="container-fluid alert alert-success">
-												{{ session()->get('success') }}
-								</div>
-				@endif
 				<div class="app-title">
 
 								<div>
@@ -20,39 +9,7 @@
 																				<p class="p-2">All Required Items entered between </p>
 
 																</div>
-																<div class="d-flex justify-content-center ml-5">
-																				<form class="row form formcontrol" method="GET" action="/sales/sales-by-date"
-																								enctype="multipart/form-data" id="sales_date_form">
-																								@csrf
-																								<div class="col">
-																												<div class="tile-body">
-																																<input class="form-control  @error('startDate') is-invalid @enderror" name="startDate"
-																																				type="text" placeholder="Select Date" autocomplete="new-startDate">
-																																@error('startDate')
-																																				<span class="invalid-feedback" role="alert">
-																																								<strong>{{ $message }}</strong>
-																																				</span>
-																																@enderror
-																												</div>
-																								</div>
-																								<div class="col">
-																												<div class="tile-body">
-																																<input class="form-control  @error('endDate') is-invalid @enderror" id="endDate" type="text"
-																																				placeholder="Select Date" name="endDate" autocomplete="new-endDate">
-																																@error('endDate')
-																																				<span class="invalid-feedback" role="alert">
-																																								<strong>{{ $message }}</strong>
-																																				</span>
-																																@enderror
-																												</div>
-																								</div>
 
-																								<div class="tile-body">
-																												<button class="btn btnsecondary bg-success text-light" type="submit">View</button>
-																								</div>
-
-																				</form>
-																</div>
 												</div>
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
@@ -61,27 +18,42 @@
 												<li class="breadcrumb-item active"><a href="#">Required Items Table</a></li>
 								</ul>
 				</div>
+				<div class="d-flex justify-content-center m-3">
+								<form class="row form formcontrol" method="GET" action="/sales/sales-by-date" enctype="multipart/form-data"
+												id="sales_date_form">
+												@csrf
+												<div class="col">
+																<div class="tile-body">
+																				<input class="form-control  @error('startDate') is-invalid @enderror" name="startDate" type="text"
+																								placeholder="Select Date" autocomplete="new-startDate">
+																				@error('startDate')
+																								<span class="invalid-feedback" role="alert">
+																												<strong>{{ $message }}</strong>
+																								</span>
+																				@enderror
+																</div>
+												</div>
+												<div class="col">
+																<div class="tile-body">
+																				<input class="form-control  @error('endDate') is-invalid @enderror" id="endDate" type="text"
+																								placeholder="Select Date" name="endDate" autocomplete="new-endDate">
+																				@error('endDate')
+																								<span class="invalid-feedback" role="alert">
+																												<strong>{{ $message }}</strong>
+																								</span>
+																				@enderror
+																</div>
+												</div>
 
-				<div class="d-flex justify-content-center">
-								<div class="col-md-3 m-3 ">
-												<form action="/sales/sales-by-retail/{id}" method="POST" enctype="multipart/form-data" id="retailform">
-																@csrf
-																<label for="exampleSelect1"><strong>Retails</strong> </label>
-																<select class="form-control" id="exampleSelect1" name="retail_id">
-																				<option disabled> <strong> Select a retail shop</strong></option>
-																				@foreach ($stocksdata['retails'] as $data)
-																								<option value="0">All Shops</option>
-																								<option value="{{ $data->id }}" onclick="submitretailform({{ $data->id }})">
-																												{{ $data->retailName }}</option>
-																				@endforeach
-																</select>
+												<div class="tile-body">
+																<button class="btn btnsecondary bg-success text-light" type="submit">View</button>
+												</div>
 
-												</form>
-								</div>
+								</form>
 				</div>
-
 				<div class="row">
 								<div class="col-md-6 col-lg-3">
+
 												<div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-basket fa-3x"></i>
 																<div class="info">
 																				<h5> Required Items</h5>
@@ -101,7 +73,15 @@
 								<div class="col-md-6 col-lg-3">
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
-																				<h5>Average Required Items</h5>
+																				<h5>Ordered Items</h5>
+																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }}</b></p>
+																</div>
+												</div>
+								</div>
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
+																<div class="info">
+																				<h5>Items to Order</h5>
 																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }}</b></p>
 																</div>
 												</div>
@@ -141,7 +121,7 @@
 																																								<th>Item Amount</th>
 																																								<th>Buying Price</th>
 																																								<th>Date Sold</th>
-                                                                                                                                                                <th>Order</th>
+																																								<th>Order</th>
 																																								<th>View</th>
 																																				</tr>
 																																</thead>

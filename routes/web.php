@@ -42,21 +42,26 @@ use App\Http\Controllers\Finance\AdminSalesController as FinanceAdminSalesContro
 use App\Http\Controllers\Loans\LoanPaymentController;
 use App\Http\Controllers\Loans\LoansApplicationsController;
 use App\Http\Controllers\Loans\LoansController;
+use App\Http\Controllers\Orders\DeliveredOrderController;
+use App\Http\Controllers\Orders\OrdersController;
 use App\Http\Controllers\Payments\CardPayments\CardPaymentsController;
 use App\Http\Controllers\payments\CardPayments\StripeController;
+use App\Http\Controllers\Profile\ProfileController as ProfileProfileController;
 use App\Http\Controllers\Reports\PDFPrinterController;
+use App\Http\Controllers\Retails\RetailController;
 use App\Http\Controllers\Retails\RetailsController;
 use App\Http\Controllers\Sales\DailySaleController;
 use App\Http\Controllers\Sales\EmployeeSaleController;
 use App\Http\Controllers\Sales\MonthlySaleController;
 use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\Sales\SalesController;
+use App\Http\Controllers\Sales\SaleTransactionController;
 use App\Http\Controllers\Sales\YearlySaleController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\stock\requiredItemsController;
 use App\Http\Controllers\stock\StockController;
-use App\Http\Controllers\supplies\OrdersController;
 use App\Http\Controllers\Supplies\SuppliersController;
+use App\Http\Controllers\Supplies\SuppliesController;
 use App\Jobs\SendEmailJob;
 use App\Repositories\B2BPayments\ipay;
 use App\Repositories\Payments\B2BPayments\ipay as B2BPaymentsIpay;
@@ -75,32 +80,54 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+
+
+
 Route::get('/home', function () {
     $routes = new RoutesRepository();
 
-  return redirect($routes->userRedirectRoute());
+    return redirect($routes->userRedirectRoute());
 })->middleware('auth');
 
 Route::get('/admin/home', function () {
     return view('admin.home');
 })->middleware('auth');
 
-Route::get('/user/home', [HomeController::class, 'index'])->middleware('auth');;
+Route::get('/client/subscriptions', function () {
+    return view('subscriptions.index');
+});
+
+Route::get('/sell', function () {
+    return view('pos.sales.index');
+});
+
+Route::get('/client/subscriptions/show', function () {
+    return view('subscriptions.show');
+});
+
+
+Route::get('/user/retail', [HomeController::class, 'retails'])->middleware('auth');
+
+Route::get('/user/home', [HomeController::class, 'index'])->middleware('auth');
+Route::post(' /user/home/retails/show', [HomeController::class, 'show'])->middleware('auth');
 
 Route::get('/', function () {
     return view('landingpage.landingpage');
 });
 
-Route::get('/pdf',[PDFPrinterController::class, 'printPDF']);
-Route::get('email-test', function(){
+Route::get('/pdf', [PDFPrinterController::class, 'printPDF']);
+Route::get('email-test', function () {
 
-	$details['email'] = '17g01acs047@anu.ac.ke';
-    if(dispatch(new SendEmailJob($details))){
+    $details['email'] = '17g01acs047@anu.ac.ke';
+    if (dispatch(new SendEmailJob($details))) {
         dd('done');
-    }else{
+    } else {
         dd('failed');
     }
+});
 
+Route::get('/bluetooth', function () {
+    return view('bluetooth');
 });
 
 
@@ -129,19 +156,16 @@ Route::get('/admin/payments/bank/{bank_id}', [AdminBankPaymentController::class,
 Route::get('/admin/ipay/pay/initiate', function () {
     $payment = new B2BPaymentsIpay();
     $payment->initiatorRequest();
-
 });
 
 Route::get('/admin/ipay/pay/mobilemoney', function () {
     $payment = new B2BPaymentsIpay();
     $payment->mobileMoneyTransact();
-
 });
 
 Route::get('/admin/ipay/pay/search', function () {
     $payment = new B2BPaymentsIpay();
     $payment->searchTransaction();
-
 });
 
 #suppliers
@@ -323,7 +347,7 @@ Route::get('/admin/bills/payment/index',  [AdminBillsPaymentController::class, '
 Route::get('/admin/bills/payment/index/{bill_id}',  [AdminBillsPaymentController::class, 'index']);
 Route::get('/admin/bills/payment/create',  [AdminBillsPaymentController::class, 'create']);
 Route::post('/admin/bills/payment/update/{id}',  [AdminBillsPaymentController::class, 'update']);
-Route::get('/admin/bills/payment/show/{id}/{bill_id}',[AdminBillsPaymentController::class, 'show']);
+Route::get('/admin/bills/payment/show/{id}/{bill_id}', [AdminBillsPaymentController::class, 'show']);
 Route::get('/admin/bills/payment/delete/{id}',  [AdminBillsPaymentController::class, 'delete']);
 
 //bill payment history
@@ -347,7 +371,7 @@ Route::post('register-Urls', [MpesaController::class, 'registerUrls']);
 
 Route::post('simulate', [MpesaController::class, 'simulateTransaction']);
 
-Route::post('send-fcm-token', [FcmCloudMessagingController::class,'firebaseTokenStorage']);
+Route::post('send-fcm-token', [FcmCloudMessagingController::class, 'firebaseTokenStorage']);
 
 Route::patch('/fcm-token', [FcmCloudMessagingController::class, 'updateToken'])->name('fcmToken');
 
@@ -363,6 +387,17 @@ Route::get('/client/sales/show/{id}', [SaleController::class, 'show']);
 Route::get('/client/sales/edit/{id}', [SaleController::class, 'edit']);
 Route::post('/client/sales/update/{id}', [SaleController::class, 'updte']);
 Route::post('/client/sales/delete/{id}', [SaleController::class, 'deletes']);
+Route::get('/client/sales/get-promt-items/{key}', [SaleController::class, 'getPrompItems']);
+Route::get('/client/sales/get-sale-item/{key}', [SaleController::class, 'getSalesItems']);
+Route::get('/client/sales/makePayment/{number}/{amount}', [SaleController::class, 'makePayment']);
+
+//store sales on hold
+Route::get('/client/sales/transactions/hold/store/{id}/{price}/{paid_amount}', [SaleTransactionController::class, 'storeItemsOnHold']);
+Route::get('/client/sales/transactions/hold/retrieve', [SaleTransactionController::class, 'getItemsOnHold']);
+Route::get('/client/sales/transactions/hold/retrieve/{id}', [SaleTransactionController::class, 'getItemOnHold']);
+Route::get('/client/sales/transactions/complete/store/{id}/{amount}/{balance}', [SaleTransactionController::class, 'storeCompleteTransaction']);
+Route::get('/client/sales/transactions/complete/retrieve', [SaleTransactionController::class, 'getCompleteTransactionItems']);
+
 
 // daily sales
 Route::get('/client/sales/daily/index', [DailySaleController::class, 'index']);
@@ -402,11 +437,11 @@ Route::post('/client/sales/employee/delete/{id}', [EmployeeSaleController::class
 
 Route::get('/createsales', [SalesController::class, 'showCreateSales']);
 Route::post('/create-sales-item', [SalesController::class, 'store']);
-Route::get('/updatesales',[SalesController::class, 'update']);
-Route::get('/showallsales',[SalesController::class, 'index'] );
-Route::get('/sales-item/{id}',[SalesController::class, 'show'] );
+Route::get('/updatesales', [SalesController::class, 'update']);
+Route::get('/showallsales', [SalesController::class, 'index']);
+Route::get('/sales-item/{id}', [SalesController::class, 'show']);
 Route::get('/salesitemsoncredit', [SalesController::class, 'showSoldItemsOnCredit']);
-Route::get('/view-emp-sales',[SalesController::class, 'showEmpSales'] );
+Route::get('/view-emp-sales', [SalesController::class, 'showEmpSales']);
 Route::get('/sales/delete/{id}', [SalesController::class, 'delete']);
 Route::get('/view-retail-sales', [SalesController::class, 'updateToken']);
 Route::get('/soldPaidItems', [SalesController::class, 'showPaidSoldItems']);
@@ -418,19 +453,21 @@ Route::post('/sales/sales-by-retail/{id}', [SalesController::class, 'getSalesByD
 //stock
 Route::get('/create-stock', [StockController::class, 'create'])->name('createstock');
 Route::get('/show-all-stock', [StockController::class, 'index'])->name('showstock');
-Route::get('/stock-item/{id}',[StockController::class, 'show'] );
+Route::get('/stock-item/{id}', [StockController::class, 'show']);
+Route::post('/client/stock/store', [StockController::class, 'store']);
 Route::get('/stockitemsoncredit', [StockController::class, 'showSoldItemsOnCredit']);
 Route::get('/stock/delete/{id}', [StockController::class, 'destroy']);
 Route::get('/view-retail-sales', [StockController::class, 'updateToken']);
 Route::get('/stock/stock-by-date', [StockController::class, 'getSalesByDate']);
 Route::post('/stock/stock-by-retail/{id}', [StockController::class, 'getSalesByDate']);
+#
 
 
 
 // required items
 Route::get('/requireditem/create-requireditems', [RequiredItemsController::class, 'create'])->name('createrequireditem');
 Route::get('/requireditem/show-all-required-item', [RequiredItemsController::class, 'index'])->name('showrequieditem');
-Route::get('/requireditem/requireditem-item/{id}',[RequiredItemsController::class, 'show'] );
+Route::get('/requireditem/requireditem-item/{id}', [RequiredItemsController::class, 'show']);
 Route::get('/requireditem/requireditemoncredit', [RequiredItemsController::class, 'showSoldItemsOnCredit']);
 Route::get('/requireditem/delete/{id}', [RequiredItemsController::class, 'destroy']);
 Route::get('/requireditem/view-retail-sales', [RequiredItemsController::class, 'updateToken']);
@@ -441,12 +478,25 @@ Route::get('/requireditems/editRequiredItems/{id}', [RequiredItemsController::cl
 
 
 //Orders
-Route::post('/orders/confirmOrder/{retail_id}', [OrdersController::class, 'store']);
-Route::get('/orders/index', [OrdersController::class, 'index']);
-Route::get('/orders/order-item/show/{id}', [OrdersController::class, 'show']);
-Route::get('/orders/create', [OrdersController::class, 'create']);
-Route::get('/orders/order-item/show/{id}', [OrdersController::class, 'show']);
-Route::get('/orders/delete', [OrdersController::class, 'delete']);
+Route::post('/client/orders/store', [OrdersController::class, 'store']);
+Route::get('/client/orders/index', [OrdersController::class, 'index']);
+Route::get('/client/orders/show/{id}', [OrdersController::class, 'show']);
+Route::get('/client/orders/create', [OrdersController::class, 'create']);
+Route::get('/client/orders/delete', [OrdersController::class, 'delete']);
+
+#delivered orders
+Route::post('/client/orders/delivered/store', [DeliveredOrderController::class, 'store']);
+Route::get('/client/orders/delivered/index', [DeliveredOrderController::class, 'index']);
+Route::get('/client/orders/delivered/show/{id}', [DeliveredOrderController::class, 'show']);
+Route::get('/client/orders/delivered/create', [DeliveredOrderController::class, 'create']);
+Route::get('/client/orders/delivered/delete', [DeliveredOrderController::class, 'delete']);
+
+#pending orders
+Route::post('/client/orders/pending/store', [OrdersController::class, 'store']);
+Route::get('/client/orders/pending/index', [OrdersController::class, 'index']);
+Route::get('/client/orders/pending/show/{id}', [OrdersController::class, 'show']);
+Route::get('/client/orders/pending/create', [OrdersController::class, 'create']);
+Route::get('/client/orders/pending/delete', [OrdersController::class, 'delete']);
 
 //loans
 Route::get('/get-available-loans', [LoansController::class, 'index'])->name('loanitems');
@@ -454,6 +504,15 @@ Route::get('/loans/show-my-loans', [LoansController::class, 'showAppliedLoans'])
 Route::get('/request-loan/{loan_id}/{amount}', [LoansController::class, 'applyLoan'])->name('LoanApplication');
 Route::get('/loans/pay-a-loan/{loanapplication_id}', [LoansApplicationsController::class, 'payLoanRequest'])->name('LoanApplication');
 Route::get('/loans/view-applied-loan/{loan_id}/{loanapplication_id}', [LoansApplicationsController::class, 'showAppliedLoanItem']);
+
+Route::get('/client/loans/index', [LoansController::class, 'index'])->name('listloan');
+Route::get('/client/loans/show', [LoansController::class, 'show'])->name('showloan');
+Route::get('/request-loan/{loan_id}/{amount}', [LoansController::class, 'applyLoan'])->name('LoanApplication');
+Route::get('/loans/pay-a-loan/{loanapplication_id}', [LoansApplicationsController::class, 'payLoanRequest'])->name('LoanApplication');
+Route::get('/loans/view-applied-loan/{loan_id}/{loanapplication_id}', [LoansApplicationsController::class, 'showAppliedLoanItem']);
+
+
+
 
 //loanpayments
 Route::get('/loans/payment/index/{loanapplication_id}',  [LoanPaymentController::class, 'index']);
@@ -480,54 +539,73 @@ Route::get('/payments/equity', [EquityBankController::class, 'index']);
 Route::get('/ipay/pay/initiate', function () {
     $payment = new B2BPaymentsIpay();
     $payment->initiatorRequest();
-
 });
 
 Route::get('/ipay/pay/mobilemoney', function () {
     $payment = new B2BPaymentsIpay();
     $payment->mobileMoneyTransact();
-
 });
 
 Route::get('/ipay/pay/search', function () {
     $payment = new B2BPaymentsIpay();
     $payment->searchTransaction();
-
 });
 
 
 
 //employees
-Route::get('/employees/showemployees', [EmployeeController::class, 'index']);
-Route::get('/employees/addemployee', [EmployeeController::class, 'create']);
-Route::post('/employees/create-new-emp', [EmployeeController::class, 'newEmployee']);
+Route::get('/client/employee/index', [EmployeeController::class, 'index']);
+Route::get('/client/employee/create', [EmployeeController::class, 'create']);
+Route::post('/client/employee/store', [EmployeeController::class, 'store']);
 
-Route::get('/employee/viewEmployee/{emp_id}', [EmployeeController::class, 'show']);
-Route::get('/employee/updateEmployee/{emp_id}', [EmployeeController::class, 'update']);
-Route::post('/employee/updateEmployeeData/{emp_id}', [EmployeeController::class, 'updateEmployee']);
-Route::get('/employee/viewEmployee/salaries', [EmployeeController::class, 'Salaries']);
-Route::get('/employee/viewEmployee/sales/{emp_id}', [EmployeeController::class, 'Sales']);
-Route::get('/employee/delete/{emp_id}', [EmployeeController::class, 'delete']);
+Route::get('/client/employee/show/{emp_id}', [EmployeeController::class, 'show']);
+Route::get('/client/employee/edit/{emp_id}', [EmployeeController::class, 'edit']);
+Route::post('/client/employee/updateEmployeeData/{emp_id}', [EmployeeController::class, 'update']);
+Route::get('/client/employee/viewEmployee/salaries', [EmployeeController::class, 'Salaries']);
+Route::get('/client/employee/viewEmployee/sales/{emp_id}', [EmployeeController::class, 'Sales']);
+Route::get('/client/employee/delete/{emp_id}', [EmployeeController::class, 'delete']);
+
+//employee sales
+Route::get('/client/sales/employee/show/{id}', [EmployeeSaleController::class, 'show']);
+
+//salaries
+Route::get('/client/employee/salaries/show/{emp_id}', [EmployeeController::class, 'delete']);
 
 //terms and conditions
 Route::get('/terms_and_conditions', function () {
     return view('termsandconditions');
 });
 
+// user profile
+Route::get('/client/user/profile/edit/{id}',  [ProfileProfileController::class, 'edit']);
 
-// Route::put('/post/{post}', function (Post $post) {
-//     // The current user may update the post...
-// })->middleware('can:update,post'); ->middleware('can:registerRetail,post');
+# -profilepic
+Route::post('/client/userprofile/profile/update/profile_picture/{id}',  [ProfileProfileController::class, 'updateUserProfile']);
+#-form
+Route::post('/client/userprofile/profile/update/{id}',  [ProfileProfileController::class, 'update']);
+# -national_id
+Route::post('/client/userprofile/profile/national_id/{id}',  [ProfileProfileController::class, 'uploadUserDocuments']);
+#-relevant-documents
+Route::post('/client/userprofile/profile/relevant-documents/{id}',  [ProfileProfileController::class, 'uploadRelevantDocuments']);
+
+
+
 
 
 //retails
-Route::get('/retails/retails-list',  [RetailsController::class, 'create']);
-Route::get('/retails/addretail',  [RetailsController::class, 'create']);
-Route::get('/retails/show',  [RetailsController::class, 'show']);
+Route::get('/client/retails/profile',  [RetailController::class, 'show']);
+
+Route::get('/client/retails/create',  [RetailController::class, 'create']);
+Route::get('/client/retails/show',  [RetailController::class, 'show']);
+Route::get('/client/retails/profile/edit/{id}',  [RetailController::class, 'edit']);
+Route::post('/client/retails/profile/update/{id}',  [RetailController::class, 'update']);
+Route::post('/client/retails/profile/retail-documents',  [RetailController::class, 'uploadRetailDocuments']);
+Route::post('/client/retails/profile/relevant-documents',  [RetailController::class, 'uploadRelevantDocuments']);
+Route::post('/client/retails/profile/update',  [RetailController::class, 'updateRetailProfile']);
 
 
 //register a retail
-Route::post('/register/add-retail',  [RetailsController::class, 'addARetail']);
+Route::post('/client/retail/register/store',  [RetailController::class, 'store']);
 
 
 //customers
@@ -572,6 +650,15 @@ Route::get('/bills/payment/history/delete',  [BillPaymentHistory::class, 'delete
 
 
 //suppliers
+Route::get('/client/supplies/index',  [SuppliesController::class, 'index']);
+Route::get('/client/supplies/create',  [SuppliesController::class, 'create']);
+Route::post('/client/supplies/store',  [SuppliesController::class, 'store']);
+Route::get('/client/supplies/show/{id}',  [SuppliesController::class, 'show']);
+Route::get('/client/supplies/edit/{id}',  [SuppliesController::class, 'edit']);
+Route::post('/client/supplies/update/{id}',  [SuppliesController::class, 'update']);
+Route::post('/client/supplies/delete/{id}',  [SuppliesController::class, 'delete']);
+
+//suppliers
 Route::get('/supplies/suppliers/index',  [SuppliersController::class, 'index']);
 Route::get('/supplies/suppliers/create',  [SuppliersController::class, 'create']);
 Route::post('/supplies/suppliers/store',  [SuppliersController::class, 'store']);
@@ -598,7 +685,5 @@ Route::get('/support/update',  [SuppliersPaymentController::class, 'update']);
 Route::get('/support/show',  [SuppliersPaymentController::class, 'show']);
 Route::get('/support/delete',  [SuppliersPaymentController::class, 'destroy']);
 Route::get('/support/index', function () {
-    return view('Support.index');
+    return view('client.Support.index');
 });
-
-

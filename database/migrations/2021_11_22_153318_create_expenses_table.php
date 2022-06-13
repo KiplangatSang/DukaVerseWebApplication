@@ -15,12 +15,12 @@ class CreateExpensesTable extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table-> string('expenseabe_id');
-            $table-> string('expenseabe_type');
-            $table-> string('entered_by');
-            $table-> string('expenseItem');
-            $table-> string('expense_date');
-            $table-> double('cost');
+            $table-> bigInteger('expenseable_id');
+            $table-> string('expenseable_type');
+            $table-> string('expenseId');
+            $table-> double('expense');
+            $table-> string('month');
+            $table-> string('year');
             $table->timestamps();
         });
     }

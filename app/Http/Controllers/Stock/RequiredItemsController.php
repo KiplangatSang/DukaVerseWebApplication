@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\stock;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Repositories\RequiredItemsRepository;
 use App\Stock\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class RequiredItemsController extends Controller
+class RequiredItemsController extends BaseController
 {
+    private $requiredItemsRepo;
+    private $retail;
+
     /**
      * Display a listing of the resource.
      *
@@ -19,38 +24,37 @@ class RequiredItemsController extends Controller
         $this->middleware('auth');
     }
 
+    public function requiredItemsRepsitory()
+    {
+        # code...
+        $this->retail = $this->getRetail();
+
+        if (!$this->retail)
+            return redirect('/retails/addretail')->with('message', __('retail.create'));
+
+        $this->requiredItemsRepo = new RequiredItemsRepository($this->retail);
+        return  $this->requiredItemsRepo;
+    }
+
     public function index()
     {
         //
-        $user = auth()->user();
-        //$retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
-        $retail = $user->Retails()->get();
-        if (count($retail) < 1) {
-            return redirect('/retails/addretail')->with('message', 'Register Your Retail Shop First');
-        }
+        $this->requiredItemsRepsitory();
 
+            $requiredItems = $this->retail->stocks()->where('isRequired', true)->orderBy('created_at', 'DESC')->get();
+             //dd($requiredItems);
 
-        $retails = auth()->user()->Retails()->get();
-
-        $allStocks = null;
-        $stocksitems = null;
-        $stocksrevenue = null;
-
-        foreach ($retails as $retail) {
-            $retailName = $retail->retailName;
-            $requiredItems = $retail->stocks->where('isRequired', true);
             $stocksitems = count($requiredItems);
-            $stocksrevenue = $retail->stocks->where('isRequired', true)->sum('price');
+            $stocksrevenue = $requiredItems->sum('price');
             $allStocks = array(
                 "Stocks"  => $requiredItems,
 
             );
-        }
+
         $stocksdata = array(
             'allStocks' =>  $allStocks,
             'stocksitems' => $stocksitems,
             'stocksrevenue' => $stocksrevenue,
-            'retails' => $retails,
         );
 
         //dd( $salesdata);
@@ -93,6 +97,22 @@ class RequiredItemsController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate(
+            [
+                'requiredItemId' => 'required',
+                'requiredItem' => 'required',
+                'employees_id' => 'required',
+                'stock_id' => 'required',
+                'requiredAmount' => 'required',
+                'projectedCost' => 'required',
+                'requiredStatus' => 'required',
+
+            ]
+        );
+
+        $this->retail->requiredItems()->create(
+            $request->all(),
+        );
     }
 
     /**
@@ -147,7 +167,7 @@ class RequiredItemsController extends Controller
         //dd($request->input());
         $countStart = 1;
 
-        if($request->has('sampleTable_length')){
+        if ($request->has('sampleTable_length')) {
             $countStart = 2;
         }
 
@@ -155,8 +175,8 @@ class RequiredItemsController extends Controller
 
             $requireditem = Stock::where('id', $requestValues[$i])->first();
 
-           $requiredItems[$requireditem->id] = $requireditem;
-           // $requiredItems = array_merge($requiredItems,$data);
+            $requiredItems[$requireditem->id] = $requireditem;
+            // $requiredItems = array_merge($requiredItems,$data);
 
         }
         if (empty($requiredItems)) {
@@ -175,7 +195,7 @@ class RequiredItemsController extends Controller
         //dd($requiredItems);
     }
 
-    public function editRequiredItems( $id)
+    public function editRequiredItems($id)
     {
         $requiredItems = session()->get('requiredItems');
 
@@ -184,12 +204,9 @@ class RequiredItemsController extends Controller
 
 
             $requiredItems = \array_diff_key($requiredItems, [$id => "xy"]);
-
-
-
         } catch (\Throwable $th) {
             throw $th;
-            return back()->with('message','No item selected');
+            return back()->with('message', 'No item selected');
         }
         Session::put('requiredItems', $requiredItems);
         $allStocks = $requiredItems;

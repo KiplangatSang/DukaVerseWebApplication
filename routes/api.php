@@ -43,5 +43,24 @@ Route::post('/user/login', [LoginController::class,'apiLogin']);
 Route::middleware('auth:api')->post('/user/pin','User\PinController@makePin');
 Route::middleware('auth:api')->post('/user/updatePin','User\PinController@updatePin');
 
+//loans
 
+Route::middleware('auth:api')->get('/user/loans/all-loans','User\LoanController@makePin');
+Route::middleware('auth:api')->post('/user/loans/loan-item/{id}','User\LoanController@updatePin');
+Route::middleware('auth:api')->post('/user/loans/loan-item/apply/{id}','User\LoanController@updatePin');
+Route::middleware('auth:api')->post('/user/loans/loan-item/loan-status/{id}','User\LoanController@updatePin');
+Route::middleware('auth:api')->post('/user/loans/loan-item/pay-loan/m-pesa/{id}','User\LoanController@updatePin');
+Route::middleware('auth:api')->post('/user/loans/loan-item/pay-loan/bank/{id}','User\LoanController@updatePin');
+Route::middleware('auth:api')->get('/user/loans/loan-history','User\LoanController@updatePin');
+Route::middleware('auth:api')->post('/user/loans/loan-history/loan-item/{id}','User\LoanController@updatePin');
 
+//sales
+
+Route::middleware('auth:api')->get('/user/sales/all-sales','User\SalesController@makePin');
+Route::middleware('auth:api')->get('/user/sales/sales-item/{id}','User\SalesController@updatePin');
+Route::middleware('auth:api')->post('/user/sales/sales-item/sell/{id}','User\SalesController@updatePin');
+Route::middleware('auth:api')->post('/user/sales/sales-item/loan-status/{id}','User\SalesController@updatePin');
+Route::middleware('auth:api')->post('/user/sales/sales-item/pay-loan/m-pesa/{id}','User\SalesController@updatePin');
+Route::middleware('auth:api')->post('/user/sales/sales-item/pay-loan/bank/{id}','User\SalesController@updatePin');
+Route::middleware('auth:api')->post('/user/sales/sales-history','User\SalesController@updatePin');
+Route::middleware('auth:api')->post('/user/sales/history/loan-item/{id}','User\SalesController@salesitem');

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Employees;
 
-use App\Employees;
+use App\Employees\Employees;
 use App\Http\Controllers\Controller;
 use App\Retails\Retail;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class EmployeeController extends Controller
 {
@@ -22,10 +23,11 @@ class EmployeeController extends Controller
         $user = auth()->user();
         $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
         $emplist = Employees::whereIn('employeeable_id', $retail)->get();
+        $emplist = Employees::all();
         $empdata = array(
             'emplist' => $emplist,
         );
-        return view('client.employees.emplist', compact('empdata'));
+        return view('client.employees.index', compact('empdata'));
     }
 
     public function create()
@@ -40,16 +42,15 @@ class EmployeeController extends Controller
             'Retail' => $retail
         );
 
-        return view('client.employees.addemp', compact('empdata'));
+        return view('client.employees.create', compact('empdata'));
     }
 
-    public function newEmployee(Request $request)
+    public function store(Request $request)
     {
 
         $data = $request->validate(
             [
                 'emp_name' => 'required',
-                'retail_id' => 'required',
                 'emp_ID' => 'required',
                 'emp_role' => 'required',
                 'emp_phoneno' => 'required',
@@ -63,25 +64,14 @@ class EmployeeController extends Controller
 
         try {
 
-            $retail->Employees()->create(
-                [
-                    'empName' => $request->emp_name,
-                    'empEmail' => $request->emp_email,
-                    'empPhoneno'=>$request->emp_phoneno,
-                    'empNationalId' => $request->emp_ID,
-                    'pin' => date('Y'),
-                    'empRole' => $request->emp_role,
-                    'userName' => $request->emp_name,
-                    'dateEmployed' => now(),
-                    'salary' => $request->emp_salary,
-
-                ]
+            $retail->employees()->create(
+                $data,
             );
 
-            return redirect('/employees/showemployees')->with('success');
+            return redirect('/client/employees/index')->with(__('employees.create'));
         } catch (Exception $ex) {
 
-            $ex->getMessage();
+          Log::info( $ex->getMessage());
             return back()->with('message',"Could not register Employee");
         }
 
@@ -92,15 +82,16 @@ class EmployeeController extends Controller
     public function show($emp_id)
     {
         $emp = Employees::where('id',$emp_id)->first();
+       // dd($emp);
 
         $empdata = array(
             'emp' => $emp,
         );
-        return view('client.employees.showemployee',compact('empdata'));
+        return view('client.employees.show',compact('empdata'));
         //dd($emp);
     }
 
-    public function update($emp_id)
+    public function edit($emp_id)
     {
         $user = auth()->user();
         $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
@@ -112,10 +103,10 @@ class EmployeeController extends Controller
             'emp' => $emp,
             'Retail' => $retail,
         );
-        return view('client.employees.updateemployee',compact('empdata'));
+        return view('client.employees.edit',compact('empdata'));
         }
 
-        public function updateEmployee($emp_id,Request $request)
+        public function update($emp_id,Request $request)
         {
 
 

@@ -32,7 +32,7 @@
 								href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-				<title>Mpesa Application</title>
+				<title>DukaVerse</title>
 				<nav class="navbar navbar-expand-lg navbar-light bg-white mx-auto px-15" style="background-color: #e7e9eb">
 								<a class="navbar-brand" href="#">Home</a>
 								<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

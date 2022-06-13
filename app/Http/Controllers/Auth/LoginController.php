@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends BaseController
 {
@@ -38,6 +39,7 @@ class LoginController extends BaseController
      */
     public function __construct()
     {
+        Session::flush();
         $this->middleware('guest')->except('logout');
     }
 
@@ -51,7 +53,7 @@ class LoginController extends BaseController
             return $this->sendResponse($success, 'User login successfully.');
         }
         else{
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error'=>'Incorrect field Details']);
         }
     }
 }

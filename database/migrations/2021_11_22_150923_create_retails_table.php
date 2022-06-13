@@ -15,17 +15,21 @@ class CreateRetailsTable extends Migration
     {
         Schema::create('retails', function (Blueprint $table) {
             $table->id();
-            $table-> string('retailNameId');
             $table-> bigInteger('retailable_id');
             $table-> string('retailable_type');
-            $table-> string('retailName');
-            $table-> longText('retailGoods');
-            $table-> string('retailTown');
-            $table-> string('retailConstituency');
-            $table-> string('retailCounty');
-            $table-> string('retailPicture');
-            $table-> string('retailEmployees_number');
-            $table-> string('retailStockEstimate');
+            $table-> string('retail_Id');
+            $table-> string('retail_name');
+            $table-> longText('retail_goods');
+            $table-> string('retail_town');
+            $table-> string('retail_constituency');
+            $table-> string('retail_county');
+            $table-> longText('retail_profile')->nullable();
+            $table-> longText('retail_documents')->nullable();
+            $table-> longText('retail_relevant_documents')->nullable();
+            $table-> string('retail_emp_no')->nullable();
+            $table-> string('retail_stock_est')->nullable();
+            $table-> string('retail_subscription')->nullable();
+            $table-> string('complete')->nullable();
             $table->timestamps();
         });
     }

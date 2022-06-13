@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Views\Admin\Composers\AdminAppComposer;
+use App\Http\Views\Admin\Composers\SalesComposer as ComposersSalesComposer;
+use App\Http\Views\Composers\AppComposer;
 use App\Http\Views\Composers\SalesComposer;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -44,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
 
-        View::composer(['client.*','Layouts.app','Loans.*','Layouts.cardpaymentslayout','Employees.*','Sales.*','Stock.*','Customers.*','Bills.*','Suppliers.*','Support.*','Admin.*' ], SalesComposer::class);
+        View::composer(['home','client.*' ], SalesComposer::class);
+        View::composer(['admin.*',], AdminAppComposer::class);
     }
 }

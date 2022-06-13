@@ -5,17 +5,17 @@ namespace App\Http\Views\Composers;
 use App\Repositories\AppRepository;
 use App\Retails\Retail;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AppComposer
 {
     public function compose(View $view)
     {
+
+
         $apprrepo = new AppRepository();
         $registrationmonths = $apprrepo->getRegisteredMonths();
-
-
-
 
 
         $monthlyData = array();
@@ -59,7 +59,6 @@ class AppComposer
         $pdata['label'] = $label;
         return $pdata;
     }
-
 
     public function getColor()
     {

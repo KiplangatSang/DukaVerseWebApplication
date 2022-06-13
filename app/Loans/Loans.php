@@ -10,7 +10,8 @@ class Loans extends Model
     protected $guarded = [];
 
 
-  public function loanable(){
-    return $this->morphTo();
-}
+    public function loanable()
+    {
+        return $this->morphTo();
+    }
 }

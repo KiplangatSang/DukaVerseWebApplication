@@ -15,11 +15,12 @@ class CreateRevenuesTable extends Migration
     {
         Schema::create('revenues', function (Blueprint $table) {
             $table->id();
+            $table-> bigInteger('revenueable_id');
+            $table-> string('revenueable_type');
             $table-> string('revenueId');
-            $table-> string('revenueItem');
-            $table-> double('itemPrice');
-            $table-> double('sellingPrice');
             $table-> double('revenue');
+            $table-> string('month');
+            $table-> string('year');
             $table->timestamps();
         });
     }

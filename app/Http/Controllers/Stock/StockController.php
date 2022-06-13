@@ -2,56 +2,59 @@
 
 namespace App\Http\Controllers\Stock;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Repositories\ExpenseRepository;
+use App\Repositories\StockRepository;
 use App\Stock\Stock;
 use Illuminate\Http\Request;
 
-class StockController extends Controller
+class StockController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $stockrepo;
+    private $retail;
+
     public function __construct()
     {
         $this->middleware('auth');
     }
 
+    public function stockRepository()
+    {
+        # code...
+        $this->retail = $this->getRetail();
+        // dd($this->retail);
+        if (!$this->retail)
+            return redirect('/retails/addretail')->with('message', __('retail.create'));
+
+        $this->stockrepo = new StockRepository($this->retail);
+
+        return $this->stockrepo;
+    }
+
+
+
     public function index()
     {
-        $user = auth()->user();
-        //$retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
-        $retail = $user->Retails()->get();
-        if (count($retail) < 1) {
-            return redirect('/retails/addretail')->with('message', 'Register Your Retail Shop First');
-        }
+        $this->stockRepository();
+
+        $allStocks = $this->retail->stocks()->get();
+        $stocksitems = count($allStocks);
+        $stocksexpense = $this->retail->stocks()->sum('buying_price');
+        $stocksexpectedSales = $this->retail->stocks()->sum('selling_price');
+        $stocksrevenue = $stocksexpectedSales - $stocksexpense;
 
 
-        $retails = auth()->user()->Retails()->get();
-
-        $allStocks = null;
-        $stocksitems = null;
-        $stocksrevenue = null;
-
-        foreach ($retails as $retail) {
-            $retailName = $retail->retailName;
-            $stocksitems = count($retail->stocks);
-            $stocksrevenue = $retail->stocks->sum('price');
-            $allStocks = array(
-                "Stocks"  => $retail->stocks,
-
-            );
-        }
         $stocksdata = array(
             'allStocks' =>  $allStocks,
             'stocksitems' => $stocksitems,
+            'stocksexpense' => $stocksexpense,
+            'stocksexpectedSales' => $stocksexpectedSales,
             'stocksrevenue' => $stocksrevenue,
-            'retails' => $retails,
         );
 
         //dd( $salesdata);
-        return view("client.stock.ItemsInStore.showitemsinstore", compact('stocksdata'));
+        return view("client.stock.ItemsInStore.index", compact('stocksdata'));
     }
 
     /**
@@ -61,7 +64,14 @@ class StockController extends Controller
      */
     public function create()
     {
-        return view('client.stock.itemsinstore.createitemsinstore');
+
+        $this->stockRepository();
+        $stockdata = array(
+            "allStock"  => $this->retail->stocks()->orderBy('created_at', 'DESC')->get(),
+
+        );
+        //dd( $stockdata);
+        return view('client.stock.itemsinstore.create', compact('stockdata'));
         //
     }
 
@@ -74,6 +84,54 @@ class StockController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate(
+            [
+                "stockNameId" => ["required", "unique:stocks"],
+                "stockName" => "required",
+                "stockSize" => "required",
+                "stockAmount" => "required",
+                "brand" => "required",
+                "selling_price" => "required",
+                "buying_price" => "required",
+            ]
+
+        );
+
+        //check if both image has been uploaded and previous image has been reused
+        if ($request->hasFile('stockImageFile') && $request['stockImageUrl']) {
+            $request->request->remove('stockImageUrl');
+        }
+
+        if ($request->has('stockImageUrl')) {
+            $request['stockImage'] = $request['stockImageUrl'];
+            unset($request['stockImageUrl']);
+        } else {
+            $request->validate(
+                [
+                    "stockImageFile" => ["required", "file:max 3000"],
+                ]
+            );
+            $request['stockImage'] = $request['stockImageFile'];
+            unset($request['stockImageFile']);
+        }
+
+
+        $request->validate(
+            [
+                "stockImage" => ["required",],
+            ]
+
+        );
+
+        //save through sock repository
+        $stockRepo = $this->stockRepository();
+        $result = $stockRepo->saveStock($request);
+
+        if (!$result)
+            return back()->with('error', "Could not Save Expense");
+
+
+        return back()->with('success', "Stock item and Expense added");
     }
 
     /**
@@ -84,7 +142,10 @@ class StockController extends Controller
      */
     public function show($id)
     {
-        $allStocks = Stock::where('stockName', $id)
+        $this->stockRepository();
+
+        $allStocks = $this->retail->stocks()
+            ->where('stockName', $id)
             ->orderBy('created_at', 'DESC')
             ->get();
         $stocksdata = array(
@@ -92,7 +153,7 @@ class StockController extends Controller
         );
 
 
-        return view('client.stock.ItemsInStore.showiteminstore', compact('stocksdata'));
+        return view('client.stock.ItemsInStore.show', compact('stocksdata'));
         //
     }
 
@@ -127,10 +188,11 @@ class StockController extends Controller
      */
     public function destroy($stock_id)
     {
-        Stock::destroy($stock_id);
-
-        return back()->with('success', 'Deletion Successful');
+        $result = $this->stockRepository()->removeStockItem($stock_id);
+        if (!$result)
+            return back()->with('error', 'Could not delete this item');
         //
+        return back()->with('success', 'The item was deleted Successfully');
     }
 
     //

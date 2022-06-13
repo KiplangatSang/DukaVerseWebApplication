@@ -21,5 +21,6 @@ return [
     'update' => "Update the Retail account first.",
     'updated' => "Retail account successfully updated.",
     'delete' => "Retail account successfully deleted.",
+    'select' => "Please select your retail first.",
 
 ];

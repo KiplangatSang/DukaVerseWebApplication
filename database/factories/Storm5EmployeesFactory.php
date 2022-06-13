@@ -11,7 +11,7 @@ $factory->define(Storm5Employees::class, function (Faker $faker) {
     return [
         //
 
-        'storm5employeeable_id'=>rand(2,10),
+        'storm5employeeable_id'=>rand(1,20),
         'storm5employeeable_type' => "App\Retails\Retail",
         'empName' => $faker->name,
         'empEmail' => $faker->email,

@@ -172,7 +172,7 @@
 																<div class="embed-responsive embed-responsive-16by9">
 																				<canvas class="embed-responsive-item" id="loansLineChart">
 
-                                                                                </canvas>
+																				</canvas>
 																</div>
 												</div>
 								</div>
@@ -188,14 +188,14 @@
 																</div>
 												</div>
 								</div>
-                                <div class="col-md-6">
-                                    <div class="tile">
-                                                    <h3 class="tile-title">Credit</h3>
-                                                    <div class="embed-responsive embed-responsive-16by9">
-                                                                    <canvas class="embed-responsive-item" id="creditLineChart"></canvas>
-                                                    </div>
-                                    </div>
-                    </div>
+								<div class="col-md-6">
+												<div class="tile">
+																<h3 class="tile-title">Credit</h3>
+																<div class="embed-responsive embed-responsive-16by9">
+																				<canvas class="embed-responsive-item" id="creditLineChart"></canvas>
+																</div>
+												</div>
+								</div>
 								<div class="col-md-6">
 												<div class="tile">
 																<h3 class="tile-title">Credit</h3>

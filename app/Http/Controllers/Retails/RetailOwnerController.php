@@ -23,7 +23,12 @@ class RetailOwnerController extends Controller
 
 public function create()
     {
-        return view('Retailers.RetailOwner.create');
+        $retail = $this->getRetail();
+        $retail->retail_goods = json_decode($retail->retail_goods);
+        $profileComplete = $this->calculate_profile($retail);
+        $retail['profile_complete'] = $profileComplete;
+
+        return view('client.retailers.profile.userprofile.edit', compact('retail'));
     }
 
     public function store()
@@ -45,13 +50,4 @@ public function create()
     {
         return redirect('retails/retailowner/index');
     }
-
-
-
-
-
-
-
-
-
 }

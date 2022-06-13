@@ -18,13 +18,14 @@ class CreateRequiredItemsTable extends Migration
             $table-> string('requiredItemId');
             $table-> bigInteger('requiredable_id');
             $table-> string('requiredable_type');
-            $table-> bigInteger('retailrequiredable_id');
-            $table-> string('retailrequiredable_type');
             $table-> string('requiredItem');
+            $table-> unsignedBigInteger('employees_id')->nullable();
+            $table-> unsignedBigInteger('stock_id');
             $table-> unsignedBigInteger('requiredAmount');
             $table-> double('projectedCost');
             $table-> string('requiredStatus');
             $table->timestamps();
+
         });
     }
 

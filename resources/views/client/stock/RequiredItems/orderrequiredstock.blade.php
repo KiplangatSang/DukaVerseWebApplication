@@ -12,22 +12,11 @@
 				</div>
 
 				<div class="row">
-								@if (session()->has('message'))
-												<div class="container-fluid alert alert-danger">
-																{{ session()->get('message') }}
-												</div>
-								@endif
-
-								@if (session()->has('success'))
-												<div class="container-fluid alert alert-success">
-																{{ session()->get('success') }}
-												</div>
-								@endif
 								<div class="col-md-12">
 												<div class="tile">
 																<div class="tile-body">
 																				<div class="table-responsive">
-																								<form action="/orders/confirmOrder/{{auth()->user()->Retails->first()->id}}"   enctype="application/x-www-form-urlencoded" method="POST">
+																								<form action="/client/orders/store"   enctype="application/x-www-form-urlencoded" method="POST">
 																												@csrf
 
 																												<div class="row m-3">
@@ -70,7 +59,7 @@
 																																												</td>
 																																												<td>{{ $stock['stockName'] }}</td>
 																																												<td>{{ $stock['stockSize'] }}</td>
-																																												<td><input name="order_amount" value="{{ $stock['id'] }}"></td>
+																																												<td><input name="{{ $stock->stockName }}" value="{{ $stock['id'] }}"></td>
 																																												<td><a href="/requireditems/editRequiredItems/{{ $stock['id'] }}"><i class="fa fa-trash-o"
 																																																								aria-hidden="true"> Delete</i></a></td>
 

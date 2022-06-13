@@ -1,6 +1,6 @@
 <?php
 
-use App\Employees;
+use App\Employees\Employees;
 use App\Retails\Retail;
 use Illuminate\Database\Seeder;
 

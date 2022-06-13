@@ -15,27 +15,20 @@ $factory->define(Orders::class, function (Faker $faker) {
 
 
         $requireditem = $faker->name();
-       $items[$i+1] = $requireditem;
-       // $requiredItems = array_merge($requiredItems,$data);
+        $items[$i + 1] = $requireditem;
+        // $requiredItems = array_merge($requiredItems,$data);
 
     }
 
     return [
-
-
-
-
-            'orderId'=> Str::random(10),
-            'orderable_id' =>  rand(2,11),
-        'orderable_type' => 'App\Employee',
-        'retailorderable_id' => rand(10,11),
-        'retailorderable_type' => 'App\Retails\Retail',
-        'ordered_items'=> json_encode($items),
-            'orderItemsCount'=> rand(200,5000),
-            'orderDate'=>now(),
-            'paymentStatus'=>rand(-1,1),
-
-
-
+        'orderId' => Str::random(10),
+        'orderable_id' =>  rand(8, 11),
+        'orderable_type' => 'App\Retails\Retail',
+        'ordered_items' => json_encode($items),
+        'orderItemsCount' => rand(200, 5000),
+        'orderDate' => now(),
+        'paymentStatus' => rand(-1, 1),
+        'orderStatus' => rand(-1, 1),
+        'suppliers_id' => rand(1, 10),
     ];
 });

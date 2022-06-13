@@ -18,19 +18,21 @@ class CreateStocksTable extends Migration
             $table-> string('stockNameId');
             $table-> bigInteger('stockable_id');
             $table-> string('stockable_type');
-            $table-> bigInteger('requiredstockable_id');
-            $table-> string('requiredstockable_type');
-            $table-> bigInteger('retailstockable_id');
-            $table-> string('retailstockable_type');
-            $table-> bigInteger('supplierstockable_id');
-            $table-> string('supplierstockable_type');
+            //items table reference
+            $table-> bigInteger('retail_item_id');
+
+            //suppliers ref
+            $table-> string('suppliers_id')->nullable();
+
             $table-> string('stockName');
             $table-> string('stockSize');
+            $table->longText('stockImage');
             $table-> unsignedBigInteger('stockAmount');
             $table-> string('brand');
-            $table-> double('price');
-            $table-> unsignedBigInteger('totalCost');
-            $table->boolean('isRequired');
+            $table-> double('selling_price');
+            $table-> unsignedBigInteger('buying_price');
+            $table->boolean('isRequired')->nullable();
+
             $table->timestamps();
         });
     }

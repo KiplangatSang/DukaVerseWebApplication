@@ -4,68 +4,116 @@ namespace App\Retails;
 
 use App\Bills\Bills;
 use App\Customers\Customers;
-use App\Employees;
-use App\Sales\Sales;
+use App\Employees\Employees;
+use App\Loans\LoanApplication;
+use App\Loans\Loans;
+use App\Payments\Expenses;
+use App\Payments\Profit;
+use App\Payments\Revenue;
+use App\RequiredItems\RequiredItems;
+use App\Sales\SaleTransactions;
 use App\Stock\Stock;
 use App\Supplies\Orders;
 use App\Supplies\Supplies;
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Retail extends Model
 {
     //
 
-    protected $guarded =[];
+    protected $guarded = [];
 
     public function retailable()
     {
 
         return $this->morphTo();
-
     }
 
 
 
-    public function sales(){
-        return $this->morphMany(\App\Sales\Sales::class,'retailsaleable');
+    public function sales()
+    {
+        return $this->morphMany(\App\Sales\Sales::class, 'retailsaleable');
     }
 
-    public function stocks(){
-        return $this->morphMany(Stock::class,'retailstockable');
+    public function stocks()
+    {
+        return $this->morphMany(Stock::class, 'stockable');
     }
 
 
-    public function Retails(){
+    public function retails()
+    {
         return  $this->hasMany(Retails::class);
     }
 
-    public function Employees(){
-            return $this->morphMany(Employees::class,'employeeable');
+    public function employees()
+    {
+        return $this->morphMany(Employees::class, 'employeeable');
     }
 
-    public function orders(){
-        return $this->morphToMany(Orders::class,'orderable');
-}
+    public function orders()
+    {
+        return $this->morphMany(Orders::class, 'orderable');
+    }
 
-public function retailOwner(){
-    return $this->morphToMany(RetailOwner::class,'retailownerable');
-}
+    public function retailOwner()
+    {
+        return $this->morphToMany(RetailOwner::class, 'retailownerable');
+    }
 
-public function bills(){
-    return $this->morphToMany(Bills::class,'billable');
-}
+    public function bills()
+    {
+        return $this->morphToMany(Bills::class, 'billable');
+    }
 
-public function customers(){
+    public function customers()
+    {
 
-    return $this->morphToMany(\App\Customers\Customers::class,'customerable');
-}
-
-
-public function supplies(){
-    return $this->morphMany(Supplies::class,'supplyable');
-}
-
+        return $this->morphToMany(Customers::class, 'customerable');
+    }
 
 
+    public function supplies()
+    {
+        return $this->morphMany(Supplies::class, 'supplyable');
+    }
+
+    public function requiredItems()
+    {
+        return $this->morphMany(RequiredItems::class, 'requiredable');
+    }
+
+    public function expenses()
+    {
+        # code...
+        return $this->morphMany(Expenses::class, 'expenseable');
+    }
+
+    public function revenues()
+    {
+        # code...
+        return $this->morphMany(Revenue::class, 'revenueable');
+    }
+
+    public function profit()
+    {
+        # code...
+        return $this->morphMany(Profit::class, 'profitable');
+    }
+
+    public function salesTransactions()
+    {
+        # code...
+        return $this->morphMany(SaleTransactions::class, 'transactionable');
+    }
+
+    public function loanApplications()
+    {
+        return $this->morphMany(LoanApplication::class, 'loanapplicable');
+    }
+    public function loans()
+    {
+        return $this->morphMany(Loans::class, 'loanable');
+    }
 }

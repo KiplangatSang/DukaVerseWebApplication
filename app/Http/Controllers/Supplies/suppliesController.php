@@ -1,12 +1,35 @@
 <?php
 
-namespace App\Http\Controllers\supplies;
+namespace App\Http\Controllers\Supplies;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Repositories\SuppliesRepository;
+use App\Supplies\Supplies;
 use Illuminate\Http\Request;
 
-class suppliesController extends Controller
+class SuppliesController extends BaseController
 {
+    private $stockrepo;
+    private $retail;
+
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
+
+    public function suppliesRepository()
+    {
+        # code...
+        $this->retail = $this->getRetail();
+
+        if (!$this->retail)
+            return redirect('/home')->with('message', __('retail.create'));
+
+        $this->requiredItemsRepo = new SuppliesRepository($this->retail);
+        return  $this->requiredItemsRepo;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +38,11 @@ class suppliesController extends Controller
     public function index()
     {
         //
+        $supplies = $this->suppliesRepository()->getAllSupplies();
+
+        $suppliesdata['supplies'] = $supplies;
+
+        return view("client.supplies.index",compact('suppliesdata'));
     }
 
     /**
@@ -25,6 +53,7 @@ class suppliesController extends Controller
     public function create()
     {
         //
+        return view("client.supplies.create");
     }
 
     /**
@@ -36,6 +65,16 @@ class suppliesController extends Controller
     public function store(Request $request)
     {
         //
+        $this->suppliesRepository();
+        $request->validate([
+
+        ]);
+
+        $this->retail->supplies()->create(
+         $request->all(),
+        );
+
+        return redirect('/client/supplies/index')->with('success',__('supplies.create'));
     }
 
     /**
@@ -47,6 +86,9 @@ class suppliesController extends Controller
     public function show($id)
     {
         //
+        $supply = $this->suppliesRepository()->getSuppliesById($id);
+        $suppliesdata['supply']=$supply;
+        return view("client.supplies.show",compact('suppliesdata'));
     }
 
     /**
@@ -58,6 +100,9 @@ class suppliesController extends Controller
     public function edit($id)
     {
         //
+        $supply = $this->suppliesRepository()->getSuppliesById($id);
+        $suppliesdata['supply']=$supply;
+        return view("client.supplies.edit",compact('suppliesdata'));
     }
 
     /**
@@ -70,6 +115,11 @@ class suppliesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->retail->supplies()->where('id',$id)->update(
+            $request->all(),
+           );
+
+         return redirect('/client/supplies/show/'.$id)->with('success',__('supplies.update'));
     }
 
     /**
@@ -81,5 +131,7 @@ class suppliesController extends Controller
     public function destroy($id)
     {
         //
+        Supplies::destroy($id);
+        return redirect('/client/supplies/index')->with('success',__('supplies.delete'));
     }
 }

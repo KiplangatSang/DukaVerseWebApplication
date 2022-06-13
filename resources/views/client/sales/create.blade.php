@@ -16,114 +16,61 @@
 
 												<div class="tile row">
 																<div class="col-md col-xl">
-																				<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/client/sales/store">
-																								@csrf
-																								<h3 class="tile-title">Sales Items</h3>
-																								<h3 class="tile-title">Select from Stock Items</h3>
-																								<div class="tile-body">
-																												<div class="form-group row">
-																																<label class="control-label col-md-3">Item Name</label>
-																																<div class="col-md-8">
-																																				<input class="form-control  @error('itemName') is-invalid @enderror" id="itemName"
-																																								name="itemName" type="text" placeholder="Enter sold item's name">
+																				<div class="tile-body">
+																								<div class="table-responsive">
+																												<table class="table table-hover table-bordered" id="sampleTable">
+																																<thead>
+																																				<tr>
+																																								<th>Item </th>
+																																								<th>Item Name</th>
+																																								<th>Size/Type</th>
+																																								<th>Price</th>
+																																								<th>View</th>
+																																				</tr>
+																																</thead>
+																																<tbody>
+																																				@foreach ($stockdata['allStock'] as $stock)
+																																								<tr>
 
-																																				@error('itemName')
-																																								<span class="invalid-feedback" role="alert">
-																																												<strong>{{ $message }}</strong>
-																																								</span>
-																																				@enderror
+																																												<td>
+																																																<div class="col-sm-6">
+																																																				<img class="icon d-flex w-100"
+																																																								src="{{ $stock['itemImage'] ?? 'noprofile.png' }}"
+																																																								alt="{{ $stock['stockName'] }}">
+																																																</div>
 
-																																</div>
-																												</div>
-																												<div class="form-group row">
-																																<label class="control-label col-md-3">Amount</label>
-																																<div class="col-md-8">
-																																				<input class="form-control col-md-8  @error('itemAmount') is-invalid @enderror"
-																																								id="itemAmount" name="itemAmount" type="number" placeholder="Enter amount sold">
+																																												</td>
+																																												<td>
+																																																{{ $stock->stockName . ' ' . $stock->brand }}
+																																												</td>
+																																												<td>
+																																																{{ $stock->stockSize }}
+																																												</td>
 
-																																				@error('itemAmount')
-																																								<span class="invalid-feedback" role="alert">
-																																												<strong>{{ $message }}</strong>
-																																								</span>
-																																				@enderror
+																																												<td>
+																																																{{ $stock->price }}
+																																												</td>
 
-																																</div>
-																												</div>
-																												<div class="form-group row">
-																																<label class="control-label col-md-3">Price</label>
-																																<div class="col-md-8">
-																																				<input class="form-control col-md-8  @error('price') is-invalid @enderror" id="price"
-																																								name="price" type="number" placeholder="Enter the price per item">
+																																												<td>
+                                                                                                                                                                                    <div class="animated-checkbox">
+                                                                                                                                                                                        <label>
+                                                                                                                                                                                                        <input type="checkbox" id="cborder"
+                                                                                                                                                                                                                        name="{{ $stock['stockName'] }}"
+                                                                                                                                                                                                                        value="{{ $stock['id'] }}"><span
+                                                                                                                                                                                                                        class="label-text">Sell</span>
+                                                                                                                                                                                        </label>
+                                                                                                                                                                        </div>
+                                                                                                                                                                                    {{-- <a href="/client/sales/show/{{ $stock->id }}"><i class="fa fa-eye ">
+																																																								View</i></a> --}}
 
-																																				@error('price')
-																																								<span class="invalid-feedback" role="alert">
-																																												<strong>{{ $message }}</strong>
-																																								</span>
-																																				@enderror
+                                                                                                                                                                                                                            </td>
 
-																																</div>
-																												</div>
-																												<div class="form-group row">
-																																<label class="control-label col-md-3">Description</label>
-																																<div class="col-md-8">
-																																				<input class="form-control   @error('description') is-invalid @enderror"
-																																								id="description" name="description" type="text" placeholder="Describe the item">
-
-																																				@error('description')
-																																								<span class="invalid-feedback" role="alert">
-																																												<strong>{{ $message }}</strong>
-																																								</span>
-																																				@enderror
-
-																																</div>
-																												</div>
-																												<div class="form-group row">
-																																<label class="control-label col-md-3">Sales </label>
-																																<div class="col-md-6">
-																																				<div class="form-check p-2">
-																																								<label class="form-check-label">
-																																												<input class="form-check-input  @error('endDate') is-invalid @enderror"
-																																																id="endDate" type=" radio" name="gender">Show on sale right away
-																																								</label>
-																																				</div>
-																																</div>
-																												</div>
-																												<div class="form-group row">
-																																<label class="control-label col-md-3">Display</label>
-																																<div class="col-md-6">
-																																				<div class="form-check p-2">
-																																								<label class="form-check-label">
-																																												<input class="form-check-input  @error('endDate') is-invalid @enderror "
-																																																id="endDate" type="radio" name="gender">Show on Storm5.com
-																																								</label>
-																																				</div>
-																																</div>
-																												</div>
-																												<div class="form-group row ">
-																																<label class="control-label col-md-3 ">Identity Proof</label>
-																																<div class="col-md-8">
-																																				<input class="form-control  @error('itemImage') is-invalid @enderror" id="itemImage"
-																																								type="file" name="itemImage">
-
-																																				@error('itemImage')
-																																								<span class="invalid-feedback" role="alert">
-																																												<strong>{{ $message }}</strong>
-																																								</span>
-																																				@enderror
-
-																																</div>
-																												</div>
+																																								</tr>
+																																				@endforeach
+																																</tbody>
+																												</table>
 																								</div>
-																								<div class="tile-footer">
-																												<div class="row">
-																																<div class="col-md-8 col-md-offset-3">
-																																				<button class="btn btn-primary" type="submit"><i
-																																												class="fa fa-fw fa-lg fa-check-circle"></i>Register</button>
-
-																																</div>
-																												</div>
-																								</div>
-																				</form>
+																				</div>
 																</div>
 																<div class="col-md col-xl">
 																				<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/client/sales/store">
@@ -186,48 +133,14 @@
 
 																																</div>
 																												</div>
-																												<div class="form-group row">
-																																<label class="control-label col-md-3">Sales </label>
-																																<div class="col-md-6">
-																																				<div class="form-check p-2">
-																																								<label class="form-check-label">
-																																												<input class="form-check-input  @error('endDate') is-invalid @enderror"
-																																																id="endDate" type=" radio" name="gender">Show on sale right away
-																																								</label>
-																																				</div>
-																																</div>
-																												</div>
-																												<div class="form-group row">
-																																<label class="control-label col-md-3">Display</label>
-																																<div class="col-md-6">
-																																				<div class="form-check p-2">
-																																								<label class="form-check-label">
-																																												<input class="form-check-input  @error('endDate') is-invalid @enderror "
-																																																id="endDate" type="radio" name="gender">Show on Storm5.com
-																																								</label>
-																																				</div>
-																																</div>
-																												</div>
-																												<div class="form-group row ">
-																																<label class="control-label col-md-3 ">Identity Proof</label>
-																																<div class="col-md-8">
-																																				<input class="form-control  @error('itemImage') is-invalid @enderror" id="itemImage"
-																																								type="file" name="itemImage">
 
-																																				@error('itemImage')
-																																								<span class="invalid-feedback" role="alert">
-																																												<strong>{{ $message }}</strong>
-																																								</span>
-																																				@enderror
 
-																																</div>
-																												</div>
 																								</div>
 																								<div class="tile-footer">
 																												<div class="row">
 																																<div class="col-md-8 col-md-offset-3">
 																																				<button class="btn btn-primary" type="submit"><i
-																																												class="fa fa-fw fa-lg fa-check-circle"></i>Register</button>
+																																												class="fa fa-fw fa-lg fa-check-circle"></i>Sell</button>
 
 																																</div>
 																												</div>
@@ -241,6 +154,30 @@
 												</div>
 								</div>
 				</div>
+
+				<script>
+				    function check() {
+				        if (document.getElementById("checkall").innerHTML == "Select all") {
+
+				            document.getElementById("cborder").checked = true;
+				            document.getElementById("cbcheckall").checked = true;
+				            document.getElementById("checkall").innerHTML = "UnSelect all";
+				        } else {
+				            uncheck();
+				        }
+
+
+
+				    }
+
+				    function uncheck() {
+				        document.getElementById("cborder").checked = false;
+				        document.getElementById("cbcheckall").checked = false;
+
+				        document.getElementById("checkall").innerHTML = "Select all";
+				    }
+				</script>
+
 				<script>
 				    function getBluetooth() {
 				        navigator.bluetooth.requestDevice({

@@ -18,12 +18,13 @@ class CreateOrdersTable extends Migration
             $table-> string('orderId');
             $table-> string('orderable_id');
             $table-> string('orderable_type');
-            $table-> string('retailorderable_id');
-            $table-> string('retailorderable_type');
             $table-> longText('ordered_items');
             $table-> unsignedBigInteger('orderItemsCount');
             $table-> string('orderDate');
             $table-> string('paymentStatus');
+            $table-> integer('orderStatus');
+            $table-> boolean('deliveryStatus')->default(false);
+            $table-> unsignedBigInteger('suppliers_id')->nullable();
             $table->timestamps();
         });
     }

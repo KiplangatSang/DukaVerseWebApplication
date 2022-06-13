@@ -15,12 +15,15 @@ class CreateProfitsTable extends Migration
     {
         Schema::create('profits', function (Blueprint $table) {
             $table->id();
+            $table-> bigInteger('profitable_id');
+            $table-> string('profitable_type');
             $table-> string('profitId');
-            $table-> double('profitAmount');
+            $table-> double('profit_amount');
+            $table-> string('month');
+            $table-> string('year');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

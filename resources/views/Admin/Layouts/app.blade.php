@@ -7,7 +7,7 @@
 
 <head>
 
-				<title>Storm5</title>
+				<title>DukaVerse</title>
 				<meta charset="utf-8">
 				<meta http-equiv="X-UA-Compatible" content="IE=edge">
 				<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +25,7 @@
 <body class="app sidebar-mini">
 				<!-- Navbar-->
 				<header class="app-header">
-								<a class="app-header__logo" href="/home">Storm5</a>
+								<a class="app-header__logo" href="/home">DukaVerse</a>
 								<!-- Sidebar toggle button-->
 								<a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
 								<!-- Navbar Right Menu-->
@@ -124,21 +124,22 @@
 				<div class="app-sidebar__overlay " data-toggle="sidebar"></div>
 				<aside class="app-sidebar">
 
-								<div class="app-sidebar__user"><img class="app-sidebar__user-avatar d-flex w-25"
+								<div class="app-sidebar__user"><a href="/client/retails/profile"><img class="app-sidebar__user-avatar d-flex w-25"
 																src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
-																alt="User Image">
+																alt="User Image"></a>
 												<div>
-																<p class="app-sidebar__user-name">
-																				{{ $data['retailimage']->retailName ?? (Auth::user()->username ?? 'guest') }}</p>
+                                                    <a href="/client/retails/profile"><p class="app-sidebar__user-name">
+																				{{ $data['retailimage']->retailName ?? (Auth::user()->username ?? 'guest') }}</p></a>
 
 
 																@if (Auth::user()->isOnwer)
-																				<p class="app-sidebar__user-designation">Retail Owner</p>
+                                                                <a href="/client/retails/profile"><p class="app-sidebar__user-designation">Retail Owner</p></a>
 																@else
 																				@if (Auth::user()->isEmployee)
-																								<p class="app-sidebar__user-designation">Employee</p>
+                                                                                <p class="app-sidebar__user-designation">
+                                                                                    Employee</a></p>
 																				@else
-																								<p class="app-sidebar__user-designation">Guest</p>
+                                                                                <p class="app-sidebar__user-designation">Guest</a></p>
 																				@endif
 
 																@endif

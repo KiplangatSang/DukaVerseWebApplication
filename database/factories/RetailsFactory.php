@@ -7,24 +7,23 @@ use Illuminate\Support\Str;
 
 
 $factory->define(Retail::class, function (Faker $faker) {
+
+    $items = array();
+
+    for ($i = 0; $i < 20; $i++) {
+        $requireditem = $faker->name();
+        $items[$i + 1] = $requireditem;
+    }
     return [
-        //
-         'retailNameId'=>Str::random(1,100000),
-         'retailNameId'=>Str::random(1,100000),
-         'retailable_id'=>rand(1000,100000),
-         'retailable_type'=>Str::random(1,100000),
-         'retailName'=>$faker-> name ." ". 'Shop',
-         'retailGoods'=>Str::random(1,100000),
-         'retailTown'=>Str::random(1,100000),
-         'retailConstituency'=>Str::random(1,100000),
-         'retailCounty'=>Str::random(1,100000),
-         'retailPicture'=>Str::random(1,100000),
-         'retailEmployees_number'=>rand(1000,100000),
-         'retailStockEstimate'=>rand(1000,100000),
 
-
-
-
-
+         //"retailable_id"=>rand(10,13),
+         "retailable_id"=>11,
+         "retailable_type"=>"App\User",
+         "retail_Id"=>Str::random(1,100000),
+         "retail_name"=>"Mama Ann",
+         "retail_goods"=> json_encode($items),
+         "retail_town"=> Str::random(1,100000),
+         "retail_constituency"=> Str::random(1,100000),
+         "retail_county"=> Str::random(1,100000),
     ];
 });

@@ -9,14 +9,21 @@ use Illuminate\Database\Eloquent\Model;
 class Orders extends Model
 {
     //
-protected $guarded = [];
+    protected $guarded = [];
 
-public function retails(){
-return $this->morphedByMany(Retail::class,'orderable');
-}
-
-public function user(){
-    return $this->morphedByMany(User::class,'orderable');
+    public function orderable()
+    {
+        return $this->morphTo();
     }
 
+    public function user()
+    {
+        return $this->morphedByMany(User::class, 'orderable');
+    }
+
+
+    public function supplier()
+    {
+        return $this->belongsTo(Suppliers::class);
+    }
 }

@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Customers;
 
 use App\Customer\CustomerCredit;
 use App\Customers\Customers;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Retails\Retail;
 use Exception;
 use Illuminate\Http\Request;
 
-class CustomerCreditController extends Controller
+class CustomerCreditController extends BaseController
 {
 
 
@@ -25,26 +26,15 @@ class CustomerCreditController extends Controller
      */
     public function index($id)
     {
-        //
-        $retail = auth()->user()->Retails()->get();
 
-        if(count($retail) < 1){
-            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
-        }
-
-        $cust = Customers::where('id',$id)->first();
-        //dd($cust);
-
-       $creditItems = $cust->customerCredit()->get();
-
-      //$customerlist = Customers::all();
-
+        $customers = $this->retail->customers()->where('id',$id)->first();
+       $creditItems = $customers->customerCredit()->get();
      //dd($creditItems);
 
         $custCreditdata = array(
+            'customers' => $creditItems,
             'creditItems' => $creditItems,
             'creditItemscount' =>count($creditItems),
-            'retails' =>$retail,
         );
 
         return view('client.customers.credit.index',compact('custCreditdata'));
@@ -69,6 +59,30 @@ class CustomerCreditController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate(
+            [
+                'itemName'=> 'required',
+            'itemDescription'=>'required',
+            'amount'=> ['required','integer'],
+            'requiredAmount'=> ['required'],
+            'amountPaid'=> ['required'],
+            'retailID'=> 'required',]
+            );
+            if(session('customer'))
+             $cust = session('customer');
+            try {
+                $cust->create(
+                   $request->all(),
+                );
+                return redirect('/customers/index')->with('success');
+
+
+
+            } catch (Exception $ex) {
+
+                $ex->getMessage();
+                return back()->with('message',"Could not Update Credit Item");
+            }
     }
 
     /**
@@ -80,13 +94,10 @@ class CustomerCreditController extends Controller
     public function show($id)
     {
         //
-        $retail = auth()->user()->Retails()->get();
 
-        if(count($retail) < 1){
-            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
-        }
+        $customers = $this->retail->customers()->where('id',$id)->first();
 
-       $creditItems = CustomerCredit::where('id',$id)->first();
+       $creditItems = $customers->customerCredit()->get();
 
 
 
@@ -94,8 +105,6 @@ class CustomerCreditController extends Controller
 
         $custCreditdata = array(
             'creditItems' => $creditItems,
-            //'creditItemscount' =>count($creditItems),
-            'retails' =>$retail,
         );
 
         return view('client.customers.credit.show',compact('custCreditdata'));
@@ -109,23 +118,11 @@ class CustomerCreditController extends Controller
      */
     public function edit($id)
     {
-        //
-        $retails = auth()->user()->Retails()->get();
-
-        if(count($retails) < 1){
-            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
-        }
 
        $creditItems = CustomerCredit::where('id',$id)->first();
-       $retail = Retail::where('id',$creditItems->retailID)->first();
-     //dd($creditItems);
-
 
         $custCreditdata = array(
             'creditItems' => $creditItems,
-            //'creditItemscount' =>count($creditItems),
-            'retails' =>$retails,
-            'retail'=>$retail,
         );
 
         return view('client.customers.credit.edit',compact('custCreditdata'));
@@ -184,6 +181,6 @@ class CustomerCreditController extends Controller
     {
         //
         CustomerCredit::destroy($id);
-        return redirect('/customers/index')->with('message','Deletion Successful');
+        return redirect('/client/customers/index')->with('message','Deletion Successful');
     }
 }

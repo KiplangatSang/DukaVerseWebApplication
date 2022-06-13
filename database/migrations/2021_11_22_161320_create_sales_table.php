@@ -15,16 +15,16 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table-> bigInteger('saleable_id');
-            $table-> string('saleable_type');
             $table-> bigInteger('retailsaleable_id');
             $table-> string('retailsaleable_type');
             $table-> string('itemNameId');
+            $table-> longText('itemImage');
             $table-> string('itemName');
             $table-> string('itemSize');
             $table-> unsignedBigInteger('itemAmount');
             $table-> boolean('onCredit')->default(false);
             $table-> double('price');
+            $table-> unsignedBigInteger('employees_id')->nullable();
             $table->timestamps();
         });
     }

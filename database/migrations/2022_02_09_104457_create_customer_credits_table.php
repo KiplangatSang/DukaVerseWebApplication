@@ -15,14 +15,13 @@ class CreateCustomerCreditsTable extends Migration
     {
         Schema::create('customer_credits', function (Blueprint $table) {
             $table->id();
-            $table-> bigInteger('custcreditable_id');
-            $table-> string('custcreditable_type');
+            $table-> bigInteger('creditable_id');
+            $table-> string('creditable_type');
             $table-> string('itemName');
             $table-> string('itemDescription');
             $table-> string('amount');
             $table-> double('requiredAmount');
             $table-> double('amountPaid');
-            $table-> unsignedBigInteger('retailID');
             $table->timestamps();
         });
     }
@@ -30,6 +29,7 @@ class CreateCustomerCreditsTable extends Migration
     /**
      * Reverse the migrations.
      *
+     * 
      * @return void
      */
     public function down()

@@ -16,7 +16,7 @@ public function retails()
         return $this->morphedByMany(Retail::class, 'customerable');
     }
 
-    public function customerCredit()
+    public function credits()
     {
         return $this->morphMany(CustomerCredit::class, 'custcreditable');
     }

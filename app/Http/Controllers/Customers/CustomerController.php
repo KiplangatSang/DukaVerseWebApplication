@@ -3,44 +3,61 @@
 namespace App\Http\Controllers\Customers;
 
 use App\Customers\Customers;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Repositories\CustomersRepository;
 use App\Retails\Retail;
+use App\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Stripe\Customer;
 
-class CustomerController extends Controller
+class CustomerController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    private $ordersRepo;
+    private $retail;
+
     public function __construct()
     {
         $this->middleware('auth');
+
+    }
+    public function customersRepository()
+    {
+        # code...
+
+        $this->retail = $this->getRetail();
+
+        $this->ordersRepo = new CustomersRepository($this->retail);
+        return $this->ordersRepo;
     }
 
     public function index()
     {
-        //
-        $retail = auth()->user()->Retails()->get();
-        if(count($retail) < 1){
-            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
-        }
+        $this->customersRepository();
+        if (!$this->retail)
+            return redirect('/home');
 
-       $customerlist = $retail->first()->customers;
 
-      //$customerlist = Customers::all();
+        $customerlist =  $this->retail->customers()->get();
 
-     // dd($customerlist);
+        $customerlist = Customers::all();
+
+        // dd($customerlist);
 
         $customerdata = array(
             'customerlist' => $customerlist,
-            'customercount' =>count($customerlist),
-            'retails' =>$retail,
+            'customercount' => count($customerlist)
         );
 
-        return view('client.customers.index',compact('customerdata'));
+        return view('client.customers.index', compact('customerdata'));
     }
 
     /**
@@ -50,16 +67,15 @@ class CustomerController extends Controller
      */
     public function create()
     {
+        $this->customersRepository();
+        if (!$this->retail)
+            return redirect('/home');
         //
         $user = auth()->user();
-        $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
-        if(count($retail) < 1){
-            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
-        }
         $custdata = array(
-            'Retail' => $retail
+            'retail' => $this->retail,
         );
-        return view('client.customers.create',compact('custdata'));
+        return view('client.customers.create', compact('custdata'));
     }
 
     /**
@@ -71,28 +87,28 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         //
+        $this->customersRepository();
+        if (!$this->retail)
+            return redirect('/home');
+
         request()->validate(
             [
                 'name' => 'required',
                 'ID' => 'required',
                 'phoneno' => 'required',
-                'email' => ['email','required',],
-                'address' => 'required',
-                'retail_id' => 'required',
-
             ]
-            );
-            $retail = Retail::where('id',  $request->retail_id)->orderBy('created_at', 'DESC')->first();
+        );
+        $retail = Retail::where('id',  $request->retail_id)->orderBy('created_at', 'DESC')->first();
 
 
-           // dd($retail);
+        // dd($retail);
 
-           try {
+        try {
             $retail->customers()->create(
                 [
                     'name' => $request->name,
                     'id_number' => $request->ID,
-                    'phone_number'=>$request->phoneno,
+                    'phone_number' => $request->phoneno,
                     'email' => $request->email,
                     'address' => $request->address,
 
@@ -100,15 +116,11 @@ class CustomerController extends Controller
             );
 
             return redirect('/customers/index')->with('success');
-
-
         } catch (Exception $ex) {
 
             $ex->getMessage();
-            return back()->with('message',"Could not register Employee");
+            return back()->with('message', "Could not register Employee");
         }
-
-
     }
 
     /**
@@ -119,16 +131,19 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
-       // $retail = auth()->user()->Retails()->get();
-       // $customerlist = $retail->customers->where('id',$id)->first();
-        $customerlist = Customers::where('id',$id)->first();
+        $this->customersRepository();
+        if (!$this->retail)
+            return redirect('/home');
+
+         $customer = $this->retail->customers()->where('id',$id)->first();
+         $custCredit = $customer->credits()->get();
 
         $customerdata = array(
-            'customer' => $customerlist,
+            'customer' => $customer,
+            'custCredit' => $custCredit,
         );
 
-        return view('client.customers.show',compact('customerdata'));
+        return view('client.customers.show', compact('customerdata'));
     }
 
     /**
@@ -140,25 +155,24 @@ class CustomerController extends Controller
     public function edit($id)
     {
         //
+        $this->customersRepository();
+        if (!$this->retail)
+            return redirect('/home');
+
+            dd(Customers::all());
+       $cust = $this->retail->customers()->where('id', $id)->first();
 
 
-        $retails = auth()->user()->Retails()->get();
-        $cust = Customers::where('id',$id)->first();
-
-        //dd($cust);
-        //$customerlist = $retail->first()->customers->where('id',$id)->first();
-        $retail = $cust->retails()->first();
-        //dd($retail);
+        $retail = $cust->customerable()->first();
 
         $custdata = array(
             'cust' => $cust,
             'custretail' => $retail,
-            'retails' => $retails,
         );
 
 
 
-        return view('client.customers.edit',compact('custdata'));
+        return view('client.customers.edit', compact('custdata'));
     }
 
     /**
@@ -170,29 +184,22 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->customersRepository();
+        if (!$this->retail)
+            return redirect('/home');
         //
-        $retail = Retail::where('id',  $request->retail_id)->orderBy('created_at', 'DESC')->first();
+        $cust = $this->retail->customers()->where("id", $id)->first();
 
         try {
-
-
-            $retail->customers()->updateOrCreate(
-                [ 'email' => $request->email,
-                 'id_number' => $request->ID,],
-                [
-                    'name' => $request->name,
-                    'phone_number'=>$request->phoneno,
-                    'address' => $request->address,
-                ]
+            $cust->update(
+                $request->all(),
             );
 
             return redirect('/customers/index')->with('success');
-
-
         } catch (Exception $ex) {
 
             $ex->getMessage();
-            return back()->with('message',"Could not register Employee");
+            return back()->with('message', "Could not Update Customer");
         }
     }
 
@@ -204,8 +211,11 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
+        $this->customersRepository();
+        if (!$this->retail)
+            return redirect('/home');
         //
         $customer = Customers::destroy($id);;
-        return redirect('/customers/index')->with('success','Deletion Successful');
+        return redirect('/customers/index')->with('success', 'Deletion Successful');
     }
 }

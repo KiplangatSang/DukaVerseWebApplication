@@ -2112,10 +2112,10 @@ pre code {
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #495057;
+    color: #000000;
     background-color: #fff;
     background-clip: padding-box;
-    border: 2px solid #ced4da;
+    border: 2px solid #579add;
     border-radius: 4px;
     -webkit-transition: border-color 0.15s ease-in-out,
         -webkit-box-shadow 0.15s ease-in-out;
@@ -15632,7 +15632,7 @@ be a descendant of the grid when it is being dragged.
     -ms-flex-item-align: center;
     align-self: center;
     margin-right: 15px;
-    padding: 10px 0;
+    padding: 8px 0;
 }
 
 @media (max-width: 480px) {
@@ -15642,10 +15642,11 @@ be a descendant of the grid when it is being dragged.
 }
 
 .app-search__input {
-    border: 0;
+    border: 1px solid grey;
     padding: 5px 10px;
     padding-right: 30px;
-    border-radius: 2px;
+    border-radius: 20px !important;
+    color: black !important;
     background-color: rgba(255, 255, 255, 0.8);
     -webkit-transition: background-color 0.3s ease;
     -o-transition: background-color 0.3s ease;
@@ -15675,7 +15676,7 @@ be a descendant of the grid when it is being dragged.
 .app-search__button {
     position: absolute;
     right: 0;
-    top: 10px;
+    top: 5px;
     bottom: 10px;
     padding: 0 10px;
     border: 0;
@@ -16998,6 +16999,23 @@ be a descendant of the grid when it is being dragged.
 .login-content .login-box {
     position: relative;
     min-width: 350px;
+    min-height: 450px;
+    border-radius: 30px !important;
+    background-color: #edeff7;
+    -webkit-box-shadow: 0px 29px 147.5px 102.5px rgba(0, 0, 0, 0.05),
+        0px 29px 95px 0px rgba(0, 0, 0, 0.16);
+    box-shadow: 0px 29px 147.5px 102.5px rgba(0, 0, 0, 0.05),
+        0px 29px 95px 0px rgba(0, 0, 0, 0.16);
+    -webkit-perspective: 800px;
+    perspective: 800px;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.login-content .register-box {
+    position: relative;
+    min-width: 500px;
     min-height: 390px;
     border-radius: 30px !important;
     background-color: #edeff7;
@@ -17010,6 +17028,58 @@ be a descendant of the grid when it is being dragged.
     -webkit-transition: all 0.5s ease-in-out;
     -o-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
+}
+
+.login-content .retail-box {
+    position: relative;
+    min-width: 350px;
+    min-height: 390px;
+    border-radius: 30px !important;
+    background-color: var(--purple);
+    -webkit-box-shadow: 0px 29px 147.5px 102.5px rgba(0, 0, 0, 0.05),
+        0px 29px 95px 0px rgba(0, 0, 0, 0.16);
+    box-shadow: 0px 29px 147.5px 102.5px rgba(0, 0, 0, 0.05),
+        0px 29px 95px 0px rgba(0, 0, 0, 0.16);
+    -webkit-perspective: 800px;
+    perspective: 800px;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.subscription-box {
+    position: relative;
+    min-width: 350px;
+    min-height: 390px;
+    border-radius: 30px !important;
+    background-color: #edeff7;
+    -webkit-box-shadow: 0px 29px 147.5px 102.5px rgba(0, 0, 0, 0.05),
+        0px 29px 95px 0px rgba(0, 0, 0, 0.16);
+    box-shadow: 0px 29px 147.5px 102.5px rgba(0, 0, 0, 0.05),
+        0px 29px 95px 0px rgba(0, 0, 0, 0.16);
+    -webkit-perspective: 900px;
+    perspective: 900px;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.gold-box {
+    border: 10px solid gold;
+    border-radius: 30px !important;
+    background-color: ghostwhite;
+}
+
+.silver-box {
+    border: 10px solid silver;
+    border-radius: 30px !important;
+    background-color: ghostwhite;
+}
+
+.btn-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 90%;
 }
 
 .login-content .login-box .login-head {
@@ -17349,3 +17419,142 @@ be a descendant of the grid when it is being dragged.
 .user .user-settings label {
     color: #666;
 }
+
+.glow {
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+    animation: glow 1s ease-in-out infinite alternate;
+  }
+  
+  @-webkit-keyframes glow {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    }
+    
+    to {
+      text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    }
+  }
+
+  .open-button {
+    background-color: #555;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    position: fixed;
+    bottom: 23px;
+    right: 28px;
+    width: 280px;
+  }
+  
+  /* The popup chat - hidden by default */
+  .chat-popup {
+    display: none;
+    position: relative;
+    right: 15px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+  }
+  
+  /* Add styles to the form container */
+  .form-container {
+    width: 300px;
+    padding: 10px;
+    background-color: white;
+  }
+  
+  /* Full-width textarea */
+  .form-container textarea {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+    resize: none;
+    min-height: 200px;
+  }
+  
+  /* When the textarea gets focus, do something */
+  .form-container textarea:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+  
+  /* Set a style for the submit/send button */
+  .form-container .btn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom:10px;
+    opacity: 0.8;
+  }
+  
+  /* Add a red background color to the cancel button */
+  .form-container .cancel {
+    background-color: red;
+  }
+  
+  /* Add some hover effects to buttons */
+  .form-container .btn:hover, .open-button:hover {
+    opacity: 1;
+  }
+
+  #regForm {
+    background-color: #ffffff;
+    border-radius: 30px;
+    z-index: 10;
+    margin: 30px auto;
+    font-family: Raleway;
+    padding: 40px;
+    width: 100%;
+    min-width: 300px;
+  }
+  
+  
+  
+  /* Mark input boxes that gets an error on validation: */
+  input.invalid {
+    background-color: #ffdddd;
+  }
+  
+  /* Hide all steps by default: */
+  .tab {
+    display: none;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  #prevBtn {
+    background-color: #bbbbbb;
+  }
+  
+  /* Make circles that indicate the steps of the form: */
+  .step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #b9b9b9;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+  }
+  
+  .step.active {
+    opacity: 1;
+    background-color: green;
+  }
+  
+  /* Mark the steps that are finished and valid: */
+  .step.finish {
+    background-color: #04AA6D;
+  }
+

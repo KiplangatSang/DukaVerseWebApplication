@@ -33,14 +33,15 @@
 																												<div class="row m-3">
 																																<div class="animated-checkbox d-flex m-2">
 																																				<label>
-																																								<input type="checkbox" id="cbcheckall" onclick="check()"><span class="label-text"><strong id="checkall">Select all</strong></span>
+																																								<input type="checkbox" id="cbcheckall" onclick="check()"><span
+																																												class="label-text"><strong id="checkall">Select all</strong></span>
 																																				</label>
 																																</div>
 
-                                                                                                                                <div class=" col-sm-3">
-                                                                                                                                    <button class="btn btn-danger" type = "Submit">Order Selected</button>
+																																<div class=" col-sm-3">
+																																				<button class="btn btn-danger" type="Submit">Order Selected</button>
 
-                                                                                                                                </div>
+																																</div>
 
 
 																												</div>
@@ -87,7 +88,10 @@
 																																																<td>
 																																																				<div class="animated-checkbox">
 																																																								<label>
-																																																												<input type="checkbox" id="cborder" name="{{  $stock['stockName'] }}" value="{{ $stock['id'] }}"><span class="label-text">Order</span>
+																																																												<input type="checkbox" id="cborder"
+																																																																name="{{ $stock['stockName'] }}"
+																																																																value="{{ $stock['id'] }}"><span
+																																																																class="label-text">Order</span>
 																																																								</label>
 																																																				</div>
 																																																</td>
@@ -111,28 +115,26 @@
 								</div>
 				</div>
 
-                <script>
-                    function check() {
-                     if(document.getElementById("checkall").innerHTML == "Select all"){
+				<script>
+				    function check() {
+				        if (document.getElementById("checkall").innerHTML == "Select all") {
 
-                      document.getElementById("cborder").checked = true;
-                      document.getElementById("cbcheckall").checked = true;
-                      document.getElementById("checkall").innerHTML = "UnSelect all";
-                     }
-                     else{
-                     uncheck();
-                     }
-
+				            document.getElementById("cborder").checked = true;
+				            document.getElementById("cbcheckall").checked = true;
+				            document.getElementById("checkall").innerHTML = "UnSelect all";
+				        } else {
+				            uncheck();
+				        }
 
 
-                    }
 
-                    function uncheck() {
-                      document.getElementById("cborder").checked = false;
-                        document.getElementById("cbcheckall").checked = false;
+				    }
 
-                       document.getElementById("checkall").innerHTML = "Select all";
-                    }
-                    </script>
+				    function uncheck() {
+				        document.getElementById("cborder").checked = false;
+				        document.getElementById("cbcheckall").checked = false;
 
+				        document.getElementById("checkall").innerHTML = "Select all";
+				    }
+				</script>
 @endsection

@@ -16,7 +16,9 @@ class RoutesRepository
        if(auth()->user()->isAdmin){
          $route ='/admin/home';
        } else{
-        $route ='/user/home';
+
+        $route ='/user/retail';
+        # /user/home
        }
 
      return $route;

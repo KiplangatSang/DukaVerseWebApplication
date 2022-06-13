@@ -12,11 +12,18 @@ class Sales extends Model
 
     protected $guarded = [];
 
-  public function saleable(){
-      return $this->morphTo();
-  }
+    public function saleable()
+    {
+        return $this->morphTo();
+    }
 
-  public function retailsaleable(){
-    return $this->morphTo();
-}
+    public function retailsaleable()
+    {
+        return $this->morphTo();
+    }
+
+    public function employees()
+    {
+        return $this->belongsTo(Employees::class);
+    }
 }
