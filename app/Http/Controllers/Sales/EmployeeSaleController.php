@@ -24,15 +24,19 @@ class EmployeeSaleController extends BaseController
         $this->retail = $this->getRetail();
 
         if (!$this->retail)
-            return redirect('/retails/addretail')->with('message', __('retail.create'));
+            return redirect('/home')->with('message', __('retail.create'));
 
-        $this->salesrepo = new SalesRepository($this->retail);
+      return  $this->salesrepo = new SalesRepository($this->retail);
     }
 
     public function index()
     {
         $this->salesRepository();
         $employees = $this->retail->employees()->get();
+        foreach($employees as $employee){
+            $employee['sales'] = $employee->sales()->get();
+
+        }
         $salesdata['employees'] = $employees;
 
        // dd($employees);
@@ -84,14 +88,12 @@ class EmployeeSaleController extends BaseController
     public function show($id)
     {
 
-        $this->salesRepository();
-
-        $allSales = $this->salesrepo->getEmployeeSales($id);
+        $allSales =$this->salesRepository()->getEmployeeSales($id);
         $solditemscount = count($allSales);
-        $salesTotalPrice = $allSales->sum('price');
+        $salesTotalPrice = $allSales->sum('selling_price');
         $sales = $this->salesrepo->getRevenue();
-        $meansales = $this->retail->sales()->Avg('itemAmount');
-
+       // $meansales = $this->retail->sales()->Avg('itemAmount');
+       $meansales = 0;
         $salesdata = array(
             'allSales' =>  $allSales,
             'solditemscount' => $solditemscount,
@@ -99,19 +101,7 @@ class EmployeeSaleController extends BaseController
             'meansales' => $meansales,
         );
 
-        // dd( $salesdata);
-        // return view("client.sales.index", compact('salesdata'));
 
-
-        // $this->salesRepository();
-        // //
-        // $soldItemName = Sales::where('id',$id)->first()->itemName;
-        // $allSales = $this->salesrepo->getSaleItem('itemName', $soldItemName);
-        // $salesdata = array(
-        //     'allSales' =>  $allSales,
-        // );
-
-        // dd($allSales);
         return view('client.sales.employee.show', compact('salesdata'));
     }
 

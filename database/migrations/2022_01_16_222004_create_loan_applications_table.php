@@ -15,17 +15,19 @@ class CreateLoanApplicationsTable extends Migration
     {
         Schema::create('loan_applications', function (Blueprint $table) {
             $table->id();
+            $table->longText('application_id');
             $table->bigInteger('loanapplicable_id');
             $table->string('loanapplicable_type');
-            $table->string('loan_type');
-            $table->bigInteger('loan_id');
+            $table->bigInteger('loans_id');
+            $table->bigInteger('users_id');
             $table->double('loan_amount');
             $table->integer('loan_duration');
-            $table->double('loan_interest');
-            $table->integer('loan_status');
+            $table->integer('loan_status')->default(-1);
+            $table->double('loan_discount')->default(0);
+            $table->double('loan_repaid_amount')->default(0);
+            $table->boolean('repayment_status')->default(false);
             $table->string('loan_assigned_at')->nullable();
             $table->string('loan_assigned_by')->nullable();
-            $table->double('loan_repaid_amount');
             $table->timestamps();
         });
     }

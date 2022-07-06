@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Stock;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Repositories\ExpenseRepository;
+use App\Repositories\RequiredItemsRepository;
 use App\Repositories\StockRepository;
+use App\RequiredItems\RequiredItems;
 use App\Stock\Stock;
 use Illuminate\Http\Request;
 
@@ -25,7 +27,7 @@ class StockController extends BaseController
         $this->retail = $this->getRetail();
         // dd($this->retail);
         if (!$this->retail)
-            return redirect('/retails/addretail')->with('message', __('retail.create'));
+            return redirect('/home')->with('message', __('retail.select'));
 
         $this->stockrepo = new StockRepository($this->retail);
 
@@ -38,10 +40,10 @@ class StockController extends BaseController
     {
         $this->stockRepository();
 
-        $allStocks = $this->retail->stocks()->get();
+        $allStocks = $this->stockRepository()->getStock();
         $stocksitems = count($allStocks);
-        $stocksexpense = $this->retail->stocks()->sum('buying_price');
-        $stocksexpectedSales = $this->retail->stocks()->sum('selling_price');
+        $stocksexpense = $this->stockRepository()->getStockExpense();
+        $stocksexpectedSales = $this->stockRepository()->getStockValue();
         $stocksrevenue = $stocksexpectedSales - $stocksexpense;
 
 
@@ -54,7 +56,7 @@ class StockController extends BaseController
         );
 
         //dd( $salesdata);
-        return view("client.stock.ItemsInStore.index", compact('stocksdata'));
+        return view("client.stock.store.index", compact('stocksdata'));
     }
 
     /**
@@ -67,11 +69,11 @@ class StockController extends BaseController
 
         $this->stockRepository();
         $stockdata = array(
-            "allStock"  => $this->retail->stocks()->orderBy('created_at', 'DESC')->get(),
+            "allStock"  =>  $this->stockRepository()->getStock(),
 
         );
         //dd( $stockdata);
-        return view('client.stock.itemsinstore.create', compact('stockdata'));
+        return view('client.stock.store.create', compact('stockdata'));
         //
     }
 
@@ -86,10 +88,9 @@ class StockController extends BaseController
         //
         $request->validate(
             [
-                "stockNameId" => ["required", "unique:stocks"],
-                "stockName" => "required",
-                "stockSize" => "required",
-                "stockAmount" => "required",
+                "code" => ["required", "unique:stocks"],
+                "name" => "required",
+                "size" => "required",
                 "brand" => "required",
                 "selling_price" => "required",
                 "buying_price" => "required",
@@ -140,20 +141,17 @@ class StockController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($item_id)
     {
-        $this->stockRepository();
 
-        $allStocks = $this->retail->stocks()
-            ->where('stockName', $id)
-            ->orderBy('created_at', 'DESC')
-            ->get();
+
+        $allStocks = $this->stockRepository()->getStockItems($item_id);
         $stocksdata = array(
             'allStocks' =>  $allStocks,
         );
 
 
-        return view('client.stock.ItemsInStore.show', compact('stocksdata'));
+        return view('client.stock.store.show', compact('stocksdata'));
         //
     }
 
@@ -166,9 +164,27 @@ class StockController extends BaseController
     public function edit($id)
     {
         //
+        $allStocks = $this->stockRepository()->getRetailItem($id);
+        $stocksdata = array(
+            'allStocks' =>  $allStocks,
+        );
+
+        //dd($stocksdata);
+        return view('client.stock.store.edit', compact('stocksdata'));
     }
 
-    /**
+    public function editItem($id)
+    {
+        //
+        $allStocks = $this->stockRepository()->getStocksById($id);
+        $stocksdata = array(
+            'allStocks' =>  $allStocks,
+        );
+
+        //dd($stocksdata);
+        return view('client.stock.store.items.edit', compact('stocksdata'));
+    }
+     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -178,6 +194,29 @@ class StockController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $retail =  $this->getRetail();
+
+        $retail->items()->where('id', $id)->update(
+            request()->except(['_token']),
+        );
+        return redirect('/client/stock/index')->with('success', ' Item updated successfully');
+    }
+
+    public function updateItem(Request $request, $id)
+    {
+        //
+
+        $request->validate([
+            'code' => 'required',
+        ]);
+        $retail =  $this->getRetail();
+
+
+
+        $retail->stocks()->where('id', $id)->update(
+            request()->except(['_token']),
+        );
+        return back()->with('success', ' Item updated successfully');
     }
 
     /**
@@ -198,19 +237,21 @@ class StockController extends BaseController
     //
 
 
-    public function showRetailStock()
+    public function markRequired($id)
     {
-        return view('client.stock.showitemsinstore');
+
+        $requiredResult=  $this->stockRepository()->markRequired($id);
+        if (!$requiredResult)
+            return back()->with('error', 'Could mark this item as required');
+
+        return back()->with('success', ' Item updated successfully');
     }
 
-    public function createAStock()
+    public function orderItems($id)
     {
-        return view('client.stock.createitemsinstore');
-    }
 
+        /// dd("orders");
 
-    public function updateAStock()
-    {
-        return view('client.stock.showitemsinstore');
+        return redirect('')->with('success', 'Edit Your orders here');
     }
 }

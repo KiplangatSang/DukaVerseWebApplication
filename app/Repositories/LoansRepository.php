@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\LoanApplication;
-use App\Loans\LoanApplication as LoansLoanApplication;
+use App\Loans\LoanApplication;
+use App\Loans\Loans;
 use App\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -21,20 +21,16 @@ class LoansRepository
     }
 
     //get all Loans
-    public function getLoanApplications( $key = null, $value =null ,$year = null)
+    public function getLoanApplications()
     {
-        $loanApplications = null;
-        if (!$year)
-            $year = date('Y');
 
-        if ($key && $value) {
-            $loanApplications = $this->retail
-                ->loanApplications()
-                ->whereMonth('created_at','=', $value)
-                ->whereYear('created_at', '=', $year)
-                ->get();
-        } else
-            $loanApplications = $this->retail->loanApplications()->get();
+        $loanApplications = $this->retail->loanApplications()->get();
+
+        $loanApplications = LoanApplication::all();
+
+        foreach ($loanApplications as $application) {
+            $application['loan'] =  $application->loans()->first();
+        }
         return $loanApplications;
     }
 
@@ -46,7 +42,7 @@ class LoansRepository
     }
 
     // routes to redirect on login
-    public function loansStatusReport(LoansLoanApplication $loanApplication)
+    public function loansStatusReport(LoanApplication $loanApplication)
     {
         $statusCode = $loanApplication->loan_status;
         $loanStatus = array();
@@ -95,5 +91,16 @@ class LoansRepository
             'passive_loan_users' => rand(100, 1000),
             'passive_loan_repayments' => rand(100, 1000),
         ];
+    }
+
+    //get loan  application by id
+
+    public function getLoanApplicationById($id)
+    {
+        # code...
+        $loanApplication = $this->retail->loanApplications()->where('id', $id)->first();
+
+            $loanApplication['loan'] =  $loanApplication->loans()->first();
+        return $loanApplication;
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\View;
-
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,6 +40,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        if(env('APP_ENV') !== 'local'){
+            URL::forceScheme('https');
+        }
 
         Str::macro('partnumber',function($part){
             return 'AB-'.substr($part,0,3).'_'.substr($part,3);
@@ -47,7 +50,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
 
-        View::composer(['home','client.*' ], SalesComposer::class);
+        View::composer(['home','client.*' ], AppComposer::class);
         View::composer(['admin.*',], AdminAppComposer::class);
     }
 }

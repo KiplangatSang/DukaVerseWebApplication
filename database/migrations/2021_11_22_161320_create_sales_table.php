@@ -17,14 +17,13 @@ class CreateSalesTable extends Migration
             $table->id();
             $table-> bigInteger('retailsaleable_id');
             $table-> string('retailsaleable_type');
-            $table-> string('itemNameId');
-            $table-> longText('itemImage');
-            $table-> string('itemName');
-            $table-> string('itemSize');
-            $table-> unsignedBigInteger('itemAmount');
-            $table-> boolean('onCredit')->default(false);
-            $table-> double('price');
+            $table-> string('code');
+            $table-> boolean('on_credit')->default(false);
+            $table-> double('selling_price')->nullable();
             $table-> unsignedBigInteger('employees_id')->nullable();
+            $table->bigInteger('retail_items_id');
+           // $table-> string('suppliers_id')->nullable();
+            $table-> bigInteger('sale_transaction_id')->nullable();
             $table->timestamps();
         });
     }

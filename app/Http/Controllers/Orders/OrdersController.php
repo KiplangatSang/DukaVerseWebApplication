@@ -29,9 +29,8 @@ class OrdersController extends BaseController
 
         $this->retail = $this->getRetail();
 
-        if (!$this->retail){
+        if (!$this->retail) {
             return redirect('/retails/addretail')->with('message', __('retail.create'));
-
         }
 
         $this->ordersRepo = new OrdersRepository($this->retail);
@@ -44,19 +43,7 @@ class OrdersController extends BaseController
         //
         $this->ordersRepository();
 
-        $orders = $this->retail->orders()->orderBy('created_at', 'DESC')->get();
-        foreach ($orders as $order) {
-            $orders->ordered_items = json_decode($order->ordered_items);
-            $orders->paymentStatus = $this->getStatus($order->paymentStatus);
-        }
-        $ordersitems = count($orders);
-
-        $allOrders["orders"] = $orders;
-
-        $ordersdata = array(
-            'allOrders' =>  $allOrders,
-            'ordersitems' => $ordersitems,
-        );
+        $ordersdata =  $this->ordersRepository()->formatOrders();
 
         //dd( $salesdata);
         return view("client.orders.index", compact('ordersdata'));
@@ -83,52 +70,58 @@ class OrdersController extends BaseController
         $this->ordersRepository();
 
         $requiredItems = array();
-        $requestValues = array_values($request->input());
+        $projectedCost = 0;
 
-       // dd($request->all());
+        // dd($request->all());
 
-       // dd($requestValues);
-        $countStart = 1;
+        $items = $request->except("_token", "sampleTable_length");
+        foreach ($items as $key => $value) {
+            $requireditem = $this->getRetail()->requiredItems()->where('id', $key)->first();
+            if (!$requireditem)
+                return false;
 
-        if ($request->has('sampleTable_length')) {
-            $countStart = 2;
-        }
-
-        for ($i = $countStart; $i < count($request->all()); $i++) {
-
-            $requireditem = Stock::where('id', $requestValues[$i])->first();
             $item = array(
-                'itemName' => $requireditem->stockName,
-                'itemDescription' =>  $requireditem->stockSize,
-                'itemAmount' => $requireditem->stockAmount,
-                'itemBrand' =>  $requireditem->brand,
+                'id' => $requireditem->items()->first()->id,
+                'item' => $requireditem->items()->first()->name,
+                'brand' =>  $requireditem->items()->first()->brand,
+                'size' =>  $requireditem->items()->first()->size,
+                'amount' => $value,
+                'cost' => $requireditem->items()->first()->buying_price,
             );
-            $requiredItems[$i] = $item;
 
+            $projectedCost += $requireditem->items()->first()->buying_price;
+
+            $requiredItems[$key] = $item;
         }
-
         if (empty($requiredItems)) {
             return back()->with('message', "You have not selected any item");
         }
-
-
-        //dd($requiredItems);
         $orderId = Str::random(20);
 
-      //  dd( $this->retail->orders());
-                $this->retail->orders()->create(
-                    [
-                        "orderId" => $orderId,
-                        "ordered_items" => json_encode($requiredItems),
-                        "orderItemsCount" => count($requiredItems),
-                        "orderDate" => now(),
-                        "paymentStatus" => -1,
-                        "orderStatus" => -1,
-                    ]
-                );
+        $order = $this->retail->orders()->updateOrCreate(
+            ["orderId" => $orderId,],
+            [
 
-        return redirect('/orders/index');
-        //dd($requiredItems);
+                "ordered_items" => json_encode($requiredItems),
+                "items_count" => count($requiredItems),
+                "payment_status" => false,
+                "order_status" => -1,
+                "projected_cost" =>  $projectedCost,
+            ]
+        );
+
+        foreach ($items as $key => $value) {
+            $requireditem = $this->getRetail()->requiredItems()->where('id', $key)->first();
+            $requireditem->update(
+                [
+                    'is_ordered' => true,
+                    'orders_id' => $order->id,
+                    'ordered_amount' => $value,
+                ]
+            );
+        }
+
+        return redirect('/client/orders/index')->with('success', __('orders.create'));
     }
 
     /**
@@ -143,7 +136,7 @@ class OrdersController extends BaseController
         $this->ordersRepository();
 
         //;
-        $orders = $this->retail->orders()->where('id',$id)->first();
+        $orders = $this->retail->orders()->where('id', $id)->first();
         //
         $orders->ordered_items = json_decode($orders->ordered_items);
         $ordersitems = count((array)$orders->ordered_items);
@@ -153,7 +146,6 @@ class OrdersController extends BaseController
             'orders' =>  $orders,
             'ordersitems' => $ordersitems,
         );
-
 
         return view("client.orders.show", compact('ordersdata'));
     }
@@ -206,3 +198,18 @@ class OrdersController extends BaseController
         return $status;
     }
 }
+   // for ($i = $countStart; $i < count($request->all()); $i++) {
+
+
+        //     // $requireditem = Stock::where('id', $requestValues[$i])->first();
+
+        //     // $item = array(
+        //     //     'itemName' => $requireditem->stockName,
+        //     //     'itemDescription' =>  $requireditem->stockSize,
+        //     //     'itemAmount' => $requireditem->stockAmount,
+        //     //     'itemBrand' =>  $requireditem->brand,
+        //     // );
+        //     // $requiredItems[$i] = $item;
+
+
+        // }

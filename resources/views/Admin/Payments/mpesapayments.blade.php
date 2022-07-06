@@ -79,16 +79,18 @@
 																								<div class="form-group">
 
 																												<label for="phone">Phone Number</label>
-																												<input type="text" name="phone" value="{{ $mpesadata['phone_number'] }}"
+                                                                                                                <input type="text" name="phone" value="{{ $mpesadata->party_A }}"
+																																class="form-control" id="phone">
+																												<input type="text" name="phone" value="{{ $mpesadata->party_B }}"
 																																class="form-control" id="phone">
 																												<label for="amount">Amount</label>
 																												<input type="text" name="amount" value="{{ $mpesadata['amount'] }}" class="form-control"
 																																id="amount">
 																												<label for="amount">Account</label>
-																												<input type="text" name="account" value="{{ $mpesadata['account'] }}" class="form-control"
+																												<input type="text" name="account" value="{{ $mpesadata->message }}" class="form-control"
 																																id="account">
 																								</div>
-																								<button class="btn btn-primary" type="submit" id="simulate">Simulate Payments</button>
+																								<button class="btn btn-primary" type="submit" id="simulate">Pay</button>
 
 																				</div>
 																</div>

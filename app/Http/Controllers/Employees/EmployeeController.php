@@ -3,20 +3,37 @@
 namespace App\Http\Controllers\Employees;
 
 use App\Employees\Employees;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Repositories\EmployeesRepository;
 use App\Retails\Retail;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class EmployeeController extends Controller
+class EmployeeController extends BaseController
 {
     protected $user;
     public function __construct()
     {
         $this->middleware('auth');
     }
+
+    public function employeeRepository()
+    {
+        # code...
+
+        $this->retail = $this->getRetail();
+
+        if (!$this->retail) {
+            return redirect('/retails/addretail')->with('message', __('retail.create'));
+        }
+
+        $this->ordersRepo = new EmployeesRepository($this->retail);
+        return $this->ordersRepo;
+    }
+
 
     public function index()
     {

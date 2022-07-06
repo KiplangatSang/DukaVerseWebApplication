@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Bills;
 
 use App\Bills\Bills;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class BillController extends Controller
+class BillController extends BaseController
 {
     public function __construct()
     {
@@ -57,6 +58,7 @@ class BillController extends Controller
     public function store(Request $request)
     {
         //
+        //dd( $request->all());
         return redirect('/bills/index');
     }
 
@@ -89,7 +91,7 @@ class BillController extends Controller
     public function edit($id)
     {
         //
-        $retail = auth()->user()->Retails()->get();
+        $retail = auth()->user()->retails()->get();
         $billslist = $retail->bills->where('id',$id)->first();
 
         $billsdata = array(

@@ -2,51 +2,56 @@
 
 namespace App\Http\Controllers\Loans;
 
-use App\Http\Controllers\Controller;
-use App\LoanApplication;
-use App\Loans\Loans;
+use App\Admin\Loaning\LoanPayment\MPesaLoanPayment;
+use App\Billing\BillPayment\MPesaBillPayment;
+use App\Http\Controllers\BaseController;
+use App\Repositories\LoansRepository;
 use App\Repositories\ThirdPartyRepository;
+use App\Repositories\TransactionsRepository;
 use Illuminate\Http\Request;
 
-class LoanPaymentController extends Controller
+class LoanPaymentController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    protected $retail;
+
     public function __construct()
     {
         $this->middleware('auth');
+        // $this->retail = $this->getRetail();
     }
 
-    public function index($loanapplication_id)
+    public function loansRepository()
+    {
+        # code...
+
+        $this->retail = $this->getRetail();
+
+        if (!$this->retail) {
+            return redirect('/retails/addretail')->with('message', __('retail.create'));
+        }
+
+        $this->ordersRepo = new LoansRepository($this->retail);
+        return $this->ordersRepo;
+    }
+
+    public function index($application_id)
     {
         //
-
-
         $thirdPartyRepo = new ThirdPartyRepository();
         $thirdPartyImages = $thirdPartyRepo->getThirdPartyImages();
-        $loanApplication = LoanApplication::where('id',$loanapplication_id)->first();
+
+        $loanApplication = $this->getRetail()->loanApplications()->where('id', $application_id)->first();
         $loanPaymentData = array(
             'thirdPartyImages' => $thirdPartyImages,
             'loanApplication'  => $loanApplication,
         );
 
-          // dd($loanPaymentData);
-       return view('client.loans.loanpayments',compact('loanPaymentData'));
-
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('client.loans.loanpayments', compact('loanPaymentData'));
     }
 
     /**
@@ -60,27 +65,29 @@ class LoanPaymentController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
-        if($id == "MPESA"){
-            return redirect('/payments/mpesapayments');
+        $transResult = null;
 
-        }elseif($id == "KCB"){
+        if ($id == "MPESA") {
 
-        }elseif($id == "EQUITY"){
 
-        }else{
+            $transRepo = new TransactionsRepository($this->getRetail());
+
+            $mpesadata = $transRepo->saveTransaction("MPESA", "0714680763","1", "DukaVerse Loan Payment",  1, 0, "ksh",__("app.pay_loan_purpose"));
+
+           // dd($mpesadata);
+             return view('client.payments.mpesapayments', compact('mpesadata'));
+
+
+        } elseif ($id == "KCB" || $id == "EQUITY") {
+        } else {
 
             return back()->with('message', "Sorry!! Error processing Request");
         }
 
+        return $transResult;
     }
 
     /**
@@ -115,5 +122,25 @@ class LoanPaymentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function MPesaPayment()
+    {
+        # code...
+    }
+
+    public function DukaVersePayment()
+    {
+        # code...
+    }
+
+    public function BankPayment()
+    {
+        # code...
+    }
+
+    public function CardPayment()
+    {
+        # code...
     }
 }

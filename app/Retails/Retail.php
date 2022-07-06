@@ -2,6 +2,8 @@
 
 namespace App\Retails;
 
+use App\Accounts\Account;
+use App\Accounts\Transaction;
 use App\Bills\Bills;
 use App\Customers\Customers;
 use App\Employees\Employees;
@@ -11,6 +13,7 @@ use App\Payments\Expenses;
 use App\Payments\Profit;
 use App\Payments\Revenue;
 use App\RequiredItems\RequiredItems;
+use App\Retail\RetailItems;
 use App\Sales\SaleTransactions;
 use App\Stock\Stock;
 use App\Supplies\Orders;
@@ -28,8 +31,6 @@ class Retail extends Model
 
         return $this->morphTo();
     }
-
-
 
     public function sales()
     {
@@ -59,8 +60,14 @@ class Retail extends Model
 
     public function retailOwner()
     {
+        return $this->morphOne(RetailOwner::class, 'retailownerable');
+    }
+
+    public function retailOwners()
+    {
         return $this->morphToMany(RetailOwner::class, 'retailownerable');
     }
+
 
     public function bills()
     {
@@ -116,4 +123,17 @@ class Retail extends Model
     {
         return $this->morphMany(Loans::class, 'loanable');
     }
+
+    public function items(){
+        return $this->morphMany(RetailItems::class,'itemable');
+    }
+
+    public function accountTransactions(){
+        return $this->morphMany(Transaction::class,"transactionable");
+    }
+
+    public function accounts(){
+        return $this->morphOne(Account::class,"accountable");
+    }
+
 }

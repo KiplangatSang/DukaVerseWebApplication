@@ -16,17 +16,12 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             EmployeeSeeder::class,
-           // ExpensesSeeder::class,
             OrderItemsSeeder::class,
-            OrdersSeeder::class,
-            //ProfitsSeeder::class,
+            // OrdersSeeder::class,
             RequiredItemsSeeder::class,
-           // RetailOwnersSeeder::class,
-            RetailSeeder::class,
             SuppliesSeeder::class,
-            UserSeeder::class,
             LoansSeeder::class,
-            SalesSeeder::class,
+            LoanApplicationSeeder::class,
             StockSeeder::class,
             RolesSeeder::class,
             CustomersSeeder::class,
@@ -34,8 +29,15 @@ class DatabaseSeeder extends Seeder
             SuppliesSeeder::class,
             SuppliersSeeder::class,
             CustomerCreditSeeder::class,
-
+            RetailItemsSeeder::class,
+            AccountSeeder::class,
+            //UserSeeder::class,
+            //SalesSeeder::class,
+            // SaleTransactionsSeeder::class,
+            // RetailOwnersSeeder::class,
+            // RetailSeeder::class,
+            //ProfitsSeeder::class,
+            // ExpensesSeeder::class,
         ]);
     }
-
 }

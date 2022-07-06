@@ -1,4 +1,4 @@
-@extends('layouts.loanslayout')
+@extends('layouts.app')
 @section('content')
 
 
@@ -14,24 +14,13 @@
 								</ul>
 				</div>
 				<div class="row">
-								@if (session()->has('message'))
-												<div class="container-fluid alert alert-danger">
-																{{ session()->get('message') }}
-												</div>
-								@endif
-
-								@if (session()->has('success'))
-												<div class="container-fluid alert alert-success">
-																{{ session()->get('success') }}
-												</div>
-								@endif
 
 								<div class="col-md-12">
 
 												@if (count($billsdata) < 1)
 
 																<div class="container-fluid alert alert-success">
-																				<h3 class="text-display-4 text-info">No available Loans</h3>
+																				<h3 class="text-display-4 text-info">You have no bills</h3>
 
 																				<a href="/home" class="button btn btn-secondary">Back to Dashbord</a>
 																</div>
@@ -44,7 +33,7 @@
 																				<div class="clearix"></div>
 																				<div class="col-md-12">
 
-																								<form method="POST" action="/bills/show/{{ $bill->id }}" id="loanForm">
+																								<form method="POST" action="/client/bills/show/{{ $bill->id }}" id="loanForm">
 
 																												@csrf
 

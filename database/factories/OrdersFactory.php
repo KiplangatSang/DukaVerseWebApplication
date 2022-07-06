@@ -22,13 +22,16 @@ $factory->define(Orders::class, function (Faker $faker) {
 
     return [
         'orderId' => Str::random(10),
-        'orderable_id' =>  rand(8, 11),
+        'orderable_id' => 1,
         'orderable_type' => 'App\Retails\Retail',
         'ordered_items' => json_encode($items),
-        'orderItemsCount' => rand(200, 5000),
-        'orderDate' => now(),
-        'paymentStatus' => rand(-1, 1),
-        'orderStatus' => rand(-1, 1),
+        'items_count' => rand(200, 5000),
+        'order_status' => rand(-1, 1),
         'suppliers_id' => rand(1, 10),
+        'projected_cost' => rand(200, 300),
+        'actual_cost'=> rand(0, 300),
+        'payment_status'=>$faker->boolean(),
+        'delivery_status'=>$faker->boolean,
+        'suppliers_id'=>rand(1,10),
     ];
 });

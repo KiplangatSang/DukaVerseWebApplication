@@ -14,4 +14,10 @@ class SessionRetail extends Model
          # code...
          return $this->morphTo();
      }
+
+     public function retails()
+     {
+         # code...
+         return $this->hasOne(Retail::class,"retail_id");
+     }
 }

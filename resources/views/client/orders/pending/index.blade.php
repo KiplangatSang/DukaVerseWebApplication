@@ -58,7 +58,6 @@
 												<div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-basket fa-3x"></i>
 																<div class="info">
 																				<h5> Orders</h5>
-
 																				<p class="text-warning"><b>{{ $ordersdata['ordersitems'] }}</b></p>
 																</div>
 												</div>
@@ -67,7 +66,7 @@
 												<div class="widget-small info coloured-icon"><i class="icon fa fa-line-chart fa-3x"></i>
 																<div class="info">
 																				<h5> Orders Cost</h5>
-																				<p class="text-warning"><b>{{ $ordersdata['ordersitems'] }} ksh</b></p>
+																				<p class="text-warning"><b>{{ $ordersdata['ordersCost'] }} ksh</b></p>
 																</div>
 												</div>
 								</div>
@@ -75,19 +74,22 @@
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
 																				<h5>Pending Orders</h5>
-																				<p class="text-warning"><b>{{ $ordersdata['ordersitems'] }}</b></p>
+																				<p class="text-warning"><b>{{ $ordersdata['ordersPending'] }}</b></p>
 																</div>
 												</div>
 								</div>
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
-                                                    <div class="info">
-                                                                    <h5>Settled Orders</h5>
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
+																<div class="info">
+																				<h5>Received Orders</h5>
 
-                                                                    <p class="text-warning"><b>{{ $ordersdata['ordersitems'] }}</b></p>
-                                                    </div>
-                                    </div>
-                    </div>
+																				<p class="text-warning">
+																								<b>{{ $ordersdata['receivedOrders'] }}</b>
+																				</p>
+
+																</div>
+												</div>
+								</div>
 
 				</div>
 				<div class="row">
@@ -100,7 +102,11 @@
 																																<tr>
 																																				<th>Order Id</th>
 																																				<th>Item Amount</th>
+																																				<th>Projected Cost</th>
+																																				<th>Actual Cost</th>
+																																				<th>Order Status</th>
 																																				<th>Payment Status</th>
+																																				<th>Delivery Status</th>
 																																				<th>Date Entered</th>
 																																				<th>View</th>
 																																</tr>
@@ -111,21 +117,47 @@
 																																								<td>
 																																												{{ $order->orderId }}
 																																								</td>
-
-
-
 																																								<td>
-																																												{{ $order->orderItemsCount }}
+																																												{{ $order->items_count }}
 																																								</td>
 																																								<td>
-																																												<a href="/retails/show">{{ $order->paymentStatus }}</a>
+																																												{{ $order->projected_cost }}
+																																								</td>
+																																								<td>
+																																												{{ $order->actual_cost ?? 'N/A' }}
+																																								</td>
+																																								<td>
+																																												@if ($order->order_status == '-1')
+																																																<h5><span class="badge badge-warning">Sent</span></h5>
+																																												@elseIf ($order->order_status == '0')
+																																																<h5><span class="badge badge-info">Accepted</span></h5>
+																																												@elseIf ($order->order_status == '1')
+																																																<h5><span class="badge badge-success">Processed</span></h5>
+																																												@elseIf ($order->order_status == '-2')
+																																																<h5><span class="badge badge-danger">Rejected</span></h5>
+																																												@endif
+																																								</td>
+																																								<td>
+																																												@if ($order->payment_status)
+																																																<h5><span class="badge badge-success">Paid</span></h5>
+																																												@else
+																																																<h5><a href="/retails/show"><span class="badge badge-info">Not
+																																																												Paid</span></a></h5>
+																																												@endif
+																																								</td>
+																																								<td>
+																																												@if ($order->delivery_status)
+																																																<h5><span class="badge badge-success">Delivered</span></h5>
+																																												@else
+																																																<h5><a href="/retails/show"><span class="badge badge-warning">Pending
+																																																								</span></a></h5>
+																																												@endif
 																																								</td>
 
 																																								<td>
-																																												{{ $order->orderDate }}
+																																												{{ $order->created_at }}
 																																								</td>
-																																								<td><a href="/client/orders/show/{{ $order->id }}"><i
-																																																				class="fa fa-eye ">
+																																								<td><a href="/client/orders/show/{{ $order->id }}"><i class="fa fa-eye ">
 																																																				View</i></a></td>
 
 

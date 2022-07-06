@@ -69,40 +69,40 @@
 																												</thead>
 																												<tbody>
 																																@foreach ($salesdata['employees'] as $emp)
+																																				@if (count($emp->sales) > 0)
+																																								<tr>
+																																												<td>
+																																																{{ $emp->id }}
+																																												</td>
+
+																																												<td>
+																																																{{ $emp->emp_name }}
+																																												</td>
+																																												<td>
+																																																{{ $emp->emp_email }}
+																																												</td>
+																																												<td>
+																																																{{ $emp->emp_phoneno }}
+																																												</td>
+																																												<td>
+																																																{{ $emp->user_name }}
+																																												</td>
+
+																																												<td>
+																																																@if (count($emp->sales()->get()) > 1)
+																																																				<a class="btn btn-info"
+																																																								href="/client/sales/employee/show/{{ $emp->id }}"><i
+																																																												class="fa fa-eye ">
+																																																												View</i></a>
+																																																@else
+																																																				<strong>No Sales</strong>
+																																																@endif
 
 
+																																												</td>
 
-																																				<tr>
-
-																																								<td>
-                                                                                                                                                                    {{ $emp->id }}
-																																								</td>
-
-																																								<td>
-																																												{{ $emp->empName }}
-																																								</td>
-																																								<td>
-																																												{{ $emp->empEmail }}
-																																								</td>
-																																								<td>
-																																												{{ $emp->empPhoneno }}
-																																								</td>
-																																								<td>
-																																												{{ $emp->userName }}
-																																								</td>
-
-																																								<td>
-                                                                                                                                                                    @if (count($emp->sales()->get())>1)
-                                                                                                                                                                    <a class="btn btn-info" href="/client/sales/employee/show/{{ $emp->id }}"><i class="fa fa-eye ">
-                                                                                                                                                                        View</i></a>
-                                                                                                                                                                    @else
-                                                                                                                                                                    <strong>No Sales</strong>
-                                                                                                                                                                    @endif
-
-
-                                                                                                                                                                                                            </td>
-
-																																				</tr>
+																																								</tr>
+																																				@endif
 																																@endforeach
 																												</tbody>
 																								</table>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Loans;
 
 use App\Http\Controllers\Controller;
 use App\LoanApplication;
+use App\Loans\LoanApplication as LoansLoanApplication;
 use App\Loans\Loans;
 use App\Repositories\ThirdPartyRepository;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class LoansApplicationsController extends Controller
     public function showAppliedLoanItem($loan_id,$loanapplication_id){
 //        $loanapplication_id = 1;
         $loan = Loans::where('id',$loan_id)->first();
-        $loanApplication = LoanApplication::where('id',$loanapplication_id)->first();
+        $loanApplication = LoansLoanApplication::where('id',$loanapplication_id)->first();
         $styling = array(
             'loan_status_color' => '',
 
@@ -48,30 +49,25 @@ class LoansApplicationsController extends Controller
             }
             $loanApplication->loan_duration = $loanApplication->loan_duration . " Days";
 
-
-
-
         $appliedLoan = array(
             'loan' =>$loan,
             'loanapplication' =>  $loanApplication,
             'styling'=>$styling,
         );
-
-        return view('Loans.appliedloanitem',compact('appliedLoan'));
-
+        return view('client.loans.appliedloanitem',compact('appliedLoan'));
     }
 
     public function payLoanRequest($loanapplication_id){
 
         $thirdPartyRepo = new ThirdPartyRepository();
         $thirdPartyImages = $thirdPartyRepo->getThirdPartyImages();
-        $loanApplication = LoanApplication::where('id',$loanapplication_id)->first();
+        $loanApplication = LoansLoanApplication::where('id',$loanapplication_id)->first();
         $loanPaymentData = array(
             'thirdPartyImages' => $thirdPartyImages,
             'loanApplication'  => $loanApplication,
         );
 
           // dd($loanPaymentData);
-       return view('Loans.loanpayments',compact('loanPaymentData'));
+       return view('client.loans.loanpayments',compact('loanPaymentData'));
     }
 }

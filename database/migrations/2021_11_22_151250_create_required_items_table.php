@@ -15,20 +15,18 @@ class CreateRequiredItemsTable extends Migration
     {
         Schema::create('required_items', function (Blueprint $table) {
             $table->id();
-            $table-> string('requiredItemId');
             $table-> bigInteger('requiredable_id');
             $table-> string('requiredable_type');
-            $table-> string('requiredItem');
             $table-> unsignedBigInteger('employees_id')->nullable();
-            $table-> unsignedBigInteger('stock_id');
-            $table-> unsignedBigInteger('requiredAmount');
-            $table-> double('projectedCost');
-            $table-> string('requiredStatus');
+            $table->bigInteger('retail_items_id');
+            $table-> unsignedBigInteger('required_amount')->nullable();
+            $table-> unsignedBigInteger('ordered_amount')->nullable();
+            $table-> double('projected_cost');
+            $table-> boolean('is_ordered')->default(false);
+            $table-> bigInteger('orders_id')->nullable();
             $table->timestamps();
-
         });
     }
-
     /**
      * Reverse the migrations.
      *

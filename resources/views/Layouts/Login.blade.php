@@ -11,10 +11,15 @@
 				<!-- Font-icon css-->
 				<link rel="stylesheet" type="text/css"
 								href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-				<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-				<script type="text/javascript" src="{{ asset('assets/js/plugins/dropzone.js') }}"></script>
 
+				{{-- jquery --}}
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+					<!-- bootstrap -->
+                <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+
+				<!-- Dropzone -->
+				<script type="text/javascript" src="{{ asset('assets/js/plugins/dropzone.js') }}"></script>
+				<!-- date select -->
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/select2.min.js') }}"></script>
 
 				<title> Storm5 Admin Login</title>

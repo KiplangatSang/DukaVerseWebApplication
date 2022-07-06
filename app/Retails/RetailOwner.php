@@ -15,4 +15,10 @@ class RetailOwner extends Model
     {
         return $this->morphedByMany(Retail::class, 'retailownerable');
     }
+
+
+    public function retailownerable()
+    {
+        return $this->morphedByMany(Retail::class, 'retailownerable');
+    }
 }

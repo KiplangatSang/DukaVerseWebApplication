@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Loaning\LoanDisbursment;
+namespace App\Admin\Loaning\LoanDisbursment;
 
 use App\LoanApplication;
 use App\Loans\Loans;

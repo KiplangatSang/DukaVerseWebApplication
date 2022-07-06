@@ -16,4 +16,9 @@ class SaleTransactions extends Model
     }
 
 
+    public function sales()
+    {
+        # code...
+        return $this->hasMany(Sales::class,'sale_transaction_id');
+    }
 }

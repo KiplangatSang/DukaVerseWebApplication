@@ -21,8 +21,7 @@ class RetailController extends BaseController
     //
     public function create()
     {
-
-        return view('client.retailers.registration.create');
+        return view('retailers.registration.create');
     }
 
     public function store(Request $request)
@@ -49,24 +48,24 @@ class RetailController extends BaseController
     {
         # code...
         $retail = $this->getRetail();
-        return view('client.retailers.profile.index', compact('retail'));
+        return view('retailers.profile.index', compact('retail'));
     }
 
     public function edit()
     {
         $retail = $this->getRetail();
         $retail->retail_goods = json_decode($retail->retail_goods);
+        $retail->account_details = json_decode($retail->account_details);
         $profileComplete = $this->calculate_profile($retail);
         $retail['profile_complete'] = $profileComplete;
 
-        return view('client.retailers.profile.retailprofile.edit', compact('retail'));
+        return view('retailers.profile.retailprofile.edit', compact('retail'));
         # code...
     }
 
     public function update(Request $request)
     {
         # code...
-        //dd($request->all());
         $retail = $this->getRetail();
         if ($request->retail_goods) {
             $retail_goods = json_decode($retail->retail_goods);
@@ -74,12 +73,49 @@ class RetailController extends BaseController
             $request['retail_goods'] = json_encode($goods);
         }
 
-
-
         $retail->update(
             $request->all(),
         );
         return back()->with("success", "Profile data Updated");
+    }
+
+    public function paymentPreference($id, Request $request)
+    {
+        # code...
+        $request->validate([
+            "paymentpreference" => "required",
+        ]);
+        $account_details = array();
+
+        if ($request->paymentpreference == "mpesapaybill") {
+
+            $request->validate([
+                "paybill" => "required",
+                "account_number" => "required",
+            ]);
+
+            $account_details["paybill"] = $request->paybill;
+            $account_details["account_number"] = $request->account_number;
+        } elseif ($request->paymentpreference == "mpesatill") {
+            $request->validate([
+                "till_number" => "required",
+                "till_store" => "required"
+            ]);
+
+            $account_details["till_number"] = $request->till_number;
+            $account_details["till_store"] = $request->till_store;
+        }
+
+        $retail = $this->getRetail();
+
+        $retail->update(
+            [
+                "paymentpreference" => $request->paymentpreference,
+                "account_details" => json_encode($account_details),
+            ]
+        );
+
+        return back()->with("success", "Payment preference data Updated");
     }
 
 
@@ -93,7 +129,7 @@ class RetailController extends BaseController
         }
         $path = request()->file('file')->storeAs('public/RetailPictures', $fileNameToStore);
         $retail = $this->getRetail();
-        Log::info("updated" . json_encode($request->all()) );
+        Log::info("updated" . json_encode($request->all()));
         $retail->update([
             "retail_profile" => $fileNameToStore,
         ]);

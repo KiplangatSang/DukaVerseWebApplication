@@ -17015,7 +17015,7 @@ be a descendant of the grid when it is being dragged.
 
 .login-content .register-box {
     position: relative;
-    min-width: 500px;
+    min-width: 40%;
     min-height: 390px;
     border-radius: 30px !important;
     background-color: #edeff7;
@@ -17557,4 +17557,17 @@ be a descendant of the grid when it is being dragged.
   .step.finish {
     background-color: #04AA6D;
   }
+
+  .center {
+    margin: auto;
+    width: 30%;
+    height: 50%;
+    border: 5px solid #FFFF00;
+    padding: 10px;
+    margin-left: 40%;
+    position: absolute;
+    z-index: 1001;
+    /* visibility: visible; */
+    visibility: hidden;
+    }
 

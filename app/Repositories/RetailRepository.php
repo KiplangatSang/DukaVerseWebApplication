@@ -2,12 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Retails\Retail;
 use App\User;
 
 class RetailRepository
 {
     private $user;
-    public function __construct(User $user)
+    public function __construct(User $user = null, Retail $retail = null)
     {
         $this->user = $user;
     }
@@ -18,5 +19,33 @@ class RetailRepository
         return $retails;
     }
 
+    public function storeRetailInSession($retailId)
+    {
+        # code...
+        $user =  User::where('id', auth()->id())->first();
+        $retail =  $user->retails()->where('id', $retailId)->first();
+        //dd( $retail);
+        $user->sessionRetail()->updateOrCreate(
+            [
+                'retail_id' => $retail->id,
+            ],
+            [
+                'retailNameId' => $retail->retail_Id,
+            ]
+        );
+        return $retail;
+    }
 
+    public function getPaymentPreferences()
+    {
+        # code...
+
+        $paymentPref = array(
+            "mpesapaybill" => "mpesapaybill",
+            "mpesatill" => "mpesatill",
+            "dukaverse"=>"dukaverse",
+        );
+
+        return $paymentPref;
+    }
 }

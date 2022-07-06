@@ -29,6 +29,8 @@ class CreateRetailsTable extends Migration
             $table-> string('retail_emp_no')->nullable();
             $table-> string('retail_stock_est')->nullable();
             $table-> string('retail_subscription')->nullable();
+            $table-> string('paymentpreference')->nullable();
+            $table-> string('account_details')->nullable();
             $table-> string('complete')->nullable();
             $table->timestamps();
         });

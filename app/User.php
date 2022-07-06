@@ -2,7 +2,10 @@
 
 namespace App;
 
+use App\Accounts\Account;
+use App\Accounts\Transaction;
 use App\Bills\Bills;
+use App\Employees\Employees;
 use App\Loans\Loans;
 use App\Profiles\profiles;
 use App\Retails\Retail;
@@ -71,5 +74,17 @@ class User extends Authenticatable
 
     public function profiles(){
         return $this->hasOne(profiles::class);
+    }
+
+    public function account(){
+        return $this->morphOne(Account::class,"accountable");
+    }
+
+    public function accountTransactions(){
+        return $this->morphMany(Transaction::class,"transactionable");
+    }
+
+    public function employees(){
+        return $this->hasOne(Employees::class,"user_id");
     }
 }

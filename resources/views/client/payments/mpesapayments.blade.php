@@ -14,9 +14,9 @@
 				</div>
 
 
-								<form action="/payments/mpesapayments/stkpush" method="POST">
-												@csrf
-                                                <div class="row mt-3">
+				<form action="/payments/mpesapayments/stkpush" method="POST">
+								@csrf
+								<div class="row mt-3">
 												<div class="col-xl-6 col-md-6">
 																<h3 class="text-info">Terms and Conditions</h3>
 																<br>
@@ -45,9 +45,7 @@
 																								<input class="form-check-input me-2 @error('terms_and_conditions') is-invalid @enderror"
 																												type="checkbox" value="Accepted" id="terms_and_conditions" name="terms_and_conditions"
 																												checked />
-
 																				@else
-
 																								<input class="form-check-input me-2 @error('terms_and_conditions') is-invalid @enderror"
 																												type="checkbox" value="Accepted" id="terms_and_conditions" name="terms_and_conditions"
 																												required />
@@ -75,31 +73,40 @@
 																								<h3 class="text-success">MPESA Transaction</h3>
 																				</div>
 																				<div class="tile-body">
-
 																								<div class="form-group">
-
-																												<label for="phone">Phone Number</label>
-																												<input type="text" name="phone" value="{{ $mpesadata['phone_number'] }}"
-																																class="form-control" id="phone">
+																												<label for="till">Till/ Paybill</label>
+																												<input type="text" name="till" value="{{ $mpesadata->party_A }}" class="form-control"
+																																id="till" disabled>
+																												<br>
+																												<label for="amount">Account</label>
+																												<input type="text" name="account" value="{{ $mpesadata->message }}" class="form-control"
+																																id="account" disabled>
+																												<br>
+                                                                                                                <label for="amount">Phone Number</label>
+																												<input type="text" name="phone" value="{{ $mpesadata->party_B }}" class="form-control"
+																																id="phone">
+                                                                                                                                <br>
 																												<label for="amount">Amount</label>
 																												<input type="text" name="amount" value="{{ $mpesadata['amount'] }}" class="form-control"
 																																id="amount">
-																												<label for="amount">Account</label>
-																												<input type="text" name="account" value="{{ $mpesadata['account'] }}" class="form-control"
-																																id="account">
+
 																								</div>
-																								<button class="btn btn-primary" type="submit" id="simulate">Simulate Payments</button>
+																								<div class="col">
+																												<div class="form-group d-flex justify-content-center">
+																																<button class="btn btn-primary btn-submit" type="submit" id="pay">Pay</button>
+																												</div>
+																								</div>
+
 
 																				</div>
 																</div>
 												</div>
 
-                                            </div>
-                                            </form>
+								</div>
+				</form>
 
 
 
 
 				<script src="{{ asset('js/app.js') }}"></script>
-
 @endsection

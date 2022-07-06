@@ -15,4 +15,10 @@ class LoanApplication extends Model
     {
         return $this->morphTo();
     }
+
+    public function loans()
+    {
+        # code...
+    return $this->belongsTo(Loans::class,'loans_id');
+    }
 }

@@ -19,11 +19,13 @@ class CreateRetailItemsTable extends Migration
             $table->string('itemable_type');
             $table->string('name');
             $table->string('brand');
+            $table->string('size');
             $table->longText('image');
             $table->double('selling_price');
             $table->unsignedBigInteger('buying_price');
-            $table-> longText('description')->nullable();
-            $table-> longText('regulation')->nullable();
+            $table->longText('description')->nullable();
+            $table->longText('regulation')->nullable();
+            $table->string('suppliers_id')->nullable();
             $table->timestamps();
         });
     }

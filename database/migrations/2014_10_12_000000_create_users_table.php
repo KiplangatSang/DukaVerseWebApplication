@@ -21,9 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('phoneno');
             $table->string('terms_and_conditions')->nullable();
-            $table-> unsignedBigInteger('userpin')->nullable()->default(1234);
+            $table-> unsignedBigInteger('userpin')->nullable()->default(null);
             $table-> boolean('isOwner')->default(false);
-            $table-> boolean('isEmployee')->default(true);
+            $table-> boolean('isEmployee')->default(false);
             $table->boolean('isAdmin')->default(false);
             $table->integer('role')->default(1);
             $table->boolean('isSuspended')->default(false);

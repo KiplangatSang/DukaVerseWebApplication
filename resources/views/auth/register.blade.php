@@ -10,7 +10,7 @@
 												<h1><strong>DukaVerse</strong></h1>
 								</div>
 								<div class="register-box">
-												<div class="card-body p-4">
+												<div class="card-body ">
 																<h2 class="text-uppercase text-center mb-5 login-head"><i class="fa fa-lg fa-fw fa fa-user-circle-o"></i>Create an account</h2>
 
 																<form method="POST" action="{{ route('register') }}">

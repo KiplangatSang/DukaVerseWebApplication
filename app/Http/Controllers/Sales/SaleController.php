@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Repositories\RevenueRepository;
 use App\Repositories\SalesRepository;
 use App\Repositories\StockRepository;
+use App\Repositories\TransactionsRepository;
 use App\Sales\Sales;
 use App\Stock\Stock;
 use Illuminate\Http\Request;
@@ -36,27 +38,8 @@ class SaleController extends BaseController
     public function index()
     {
         $this->salesrepo = $this->salesRepository();
-        if (!$this->salesrepo) {
-            return redirect('/home')->with('message', __('retail.select'));
-        }
 
-        $allSales = $this->salesrepo->getDisctictSoldItems();
-
-        $solditemscount = count($allSales);
-        $salesTotalPrice = $this->retail->sales()->sum('price');
-        $salesrevenue = $this->salesrepo->getRevenue();
-        $meansales = $this->retail->sales()->Avg('itemAmount');
-        $growth = $this->salesrepo->getProfitPercentage();
-        $growth = round($growth, 2);
-
-        $salesdata = array(
-            'allSales' =>  $allSales,
-            'solditemscount' => $solditemscount,
-            'salesTotalPrice' => $salesTotalPrice,
-            'salesrevenue' => $salesrevenue,
-            'meansales' => $meansales,
-            'growth' => $growth,
-        );
+        $salesdata = $this->salesrepo->indexData();
 
         // dd( $salesdata);
         return view("client.sales.index", compact('salesdata'));
@@ -69,13 +52,7 @@ class SaleController extends BaseController
      */
     public function create()
     {
-        $this->salesRepository();
-        $stockdata = array(
-            "allStock"  => $this->retail->stocks()->get(),
-
-        );
-
-
+        $stockdata = $this->salesRepository()->createData();
         //
         return view("client.sales.create", compact('stockdata'));
     }
@@ -115,67 +92,36 @@ class SaleController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($item_id)
     {
-        $this->salesRepository();
-        //
-        $soldItemName = Sales::where('id', $id)->first()->itemName;
-        $allSales = $this->salesrepo->getSaleItem('itemName', $soldItemName);
-        $salesdata = array(
-            'allSales' =>  $allSales,
-        );
+        $salesdata = $this->salesRepository()->showData($item_id);
 
         // dd($allSales);
         return view('client.sales.show', compact('salesdata'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
+        $result = $this->salesRepository()->destroy($id);
+        if (!$result)
+            return back()->with('error', 'Could not delete this item');;
+        return back()->with('success', 'item deleted successfully');
     }
 
-    public function getSalesItems($key)
+    public function getSalesItems($trans_id, $key)
     {
         # code...
+
         $item = null;
         $salesRepo = $this->salesRepository();;
         $item = $salesRepo->getStockById($key);
+        //return $item;
         if (!$item)
-            return;
+            return false;
 
-        $transactionItem["name"] = $item->stockNameId;
-        $transactionItem["amount"] = 1;
-
-        $transactionResult = $this->saveTransaction($transactionItem);
+        $transactionResult = $this->saveTransaction($trans_id, $item);
 
         if (!$transactionResult)
             return false;
@@ -201,16 +147,18 @@ class SaleController extends BaseController
         if ($q !== "") {
             $q = strtolower($q);
             $len = strlen($q);
-            foreach ($a as $name) {
+            foreach ($a as $stockItem) {
                 // return $name->stockNameId;
-                if (stristr($q, substr($name->stockNameId, 0, $len))) {
+                //dd($stockItem);
+                if (stristr($q, substr($stockItem->code, 0, $len)) || stristr($q, substr($stockItem->item->brand, 0, $len)) || stristr($q, substr($stockItem->item->name, 0, $len))) {
+
                     if ($hint === "") {
-                        $hint = $name->stockNameId;
-                        $hint['image'] = $name->stockImage;
+                        $hint = $stockItem->code;
+                        $hint['image'] = $stockItem->item->image;
                     } else {
                         // dd("bfore ".$hint);
-                        $hint['item'] .= ", $name->stockNameId";
-                        $hint['image'] = $name->stockImage;
+                        $hint['item'] .= ", $stockItem->code";
+                        $hint['image'] = $stockItem->item->image;
                         //dd("after ".$hint);
                     }
                 }
@@ -231,41 +179,126 @@ class SaleController extends BaseController
             return false;
 
         $result['status'] = true;
-        $result['body'] = "Kiplangat Sang";
+        $result['body'] = "Success, The transaction was successfull";
 
         return  $result;
     }
 
-    public function saveTransaction($items)
+    public function saveTransaction($trans_id, $item)
     {
         # code...
-        $new_items = array();
-        $old_items = array();
-        $transId = Str::random($this->TRANSACTIONSTRLEN);
+        // $old_items = array();
+
+        $price = $item->items()->first()->selling_price;
+
+        if ($trans_id == "null" || $trans_id == null)
+            $trans_id = Str::random($this->TRANSACTIONSTRLEN);
+
+
 
         $transController = new SaleTransactionController();
-        $activeTrns = $transController->getActiveTransaction();
-
+        $activeTrns = $transController->getActiveTransaction($trans_id);
 
         if ($activeTrns) {
-            $transId = $transController->getActiveTransaction()->transaction_id;
-            $old_items = $transController->getActiveTransaction()->transaction_items;
-            //cast items to array
-            $old_items = (array)json_decode($old_items);
+            $trans_id = $activeTrns->transaction_id;
+            $price = $activeTrns->expense + $price;
+            // dd("id ".$trans_id);
         }
-        //push items to the old array
-        array_push($old_items, $items);
 
+        //store transaction  and items
+        $transacResult = $transController->storeTransactionItems($trans_id, $price);
 
-        $result = $transController->storeTransactionItems($transId, $old_items);
-
-        if (!$result)
+        if (!$transacResult)
             return false;
+
+        //store sales
+        $salesResult  = $this->salesRepository()->addSoldItemFromStock($item, $transacResult->id);
+        //dd( $salesResult );
+        if (!$salesResult)
+            return false;
+
         //dd(count($old_items));
-        return $transId;
+        return $trans_id;
     }
 
+    public function makeCashPayment($trans_id, $amount)
+    {
+        $transaction = $this->getRetail()->salesTransactions()->where('transaction_id', $trans_id)->first();
+        if (!$transaction)
+            return $this->sendError("error", $transaction);
 
-    //@todo remove sold item
-   // removeStockItem($id)
+        // dd($transaction);
+        if ($transaction->expense <= $amount) {
+            $balance = $amount - $transaction->expense;
+            $transaction['balance'] = $balance;
+
+            $retail = $this->getRetail();
+            $transactions = $retail->salesTransactions()->updateOrCreate(
+                ["transaction_id" => $trans_id],
+                [
+                    "on_hold" => false,
+                    "pay_status" => true,
+                    "is_active" => true,
+                    "paid_amount" => $amount,
+                    "balance" => $balance,
+                ]
+            );
+
+            return $this->sendResponse($transaction, "The transaction is successfull");
+        } else
+            return $this->sendError("Amount is less than the required amount", $transaction);
+    }
+
+    public function closeTransaction($trans_id)
+    {
+        # code...
+        $transaction = $this->getRetail()->salesTransactions()->where('transaction_id', $trans_id)->first();
+        if (!$transaction)
+            return $this->sendError("error", $transaction);
+
+        if ($transaction->balance < 0)
+            return $this->sendError("error", $transaction);
+
+        // dd($transaction);
+        $retail = $this->getRetail();
+        $transactions = $retail->salesTransactions()->updateOrCreate(
+            ["transaction_id" => $trans_id],
+            [
+                "on_hold" => false,
+                "pay_status" => true,
+                "is_active" => false,
+            ]
+        );
+
+        return $this->sendResponse($transaction, "The transaction is successfull");
+    }
+
+    public function makeMpesaPayment($trans_id, $account, $amount)
+    {
+        $transaction = $this->getRetail()->salesTransactions()->where('transaction_id', $trans_id)->first();
+        if (!$transaction)
+            return $this->sendError("error", $transaction);
+
+
+        $transRepo = new TransactionsRepository($this->getRetail());
+
+        $mpesadata = $transRepo->saveTransaction("MPESA", $account, $amount, "Retail Goods Payment",  2, 0, "ksh", "Retail Goods Payment");
+
+        $request = new \Illuminate\Http\Request();
+        $request->setMethod('POST');
+        $request->request->add(['mpesadata' =>  $mpesadata]);
+
+
+        $mpesaCont = new MpesaController();
+        $mpesaRes = $mpesaCont->stkPush($request);
+       // dd($mpesaRes);
+        if (!$mpesaRes)
+            return $this->sendError("Could not send Request", $transaction);
+        if (array_key_exists('errorCode', $mpesaRes))
+            return $this->sendError($mpesaRes['errorMessage'], $transaction);
+
+        return $this->sendResponse($transaction, "The transaction is successfull");
+        // else
+        //     return $this->sendError("Amount is less than the required amount", $transaction);
+    }
 }

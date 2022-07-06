@@ -18,14 +18,15 @@ class CreateSaleTransactionsTable extends Migration
             $table->bigInteger('transactionable_id');
             $table->text('transactionable_type');
             $table->longText('transaction_id');
-            $table->longText('transaction_items')->nullable();
-            $table->string('price')->nullable();
+            $table->longText('expense')->default(0);
+            // $table->longText('transaction_items')->nullable();
             $table->string('paid_amount')->nullable();
             $table->string('balance')->nullable();
             $table->string('discount')->nullable();
             $table->longText('deductions')->nullable();
             $table->boolean('on_hold')->default(false);
             $table->boolean('pay_status')->default(false);
+            $table->boolean('on_credit')->default(false);
             $table->boolean('is_active')->default(false);
             $table->timestamps();
         });

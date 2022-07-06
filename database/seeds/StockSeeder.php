@@ -14,7 +14,7 @@ class StockSeeder extends Seeder
     {
         //
 
-       factory(StockStock::class,10)
+       factory(StockStock::class,50)
         ->create();
     }
 }

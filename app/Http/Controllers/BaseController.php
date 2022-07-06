@@ -19,27 +19,44 @@ class BaseController extends Controller
      */
 
     //gets retails list sent to home controller for choosing
-    public function setRetail()
+    public function getRetailList()
     {
         $retails = null;
         # code...
         $user = User::where('id', Auth::id())->first();
         $retails = $user->retails()->get();
         $retailList['retails'] = $retails;
+
         return $retailList;
     }
+
+    public function setRetail()
+    {
+
+        $retails = $this->getRetailList();
+
+        if (count($retails['retails']) < 1) {
+            return redirect("/client/retails/create")->with('error', 'Register Your Retail Shop First');
+        }
+
+
+        return view('retails', compact('retails'));
+    }
+
 
     public function getRetail()
     {
         $user = User::where('id', Auth::id())->first();
         $retail = $user->sessionRetail()->get()->first();
+
         if (!$retail)
             return false;
+
         $retailId  = $retail->retail_id;
         $retail = $user->retails()->where('id', $retailId)->first();
-        // dd("Retail". $retail);
+
         if (!$retail)
-            return;
+            return false;
         $retail['complete'] = $this->calculate_profile($retail);
         return $retail;
     }

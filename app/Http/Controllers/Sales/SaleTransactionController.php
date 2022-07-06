@@ -17,22 +17,20 @@ class SaleTransactionController extends BaseController
     {
         $this->middleware('auth');
     }
-
-
-    public function storeTransactionItems($transId, $transactionItems)
+    public function storeTransactionItems($transId,$price)
     {
         # code...
-        $transactionItems = json_encode($transactionItems);
+        $transaction = null;
         // dd($transactionItems);
         try {
             $retail = $this->getRetail();
-            $transactions = $retail->salesTransactions()->updateOrCreate(
+            $transaction = $retail->salesTransactions()->updateOrCreate(
                 ["transaction_id" => $transId],
                 [
-                    "transaction_items" => $transactionItems,
                     "on_hold" => true,
                     "pay_status" => false,
                     "is_active" => true,
+                    "expense"=>$price,
                 ]
 
             );
@@ -40,24 +38,31 @@ class SaleTransactionController extends BaseController
             Log::error($e->getMessage());
             return false;
         }
-        return $transactions;
-    }
+        if (!$transaction)
+            return false;
 
+        return $transaction;
+    }
     public function getItemsOnHold()
     {
-        # code...
+        $salesRepo = new SalesRepository($this->getRetail());
+
         $retail = $this->getRetail();
         $transactions = $retail->salesTransactions()->where('on_hold', true)->orderBy('created_at', 'DESC')->get();
-
+        // dd($transactions->first()->sales()->get());
         foreach ($transactions as $transaction) {
-            if ($transaction->transaction_items) {
-                $transaction->transaction_items = (array)json_decode($transaction->transaction_items);
+            $transaction_items =  $salesRepo->getTransactionItems($transaction);
+
+            // dd( $transaction_items);
+
+            if ($transaction_items) {
+
+                $transaction['transaction_items'] = $transaction_items;
             }
         }
 
         return $transactions;
     }
-
     public function getItemOnHold($id)
     {
         # code...
@@ -70,35 +75,31 @@ class SaleTransactionController extends BaseController
         if (!$transaction)
             return false;
 
-        $salesRepo = new SalesRepository($retail);
-        $items = array();
-        $transaction->transaction_items = (array)json_decode($transaction->transaction_items);
-        foreach ($transaction->transaction_items as $item) {
-            $item = (array)$item;
-            $key =  $item['name'];
 
-             $soldItems = $salesRepo->getStockById($key);
-             array_push($items,$soldItems);
+        $transaction->transaction_items = $transaction->sales()->get();
+        foreach ($transaction->transaction_items as $item) {
+            $item['item'] = $item->items()->first();
         }
-        $transaction['items'] =$items;
-       // dd($transaction);
+        // $transaction['items'] = $items;
+        // dd($transaction);
         return $transaction;
     }
 
-    public function storeItemsOnHold($id, $price, $paid_amount)
+    public function storeItemsOnHold($id, $expense, $paid_amount)
     {
         # code...
         $pay_status = false;
         if ($paid_amount) {
             $pay_status = true;
         }
-        $balance = $paid_amount - $price;
+        $balance = $paid_amount - $expense;
         $transactions = null;
         $retail = $this->getRetail();
         try {
-            $transactions = $retail->salesTransactions()->where('transaction_id', $id)->update(
+            $transactions = $retail->salesTransactions()->updateOrCreate(
+                ["transaction_id" => $id],
                 [
-                    "price" => $price,
+                    "expense" => $expense,
                     "paid_amount" => $paid_amount,
                     "balance" => $balance,
                     "on_hold" => true,
@@ -111,19 +112,16 @@ class SaleTransactionController extends BaseController
             return $e->getMessage();
         }
 
-
-
         return $transactions;
     }
 
-
-
-    public function getActiveTransaction()
+    public function getActiveTransaction($trans_id)
     {
         # code...
         $retail = $this->getRetail();
         $transactions = $retail->salesTransactions()
             ->where('is_active', true)
+            ->where('transaction_id', $trans_id)
             ->orderBy('created_at', 'DESC')->first();
         return $transactions;
     }

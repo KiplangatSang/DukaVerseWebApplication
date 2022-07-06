@@ -1,5 +1,6 @@
 <?php
 
+use App\Retail\RetailItems;
 use Illuminate\Database\Seeder;
 
 class RetailItemsSeeder extends Seeder
@@ -12,5 +13,7 @@ class RetailItemsSeeder extends Seeder
     public function run()
     {
         //
+        factory(RetailItems::class,10)
+        ->create();
     }
 }

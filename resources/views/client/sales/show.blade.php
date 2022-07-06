@@ -2,8 +2,8 @@
 @section('content')
 				<div class="app-title">
 								<div>
-												<h1><i class="fa fa-th-list"></i> Data Table</h1>
-												<p>Table to display analytical data effectively</p>
+												<h1><i class="fa fa-th-list"></i> Sold Items</h1>
+												<p>Sold items from your shop</p>
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -24,8 +24,10 @@
 																																				<th>Item Id</th>
 																																				<th>Item Name</th>
 																																				<th>Item Size</th>
-																																				<th>Item Amount</th>
-																																				<th>Price</th>
+																																				<th>Brand</th>
+																																				<th>Buying Price</th>
+																																				<th>Selling Price</th>
+																																				<th>Sold By</th>
 																																				<th>Date Sold</th>
 																																				<th>Delete</th>
 
@@ -38,20 +40,21 @@
 																																@foreach ($salesdata['allSales'] as $sale)
 																																				<tr>
 																																								<td>
-																																												<div class="col-sm-3">
-																																																<img class="icon d-flex w-100"
-																																																				src="{{$sale['itemImage'] ?? 'noprofile.png' }}"
-																																																				alt="{{ $sale['itemNameId'] }}">
-																																												</div>
-																																								</td>
-																																								<td>{{ $sale['itemNameId'] }}</td>
-																																								<td>{{ $sale['itemName'] }}</td>
-																																								<td>{{ $sale['itemSize'] }}</td>
-																																								<td>{{ $sale['itemAmount'] }}</td>
 
-																																								<td>{{ $sale['price'] }}</td>
+																																												<img class="icon d-flex w-100"
+																																																src="{{ $sale['item']->image ?? 'noprofile.png' }}"
+																																																alt="{{ $sale['item']->name }}">
+
+																																								</td>
+																																								<td>{{ $sale->code }}</td>
+																																								<td>{{ $sale['item']->name }}</td>
+																																								<td>{{ $sale['item']->size }}</td>
+																																								<td>{{ $sale['item']->brand }}</td>
+																																								<td>{{ $sale['item']->buying_price }}</td>
+																																								<td>{{ $sale->selling_price }}</td>
+																																								<td>{{ $sale->employees()->first()->emp_name ?? "N/A"}}</td>
 																																								<td>{{ $sale['created_at'] }}</td>
-																																								<td><a href="/sales/delete/{{ $sale['id'] }}"><i class="fa fa-trash-o"
+																																								<td><a href="/client/sales/delete/{{ $sale['id'] }}"><i class="fa fa-trash-o"
 																																																				aria-hidden="true"> Delete</i></a></td>
 
 
@@ -67,5 +70,4 @@
 												</div>
 								</div>
 				</div>
-
 @endsection

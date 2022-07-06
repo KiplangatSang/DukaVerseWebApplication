@@ -10,6 +10,7 @@
 
 				{{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
 				<link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
+				{{-- <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}"> --}}
 				<script src="https://unpkg.com/animejs@3.0.1/lib/anime.min.js"></script>
 				<script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
 
@@ -33,14 +34,13 @@
 																																				<p><strong>Kazi Safi Faida Zaidi</strong></p>
 																																				<div>
 																																								@if (Route::has('login'))
-																																												<div class="top-right links">
+																																												<div class="top-right links m-2">
 																																																@auth
 																																																				<a class="button button-primary" href="{{ url('/home') }}">Home</a>
 																																																@else
 																																																				<div class="row">
-																																																								<div class="">
-																																																												<a class="button"
-																																																																href="{{ route('login') }}">Login</a>
+																																																								<div class="p-2 m-2">
+																																																												<a class="button" href="{{ route('login') }}">Login</a>
 
 																																																												@if (Route::has('register'))
 																																																																<a class="button button-primary"
@@ -59,63 +59,51 @@
 
 																								</div>
 																								<div class="box box-2">
-
 																												<div id="slideshow">
-																																<div>
-																																				<img class="slider-img w-100" src="dist/images/DukaVerse/analyze.jpg">
+																																<div class="slider-div">
 																																				<div class="d-flex justify-content-center">
 																																								<p>Control your Business</p>
 																																				</div>
-																																</div>
-																																<div>
-																																				<img class="slider-img" src="dist/images/DukaVerse/graphs.jpg"
-																																								style="width:100%">
+																																				<img class="slider-img" src="dist/images/DukaVerse/analyze.jpg">
 
+																																</div>
+																																<div class="slider-div">
 																																				<div class="d-flex justify-content-center">
 																																								Get the Best Market Data Analytics
 																																				</div>
+																																				<img class="slider-img" src="dist/images/DukaVerse/graphs.jpg">
 																																</div>
 																																<div>
-																																				<img class="slider-img " src="dist/images/DukaVerse/invest.jpg"
-																																								style="width:100%">
-
 																																				<div class="d-flex justify-content-center">
 																																								Manage Your Finance Better to Grow
 																																				</div>
+																																				<img class="slider-img " src="dist/images/DukaVerse/invest.jpg">
 																																</div>
 																																<div>
-																																				<img class="slider-img" src="dist/images/DukaVerse/loans.jpg"
-																																								style="width:100%">
-
-																																				<div class="d-flex justify-content-center">Access Funds to see your Business
+																																				<div class="d-flex justify-content-center">
+                                                                                                                                                    Access Funds to see your Business
 																																								Grow</div>
+																																				<img class="slider-img" src="dist/images/DukaVerse/loans.jpg">
 																																</div>
 																												</div>
-
-
 																												<br>
-
-
 																								</div>
 																				</div>
 																</div>
 																<br>
-
-
-
 				</div>
 				</section>
 
-				<section class="features section">
+				<section class="features section ">
 								<div class="container">
 												<div class="features-inner section-inner has-bottom-divider">
 																<div class="features-wrap">
 																				<div class="feature text-center is-revealing">
-																								<div class="feature-inner">
+																								<div class="feature-inner ">
 																												<div class="feature-icon">
 																																<img src="dist/images/DukaVerse/data_extraction.svg" alt="Feature 01">
 																												</div>
-																												<h4 class="feature-title mt-24">Plan Your Business</h4>
+																												<h4 class="feature-title mt-24 ">Plan Your Business</h4>
 																												<p class="text-sm mb-0">Planning is an Integral part of bussiness.
 																																We help you to take this to a whole new level.
 																												</p>
@@ -191,7 +179,7 @@
 												<div class="cta-inner section-inner">
 																<h3 class="section-title mt-0">got a query?</h3>
 																<div class="cta-cta">
-																				<a class="button button-primary button-wide-mobile" href="/users/posts/contact">Get in
+																				<a class="button button-primary button-wide-mobile" href="#">Get in
 																								touch</a>
 																</div>
 												</div>
@@ -223,7 +211,7 @@
 																</ul>
 																<ul class="footer-social-links list-reset">
 																				<li>
-																								<a href="https://web.facebook.com/SG-H-News-111185534916109/">
+																								<a href="#">
 																												<span class="screen-reader-text">Facebook</span>
 																												<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 																																<path

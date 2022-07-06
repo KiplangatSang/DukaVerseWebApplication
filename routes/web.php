@@ -39,26 +39,35 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Http\Controllers\FcmCloudMessagingController;
 use App\Http\Controllers\Finance\AdminSalesController as FinanceAdminSalesController;
+use App\Http\Controllers\Firebase\FirebaseController;
+use App\Http\Controllers\Firebase\FirebaseStorageController;
+use App\Http\Controllers\Loans\AppliedLoansController;
 use App\Http\Controllers\Loans\LoanPaymentController;
 use App\Http\Controllers\Loans\LoansApplicationsController;
 use App\Http\Controllers\Loans\LoansController;
 use App\Http\Controllers\Orders\DeliveredOrderController;
 use App\Http\Controllers\Orders\OrdersController;
+use App\Http\Controllers\Orders\PendingOrderController;
 use App\Http\Controllers\Payments\CardPayments\CardPaymentsController;
 use App\Http\Controllers\payments\CardPayments\StripeController;
 use App\Http\Controllers\Profile\ProfileController as ProfileProfileController;
 use App\Http\Controllers\Reports\PDFPrinterController;
+use App\Http\Controllers\RequiredItems\OrderedRequiredItemController;
+use App\Http\Controllers\RequiredItems\RequiredItemOrderController;
+use App\Http\Controllers\RequiredItems\RequiredItemController;
 use App\Http\Controllers\Retails\RetailController;
 use App\Http\Controllers\Retails\RetailsController;
+use App\Http\Controllers\Sales\CreditItemController;
+use App\Http\Controllers\Sales\CreditItemsController;
 use App\Http\Controllers\Sales\DailySaleController;
 use App\Http\Controllers\Sales\EmployeeSaleController;
 use App\Http\Controllers\Sales\MonthlySaleController;
+use App\Http\Controllers\Sales\PaidItemsController;
 use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\Sales\SaleTransactionController;
 use App\Http\Controllers\Sales\YearlySaleController;
 use App\Http\Controllers\Settings\SettingsController;
-use App\Http\Controllers\stock\requiredItemsController;
 use App\Http\Controllers\stock\StockController;
 use App\Http\Controllers\Supplies\SuppliersController;
 use App\Http\Controllers\Supplies\SuppliesController;
@@ -81,7 +90,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
-
+Route::get('/firebase', [FirebaseStorageController::class, 'create']);
 
 Route::get('/home', function () {
     $routes = new RoutesRepository();
@@ -364,10 +373,12 @@ Route::get('/admin/bills/payment/history/delete',  [AdminBillsHistoryController:
 
 
 
-
+Route::get('/transaction-query', [MpesaController::class, 'transactionQuery']);
+Route::get('/mpesa-b2c', [MpesaController::class, 'MpesaB2C']);
+Route::get('/reverse', [MpesaController::class, 'reverseMpesa']);
 Route::post('get-token', [MpesaController::class, 'getAccessToken']);
 
-Route::post('register-Urls', [MpesaController::class, 'registerUrls']);
+Route::get('/register-urls', [MpesaController::class, 'registerUrls']);
 
 Route::post('simulate', [MpesaController::class, 'simulateTransaction']);
 
@@ -385,11 +396,14 @@ Route::get('/client/sales/create', [SaleController::class, 'create']);
 Route::post('/client/sales/store', [SaleController::class, 'store']);
 Route::get('/client/sales/show/{id}', [SaleController::class, 'show']);
 Route::get('/client/sales/edit/{id}', [SaleController::class, 'edit']);
-Route::post('/client/sales/update/{id}', [SaleController::class, 'updte']);
-Route::post('/client/sales/delete/{id}', [SaleController::class, 'deletes']);
+Route::post('/client/sales/update/{id}', [SaleController::class, 'update']);
+Route::post('/client/sales/delete/{id}', [SaleController::class, 'delete']);
 Route::get('/client/sales/get-promt-items/{key}', [SaleController::class, 'getPrompItems']);
-Route::get('/client/sales/get-sale-item/{key}', [SaleController::class, 'getSalesItems']);
-Route::get('/client/sales/makePayment/{number}/{amount}', [SaleController::class, 'makePayment']);
+Route::get('/client/sales/get-sale-item/{trans_id}/{key}', [SaleController::class, 'getSalesItems']);
+Route::get('/client/sales/makePayment/mpesa/{trans_id}/{number}/{amount}', [SaleController::class, 'makeMpesaPayment']);
+Route::get('/client/sales/makePayment/card/{number}/{amount}', [SaleController::class, 'makePayment']);
+Route::get('/client/sales/makePayment/cash/{trans_id}/{amount}', [SaleController::class, 'makeCashPayment']);
+Route::get('/client/sales/closetransaction/{trans_id}', [SaleController::class, 'closeTransaction']);
 
 //store sales on hold
 Route::get('/client/sales/transactions/hold/store/{id}/{price}/{paid_amount}', [SaleTransactionController::class, 'storeItemsOnHold']);
@@ -399,6 +413,9 @@ Route::get('/client/sales/transactions/complete/store/{id}/{amount}/{balance}', 
 Route::get('/client/sales/transactions/complete/retrieve', [SaleTransactionController::class, 'getCompleteTransactionItems']);
 
 
+
+
+/*
 // daily sales
 Route::get('/client/sales/daily/index', [DailySaleController::class, 'index']);
 Route::get('/client/sales/daily/create', [DailySaleController::class, 'create']);
@@ -409,6 +426,7 @@ Route::post('/client/sales/daily/update/{id}', [DailySaleController::class, 'upd
 Route::post('/client/sales/daily/delete/{id}', [DailySaleController::class, 'deletes']);
 
 // monthly sales
+
 Route::get('/client/sales/monthly/index', [MonthlySaleController::class, 'index']);
 Route::get('/client/sales/monthly/create', [MonthlySaleController::class, 'create']);
 Route::post('/client/sales/monthly/store', [MonthlySaleController::class, 'store']);
@@ -425,6 +443,7 @@ Route::get('/client/sales/yearly/show/{id}', [YearlySaleController::class, 'show
 Route::get('/client/sales/yearly/edit/{id}', [YearlySaleController::class, 'edit']);
 Route::post('/client/sales/yearly/update/{id}', [YearlySaleController::class, 'updte']);
 Route::post('/client/sales/yearly/delete/{id}', [YearlySaleController::class, 'deletes']);
+*/
 
 // employee sales
 Route::get('/client/sales/employee/index', [EmployeeSaleController::class, 'index']);
@@ -435,28 +454,32 @@ Route::get('/client/sales/employee/edit/{id}', [EmployeeSaleController::class, '
 Route::post('/client/sales/employee/update/{id}', [EmployeeSaleController::class, 'updte']);
 Route::post('/client/sales/employee/delete/{id}', [EmployeeSaleController::class, 'deletes']);
 
-Route::get('/createsales', [SalesController::class, 'showCreateSales']);
-Route::post('/create-sales-item', [SalesController::class, 'store']);
-Route::get('/updatesales', [SalesController::class, 'update']);
-Route::get('/showallsales', [SalesController::class, 'index']);
-Route::get('/sales-item/{id}', [SalesController::class, 'show']);
-Route::get('/salesitemsoncredit', [SalesController::class, 'showSoldItemsOnCredit']);
-Route::get('/view-emp-sales', [SalesController::class, 'showEmpSales']);
-Route::get('/sales/delete/{id}', [SalesController::class, 'delete']);
-Route::get('/view-retail-sales', [SalesController::class, 'updateToken']);
-Route::get('/soldPaidItems', [SalesController::class, 'showPaidSoldItems']);
-Route::get('/sales/sales-by-date', [SalesController::class, 'getSalesByDate']);
-Route::post('/sales/sales-by-retail/{id}', [SalesController::class, 'getSalesByDate']);
+
+//items on credit
+Route::get('/client/sales/credit/index', [CreditItemController::class, 'index']);
+
+//paid items
+Route::get('/client/sales/paiditems/index', [PaidItemsController::class, 'index']);
 
 
 
 //stock
 Route::get('/create-stock', [StockController::class, 'create'])->name('createstock');
-Route::get('/show-all-stock', [StockController::class, 'index'])->name('showstock');
-Route::get('/stock-item/{id}', [StockController::class, 'show']);
+Route::get('/client/stock/index', [StockController::class, 'index'])->name('showstock');
+
+Route::get('/client/stock/show/{id}', [StockController::class, 'show']);
+Route::get('/client/stock/edit/{id}', [StockController::class, 'edit']);
+Route::get('/client/stock/item/edit/{id}', [StockController::class, 'editItem']);
+
+Route::post('/client/stock/update/{id}', [StockController::class, 'update']);
+Route::post('/client/stock/item/update/{id}', [StockController::class, 'updateItem']);
+Route::get('/client/stock/item/update/required/{id}', [StockController::class, 'markRequired']);
+Route::get('/client/stock/item/update/orders/{id}', [StockController::class, 'orderItems']);
+
 Route::post('/client/stock/store', [StockController::class, 'store']);
-Route::get('/stockitemsoncredit', [StockController::class, 'showSoldItemsOnCredit']);
-Route::get('/stock/delete/{id}', [StockController::class, 'destroy']);
+// Route::get('/stockitemsoncredit', [StockController::class, 'showSoldItemsOnCredit']);
+Route::get('/client/stock/delete/{id}', [StockController::class, 'destroy']);
+Route::get('/client/stock/item/delete/{id}', [StockController::class, 'destroy']);
 Route::get('/view-retail-sales', [StockController::class, 'updateToken']);
 Route::get('/stock/stock-by-date', [StockController::class, 'getSalesByDate']);
 Route::post('/stock/stock-by-retail/{id}', [StockController::class, 'getSalesByDate']);
@@ -465,16 +488,16 @@ Route::post('/stock/stock-by-retail/{id}', [StockController::class, 'getSalesByD
 
 
 // required items
-Route::get('/requireditem/create-requireditems', [RequiredItemsController::class, 'create'])->name('createrequireditem');
-Route::get('/requireditem/show-all-required-item', [RequiredItemsController::class, 'index'])->name('showrequieditem');
-Route::get('/requireditem/requireditem-item/{id}', [RequiredItemsController::class, 'show']);
-Route::get('/requireditem/requireditemoncredit', [RequiredItemsController::class, 'showSoldItemsOnCredit']);
-Route::get('/requireditem/delete/{id}', [RequiredItemsController::class, 'destroy']);
-Route::get('/requireditem/view-retail-sales', [RequiredItemsController::class, 'updateToken']);
-Route::get('/requireditem/requireditem-by-date', [RequiredItemsController::class, 'getSalesByDate']);
-Route::post('/requireditem/requireditem-by-retail/{id}', [RequiredItemsController::class, 'getSalesByDate']);
-Route::post('/requireditems/order', [RequiredItemsController::class, 'order']);
-Route::get('/requireditems/editRequiredItems/{id}', [RequiredItemsController::class, 'editRequiredItems']);
+Route::get('/requireditem/create-requireditems', [RequiredItemController::class, 'create'])->name('createrequireditem');
+Route::get('/client/requireditem/index', [RequiredItemController::class, 'index'])->name('showrequieditem');
+Route::get('/client/requireditem/requireditem-item/{id}', [RequiredItemController::class, 'show']);
+Route::post('/client/requireditems/order', [RequiredItemController::class, 'order']);
+Route::get('/client/requireditems/editRequiredItems/{id}', [RequiredItemController::class, 'edit']);
+
+//ordered required items
+Route::get('/client/requireditem/ordered/index', [OrderedRequiredItemController::class, 'index'])->name('showrequieditem');
+Route::get('/client/requireditem/placeorder/index', [RequiredItemOrderController::class, 'index']);
+
 
 
 //Orders
@@ -492,32 +515,30 @@ Route::get('/client/orders/delivered/create', [DeliveredOrderController::class, 
 Route::get('/client/orders/delivered/delete', [DeliveredOrderController::class, 'delete']);
 
 #pending orders
-Route::post('/client/orders/pending/store', [OrdersController::class, 'store']);
-Route::get('/client/orders/pending/index', [OrdersController::class, 'index']);
+Route::get('/client/orders/pending/index', [PendingOrderController::class, 'index']);
 Route::get('/client/orders/pending/show/{id}', [OrdersController::class, 'show']);
-Route::get('/client/orders/pending/create', [OrdersController::class, 'create']);
-Route::get('/client/orders/pending/delete', [OrdersController::class, 'delete']);
 
 //loans
-Route::get('/get-available-loans', [LoansController::class, 'index'])->name('loanitems');
+Route::get('/client/loans/index', [LoansController::class, 'index'])->name('loanitems');
 Route::get('/loans/show-my-loans', [LoansController::class, 'showAppliedLoans'])->name('getMyLoans');
 Route::get('/request-loan/{loan_id}/{amount}', [LoansController::class, 'applyLoan'])->name('LoanApplication');
 Route::get('/loans/pay-a-loan/{loanapplication_id}', [LoansApplicationsController::class, 'payLoanRequest'])->name('LoanApplication');
-Route::get('/loans/view-applied-loan/{loan_id}/{loanapplication_id}', [LoansApplicationsController::class, 'showAppliedLoanItem']);
+
+//applied loans
+Route::get('/client/loans/applied/index', [AppliedLoansController::class, 'index'])->name('applied-loans');
+Route::get('/client/loans/applied/show/{id}', [AppliedLoansController::class, 'show']);
 
 Route::get('/client/loans/index', [LoansController::class, 'index'])->name('listloan');
 Route::get('/client/loans/show', [LoansController::class, 'show'])->name('showloan');
 Route::get('/request-loan/{loan_id}/{amount}', [LoansController::class, 'applyLoan'])->name('LoanApplication');
-Route::get('/loans/pay-a-loan/{loanapplication_id}', [LoansApplicationsController::class, 'payLoanRequest'])->name('LoanApplication');
 Route::get('/loans/view-applied-loan/{loan_id}/{loanapplication_id}', [LoansApplicationsController::class, 'showAppliedLoanItem']);
 
-
-
-
-//loanpayments
-Route::get('/loans/payment/index/{loanapplication_id}',  [LoanPaymentController::class, 'index']);
-Route::get('/loans/payment/show/{id}',  [LoanPaymentController::class, 'show']);
-
+//loan payments
+//pay loan
+Route::get('/client/loans/pay/{id}', [LoanPaymentController::class, 'index']);
+// Route::get('/loans/pay-a-loan/{loanapplication_id}', [LoansApplicationsController::class, 'payLoanRequest'])->name('LoanApplication');
+// Route::get('/loans/payment/index/{loanapplication_id}',  [LoanPaymentController::class, 'index']);
+Route::get('/client/loans/payment/show/{id}',  [LoanPaymentController::class, 'show']);
 
 //payments
 Route::get('/payments/cardpayments', [CardPaymentsController::class, 'index']);
@@ -587,11 +608,6 @@ Route::post('/client/userprofile/profile/update/{id}',  [ProfileProfileControlle
 Route::post('/client/userprofile/profile/national_id/{id}',  [ProfileProfileController::class, 'uploadUserDocuments']);
 #-relevant-documents
 Route::post('/client/userprofile/profile/relevant-documents/{id}',  [ProfileProfileController::class, 'uploadRelevantDocuments']);
-
-
-
-
-
 //retails
 Route::get('/client/retails/profile',  [RetailController::class, 'show']);
 
@@ -599,19 +615,19 @@ Route::get('/client/retails/create',  [RetailController::class, 'create']);
 Route::get('/client/retails/show',  [RetailController::class, 'show']);
 Route::get('/client/retails/profile/edit/{id}',  [RetailController::class, 'edit']);
 Route::post('/client/retails/profile/update/{id}',  [RetailController::class, 'update']);
+Route::post('/client/retails/profile/payentpreference/update/{id}',  [RetailController::class, 'paymentPreference']);
 Route::post('/client/retails/profile/retail-documents',  [RetailController::class, 'uploadRetailDocuments']);
 Route::post('/client/retails/profile/relevant-documents',  [RetailController::class, 'uploadRelevantDocuments']);
 Route::post('/client/retails/profile/update',  [RetailController::class, 'updateRetailProfile']);
-
 
 //register a retail
 Route::post('/client/retail/register/store',  [RetailController::class, 'store']);
 
 
 //customers
-Route::get('/customers/index',  [CustomerController::class, 'index']);
-Route::get('/customers/create',  [CustomerController::class, 'create']);
-Route::post('/customers/store',  [CustomerController::class, 'store']);
+Route::get('/client/customers/index',  [CustomerController::class, 'index']);
+Route::get('/client/customers/create',  [CustomerController::class, 'create']);
+Route::post('/client/customers/store',  [CustomerController::class, 'store']);
 Route::get('/customers/show/{id}',  [CustomerController::class, 'show']);
 Route::get('/customers/edit/{id}',  [CustomerController::class, 'edit']);
 Route::post('/customers/update/{id}',  [CustomerController::class, 'update']);
@@ -629,12 +645,15 @@ Route::get('/customers/credit/delete/{id}',  [CustomerCreditController::class, '
 
 
 //bills
-Route::get('/bills/index',  [BillController::class, 'index']);
-Route::get('/bills/create',  [BillController::class, 'create']);
-Route::post('/bills/store',  [BillController::class, 'store']);
-Route::post('/bills/show/{id}',  [BillController::class, 'show']);
-Route::get('/bills/edit',  [BillController::class, 'edit']);
-Route::post('/bills/update',  [BillController::class, 'update']);
+Route::get('/client/bills/index',  [BillController::class, 'index']);
+Route::get('/client/bills/create',  [BillController::class, 'create']);
+Route::post('/client/bills/store',  [BillController::class, 'store']);
+Route::post('/client/bills/show/{id}',  [BillController::class, 'show']);
+Route::get('/client/bills/edit',  [BillController::class, 'edit']);
+Route::post('/client/bills/update',  [BillController::class, 'update']);
+//bill history
+Route::get('/client/bills/history/index',  [BillController::class, 'index']);
+Route::post('/client/bills/history/show/{id}',  [BillController::class, 'show']);
 
 //bill payment
 Route::get('/bills/payment/index/{bill_id}',  [BillPaymentController::class, 'index']);

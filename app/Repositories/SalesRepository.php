@@ -12,6 +12,69 @@ class SalesRepository
         $this->retail = $retail;
     }
 
+
+public function indexData()
+{
+    # code...
+    $allSales = $this->getAllSales();
+    $soldItems = $this->getItems();
+    //dd( $soldItems);
+
+    $solditemscount = count($allSales);
+    $salesTotalPrice = $allSales->sum('selling_price');
+    $salesrevenue = $this->getRevenue();
+    $meansales = $this->retail->sales()->get()->Avg('selling_price');
+    $meansales = round($meansales, 2);
+    $growth = $this->getProfitPercentage();
+    $growth = round($growth, 2);
+
+    
+    $salesdata = array(
+        'soldItems' => $soldItems,
+        'allSales' =>  $allSales,
+        'solditemscount' => $solditemscount,
+        'salesTotalPrice' => $salesTotalPrice,
+        'salesrevenue' => $salesrevenue,
+        'meansales' => $meansales,
+        'growth' => $growth,
+    );
+
+    return $salesdata;
+}
+
+public function createData()
+{
+    # code...
+    $stockdata = array(
+        "allStock"  => $this->retail->stocks()->get(),
+
+    );
+
+    return  $stockdata;
+}
+
+public function showData($id)
+{
+    # code...
+    $allSales = $this->getSaleItem($id);
+    // dd( $allSales);
+    $salesdata = array(
+        'allSales' =>  $allSales,
+    );
+
+    return  $salesdata;
+
+}
+
+public function destroy($id)
+{
+    //
+    $result = $this->retail->sales()->destroy($id);
+    if (!$result)
+        return false;
+    return $result;
+}
+
     //store sales item
     public function saveSalesItem($request)
     {
@@ -20,15 +83,64 @@ class SalesRepository
         );
     }
 
+    public function saveSalesItemFromStock($request)
+    {
+        // dd($request);
+      //  dd($request->retail_items_id);
+
+        $result = $this->retail->sales()->create(
+            [
+                'code' => $request->code,
+                'selling_price' => $request->item->selling_price,
+                'employees_id' => auth()->id(),
+                'retail_items_id' => $request->retail_items_id,
+                'sale_transaction_id' => $request->sale_transaction_id,
+            ]
+
+        );
+
+        if (!$result)
+            return false;
+
+        return true;
+    }
     public function getDisctictSoldItems()
     {
         //dd($this->retail);
         $sales = $this->retail->sales()->distinct('itemName', 'itemSize')->get();
         foreach ($sales as $sale) {
             $sale->itemAmount = $this->retail->sales()->where('itemName', $sale->itemName)->sum('itemAmount');
-            $sale->price = $this->retail->sales()->where('itemName', $sale->itemName)->sum('price');
+            $sale->price = $this->retail->sales()->where('itemName', $sale->itemName)->sum('selling_price');
         }
+
         return $sales;
+    }
+
+    //get sold items
+    public function getItems($month = null, $year = null)
+    {
+        $sales = null;
+
+        if (!$year)
+            $year = date('Y');
+        if ($month)
+            $items = $this->retail->items()
+                ->whereMonth('created_at', '=', $month)
+                ->whereYear('created_at', '=', $year)
+                ->get();
+
+        else {
+            $month = date('m');
+            $items = $this->retail->items()
+                ->whereMonth('created_at', '=', $month)
+                ->whereYear('created_at', '=', $year)
+                ->get();
+        }
+        foreach ($items as $item) {
+            $item['sales'] =  $item->sales()->whereIn('retailsaleable_id', $this->retail)->get();
+        }
+
+        return $items;
     }
 
     //get all sales
@@ -50,6 +162,9 @@ class SalesRepository
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
+        }
+        foreach ($sales as $sale) {
+            $sale['item'] =  $sale->items()->first();
         }
 
 
@@ -90,25 +205,22 @@ class SalesRepository
 
     public function getRevenue($key = null, $value = null)
     {
-        $sales = 0;
+        $salesRevenue = 0;
         $salesexpense = 0;
-        if ($key && $value) {
-            $sales = $this->retail->sales()
-                ->where($key, $value)
-                ->sum('price');
-            $salesexpense = $this->retail->stocks()
-                ->where($key, $value)
-                ->sum('buying_price');
-        } else {
-            $sales = $this->retail->sales()->sum('price');
-            $salesexpense = $this->retail->stocks()->sum('buying_price');
-        }
 
+        $sales = $this->retail->sales()
+            ->where($key, $value)
+            ->sum('selling_price');
 
-        $salesrevenue = $sales - $salesexpense;
+        $stockRepo = new StockRepository($this->retail);
+        $salesexpense = $stockRepo->getStockExpense();
+
+        $salesRevenue = $sales - $salesexpense;
         # code...
-        return $salesrevenue;
+        return $salesRevenue;
     }
+
+
     public function getProfitPercentage($key = null, $value = null)
     {
         $salesrevenue = $this->getRevenue($key, $value);
@@ -123,16 +235,23 @@ class SalesRepository
     }
 
 
-    public function getSaleItem($key, $value)
+    public function getSaleItem($item_id)
     {
-        $sales =  $this->retail->sales()->where($key, $value)->orderBy('created_at', 'DESC')->get();
+        $item = $this->retail->items()->where('id', $item_id)->first();
+
+        $sales =  $item->sales()
+            ->whereIn('retailsaleable_id', $this->retail)
+            ->orderBy('created_at', 'DESC')->get();
+
+        foreach ($sales as $sale)
+            $sale['item'] = $item;
         return $sales;
     }
     //get sale by item id
     public function getStockById($itemid)
     {
-        $stock = $this->retail->stocks()->where('stockNameId', $itemid)->first();
-
+        $stock = $this->retail->stocks()->where('code', $itemid)->first();
+        $stock['item'] =  $stock->items()->first();
         return $stock;
     }
 
@@ -161,11 +280,11 @@ class SalesRepository
 
         $currentTransactions = $this->retail->salesTransactions()
             ->whereMonth('created_at', '=', $month)
-            ->sum('price');
+            ->sum('paid_amount');
 
         $previousTransactions = $this->retail->salesTransactions()
             ->whereMonth('created_at', '=', $month - 1)
-            ->sum('price');
+            ->sum('paid_amount');
 
         if (!$currentTransactions)
             $currentTransactions = 1;
@@ -193,29 +312,72 @@ class SalesRepository
     }
 
     //add sold item from stock
-    public function addSoldItemFromStock($id)
+    public function addSoldItemFromStock($item, $transId)
     {
         # code...
         $stockRepo = new StockRepository($this->retail);
-        $stockItem = $stockRepo->getStockById($id);
-        if (!$stockItem)
+
+        $salesItem = $item;
+
+        $salesItem['sale_transaction_id'] = $transId;
+        $saveSales = $this->saveSalesItemFromStock($salesItem);
+        if (!$saveSales)
             return false;
 
-     $saleitem = array(
-                'itemNameId' => $stockItem->
-                'itemName' => $stockItem->
-                'description' => $stockItem->
-                'itemAmount' => $stockItem->
-                'itemImage' =>$stockItem->
-                'price' => $stockItem->
-     )
+        $result = $this->removeStockItem($item->id);
+        return $result;
+    }
+
+    public function getTransactionItems($transaction)
+    {
+        # code...
+        $sales = $transaction->sales()->get();
+        if (!$sales)
+            return false;
+        foreach ($sales as $sale) {
+            $items =  $sale->items()->first();
+            $sale['item'] = $items;
+        }
+
+        return $sales;
+    }
+
+    public function getPaidSoldItems()
+    {
+        # code...
+        $transactions = $this->retail->salesTransactions()->where('pay_status', true)->get();
+        foreach ($transactions as $transaction) {
+            $sales = $this->getTransactionItems($transaction);;
+            $transaction['sales'] = $sales;
+        }
+        return $transactions;
+    }
+
+    public function getCreditItems()
+    {
+        # code...
+
+        $transactions = $this->retail->salesTransactions()->where('on_credit', true)->get();
+        foreach ($transactions as $transaction) {
+            $sales = $this->getTransactionItems($transaction);
+            $transaction['sales'] = $sales;
+        }
+        return $transactions;
+    }
 
 
+    //employees
+    public function getEmployeeSales($id)
+    {
+        $emp = $this->retail->employees()->where('id', $id)->first();
+        $sales = $emp->sales()->get();
+        foreach ($sales as $sale) {
+            $sale['saleitem'] = $sale->items()->first();
+            // dd($sale);
+        }
+        $sales['emp'] = $emp;
+
+        //dd($sales);
+        return  $sales;
+    }
 }
-
-
-    //$month = "2027";
-        // $post = Mjblog::whereYear('created_at', '=', $year)
-        //     ->whereMonth('created_at', '=', $month)
-        //     ->get();
-        //5636642.0

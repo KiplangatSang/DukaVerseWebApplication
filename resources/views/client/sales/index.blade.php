@@ -105,37 +105,42 @@
 																																</tr>
 																												</thead>
 																												<tbody>
-																																@foreach ($salesdata['allSales'] as $saleitem)
-																																				<tr>
+																																@foreach ($salesdata['soldItems'] as $saleitem)
+																																				@if ($saleitem->sales)
+																																								@if (count($saleitem->sales) > 0)
+																																												<tr>
 
-																																								<td>
-																																												<div class="col-sm-6">
-																																																<img class="icon d-flex w-100"
-																																																				src="{{ $saleitem['itemImage'] ?? 'noprofile.png' }}"
-																																																				alt="{{ $saleitem['itemName'] }}">
-																																												</div>
+																																																<td>
+																																																				<div class="col-sm-6">
+																																																								<img class="icon d-flex w-100"
+																																																												src="{{ $saleitem->image ?? 'noprofile.png' }}"
+																																																												alt="{{ $saleitem->name }}">
+																																																				</div>
 
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->itemName }}
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->itemSize }}
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->itemAmount }}
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->price }}
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->created_at }}
+																																																</td>
+																																																<td>
+																																																				{{ $saleitem->name }}
+																																																</td>
+																																																<td>
+																																																				{{ $saleitem->size }}
+																																																</td>
+																																																<td>
+																																																				{{ count($saleitem->sales) }}
+																																																</td>
+																																																<td>
+																																																				{{ $saleitem->selling_price }}
+																																																</td>
+																																																<td>
+																																																				{{ $saleitem->created_at }}
 
-																																								</td>
-																																								<td><a href="/client/sales/show/{{ $saleitem->id }}"><i class="fa fa-eye ">
-																																																				View</i></a></td>
+																																																</td>
+																																																<td><a href="/client/sales/show/{{ $saleitem->id }}"><i
+																																																												class="fa fa-eye ">
+																																																												View</i></a></td>
 
-																																				</tr>
+																																												</tr>
+																																								@endIf
+																																				@endIf
 																																@endforeach
 																												</tbody>
 																								</table>

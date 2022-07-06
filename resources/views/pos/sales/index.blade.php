@@ -25,8 +25,7 @@
 																								<li class="app-search float-right">
 																												<input class="app-search__input " type="search" placeholder="Search" id="txt1"
 																																onkeyup="showHint(this.value)">
-																												<button class="app-search__button" onclick="showHint('')"><i
-																																				class="fa fa-search"></i></button>
+																												<button class="app-search__button" onclick="showHint('')"><i class="fa fa-search"></i></button>
 																								</li>
 
 																								<div class="col-md-3">
@@ -37,8 +36,19 @@
 																								</div>
 
 																				</div>
+																				<div class="tile center" id="transaction-response">
+																								<div class="d-flex justify-content-center">
+																												<h3 id="respaystatus"><strong>Kiplangat Sang</strong></h3>
+																								</div>
+																								<div class="d-flex justify-content-center">
+																												<p id="respayamount">Kiplangat Sang</p>
+																								</div>
+																								<div class="d-flex justify-content-center">
+																												<a class="btn btn-primary" id="closetransaction">Close</a>
+																								</div>
+																				</div>
 
-																				<div class="">
+																				<div>
 																								<div class="tile-body">
 																												<div class="table-responsive">
 																																<table class="table table-hover table-bordered" id="sampleTable">
@@ -46,11 +56,12 @@
 																																								<tr>
 
 																																												<th>Item Name</th>
+																																												<th>Item code</th>
+																																												<th>Item brand</th>
 																																												<th>Item Description</th>
 																																												<th>Item Amount</th>
 																																												<th>Price</th>
-																																												<th>Remove</th>
-																																												<th>View</th>
+																																												{{-- <th>View</th> --}}
 																																								</tr>
 																																				</thead>
 																																				<tbody>
@@ -147,15 +158,19 @@
 																																<div class="mx-2">
 																																				<h1>Cash</h1>
 																																				<input class="form-control" type="text" placeholder="Enter amount paid "
-																																								autocomplete="additional-name" id="inputCash" onclick="disableInput('inputCash')">
+																																								autocomplete="additional-name" id="inputCash"
+																																								onclick="disableInput('inputCash')">
 																																				<h1>Mpesa</h1>
 																																				<input class="form-control" type="text" placeholder="Enter phone Number "
-																																								autocomplete="additional-name" id="inputMpesa" onclick="disableInput('inputMpesa')">
+																																								autocomplete="additional-name" id="inputMpesa"
+																																								onclick="disableInput('inputMpesa')">
 																																				<h1>Card</h1>
 																																				<input class="form-control" type="text" placeholder="Enter Item Code "
-																																								autocomplete="additional-name" id="inputCard" onclick="disableInput('inputCard')">
+																																								autocomplete="additional-name" id="inputCard"
+																																								onclick="disableInput('inputCard')">
 																																</div>
-																																<button type="button" class="btn btn-primary mt-2" onclick="submitPayment()">Send</button>
+																																<button type="button" class="btn btn-primary mt-2"
+																																				onclick="submitPayment()">Send</button>
 																																<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
 																												</form>
 																								</div>
@@ -170,7 +185,7 @@
 																				</div>
 																				<div class="row mx-auto d-flex justify-content-center">
 
-																								<a onclick="closeTransaction()">
+																								<a onclick="clearTable()">
 																												<div class="tile m-1 bg-danger">
 																																<h3 class="tile-title text-dark">Clear</h3>
 																												</div>
@@ -183,6 +198,7 @@
 																								</a>
 																				</div>
 																</div>
+																{{-- display balance and payment result --}}
 												</div>
 								</div>
 								<hr>
@@ -238,6 +254,25 @@
 												</div>
 								</div>
 				</div>
+
+				<script>
+				    $('#closetransaction').click(function() {
+				        const xhttp = new XMLHttpRequest();
+				        xhttp.onload = function() {
+				            console.log("response" + this.responseText);
+				            var result = JSON.parse(this.responseText);
+				            if (result.success == true) {
+				               clearTable();
+				               document.getElementById("transaction-response").style.visibility = "hidden";
+				            }else{
+                                alert("Error");
+                                alert("Could not Close transaction");
+                            }
+				        }
+				        xhttp.open("GET", "/client/sales/closetransaction/" + getTransactionId());
+				        xhttp.send();
+				    });
+				</script>
 				<script>
 				    //payment section
 				    function openForm() {
@@ -249,8 +284,6 @@
 				        document.getElementById("paymentSection").style.display = "none";
 				        disableInput("");
 				    }
-
-
 				    //payment submition
 				    function submitPayment() {
 				        var cashInputId, mpesaInputId, cardInputId, expenseEmountId, expense;
@@ -264,6 +297,7 @@
 				        if (cashInputId.value != "") {
 				            paidAmountId = document.getElementById("paid");
 				            paidAmountId.innerHTML = cashInputId.value;
+                            cashPayment(cashInputId.value)
 				            calculateBalance();
 				            closeForm();
 				        } else if (mpesaInputId.value != "") {
@@ -276,11 +310,35 @@
 
 				    }
 
+				    //submitCashBalance
+				    function cashPayment(amount) {
+				        if (amount.length == 0 ) {
+				            alert("Input correct number and amount");
+				            return;
+				        }
+				        const xhttp = new XMLHttpRequest();
+				        xhttp.onload = function() {
+				            console.log("response" + this.responseText);
+				            var result = JSON.parse(this.responseText);
+
+				            if (result.success = true) {
+				                document.getElementById("transaction-response").style.visibility = "visible";
+                                document.getElementById("respaystatus").innerHTML = "Success Paid";
+                                document.getElementById("respayamount").innerHTML = result.data.balance;
+
+
+				            } else if (result.success = false) {
+                                document.getElementById("transaction-response").style.visibility = "visible";
+                                document.getElementById("respaystatus").innerHTML = "Error";
+				            }
+
+				        }
+				        xhttp.open("GET", "/client/sales/makePayment/cash/" + getTransactionId() + "/" + amount);
+				        xhttp.send();
+				    }
+
 				    //disables other inputs when one payment method is chosen
 				    function disableInput(id) {
-
-
-
 				        cashInputId = document.getElementById("inputCash");
 				        mpesaInputId = document.getElementById("inputMpesa");
 				        cardInputId = document.getElementById("inputCard");
@@ -330,6 +388,8 @@
 				        xhttp.send();
 				    }
 
+
+
 				    //show item hints
 				    function showHint(str) {
 				        if (str.length == 0) {
@@ -349,6 +409,7 @@
 				        xhttp.send();
 				    }
 
+                    //get item using code
 				    function getItem(str) {
 				        if (str.length == 0) {
 				            document.getElementById("txtHint").innerHTML = "";
@@ -360,23 +421,28 @@
 				            //console.log(this.responseText);
 				            var result = JSON.parse(this.responseText);
 				            var table = $('#sampleTable'),
-				                newRow = '<tr><td>' + result.stockName + '</td><td>' + result.stockSize + '</td><td>' +
-				                1 + '</td><td>' + result.selling_price +
-				                '</td><td><a class="btn btn-primary" href="/stock-item/' + result.id +
-				                '">Remove</a></td><td><a href="/stock-item/' + result.id +
-				                '"><i class="fa fa-eye ">View</i></a></td></tr>';
+				                newRow = '<tr><td>' + result.item.name + '</td><td>' + result.code + '</td><td>' + result.item
+				                .brand + '</td><td>' + result.item.size + '</td><td>' +
+				                1 + '</td><td>' + result.item.selling_price +
+				                '</td></tr>';
+				            //<td><a class="btn btn-primary" href="/stock-item/' + result.id +'">Remove</a></td>
+				            //<td><a href="/stock-item/' + result.id +'"><i class="fa fa-eye ">View</i></a></td>
+
 				            table.find('tbody').append(newRow);
 				            document.getElementById("itemCodeInput").value = "";
 				            document.getElementById("trans_id").innerHTML = result.transaction_id
 				            setSalesStatusItems();
-				            updateExpense(result.selling_price);
+				            updateExpense(result.item.selling_price);
 				            calculateBalance();
 
 				        }
-				        xhttp.open("GET", "/client/sales/get-sale-item/" + str);
+                        var trans_id = getTransactionId();
+                        var url = "/client/sales/get-sale-item/" +  trans_id + "/" + str;
+                        console.log(url);
+                        // alert(trans_id);
+				        xhttp.open("GET", url);
 				        xhttp.send();
 				    }
-
 				    const tableObject = document.getElementById('sampleTable');
 				    const rowCount = tableObject.childElementCount - 2;
 				    //var rowCount =tableObject.rows.length;
@@ -439,12 +505,10 @@
 				        const xhttp = new XMLHttpRequest();
 				        xhttp.onload = function() {
 				            clearHoldTable();
-				            var hello = "hello";
+
 
 				            var result = JSON.parse(this.responseText);
-
-
-
+                            console.log(result);
 				            for (var i = 0; i < result.length; i++) {
 				                var clickAction = "resetItemsOnHold('" + result[i].transaction_id + "')";
 				                var payStatus = "Not Paid";
@@ -452,12 +516,12 @@
 				                    payStatus = "paid";
 				                }
 				                var table = $('#tableHoldItems'),
-				                    newRow = '<tr><td>' + result[i].transaction_id + '</td><td>' + result[i].price +
+				                    newRow = '<tr><td>' + result[i].transaction_id + '</td><td>' + result[i].expense +
 				                    '</td><td>' +
 				                    payStatus + '</td><td>' +
 				                    result[i].transaction_items.length + '</td><td>' + result[i].balance +
 				                    '</td><td><a class="btn btn-primary" ' +
-				                    '" onClick="' + clickAction + '">Open</a></td><td></tr>';
+				                    '" onClick="' + clickAction + '">Open</a></td></tr>';
 				                table.find('tbody').append(newRow);
 
 
@@ -497,8 +561,7 @@
 				            console.log(this.responseText);
 				            clearTable();
 				            getTransactionsOnHold();
-				            // alert(this.responseText);
-				            // var result = JSON.parse(this.responseText);
+
 
 				        }
 				        xhttp.open("get", "/client/sales/transactions/hold/store/" + id + "/" + expense + "/" + paid);
@@ -545,7 +608,7 @@
 				    }
 
 				    function resetItemsOnHold(str) {
-				        //alert(str);
+
 				        clearTable();
 				        //+'"'+result[i].transaction_id+'"'+
 				        if (str.length == 0) {
@@ -558,16 +621,22 @@
 
 				            document.getElementById("expense").innerHTML = 0;
 				            var result = JSON.parse(this.responseText);
-				            var resultItems = result.items
-				            console.log(result.items);
+				            var resultItems = result.transaction_items
+				            console.log(result.transaction_items);
 				            for (var i = 0; i < resultItems.length; i++) {
+
+				                console.log(resultItems);
 				                var table = $('#sampleTable'),
-				                    newRow = '<tr><td>' + resultItems[i].stockName + '</td><td>' + resultItems[i].stockSize +
+				                    newRow = '<tr><td>' + resultItems[i].item.name + '</td><td>' + resultItems[i].code +
+				                    '</td><td>' + resultItems[i].item.brand + '</td><td>' + resultItems[i].item.size +
 				                    '</td><td>' +
-				                    1 + '</td><td>' + resultItems[i].selling_price +
-				                    '</td><td><a class="btn btn-primary" href="/stock-item/' + resultItems[i].id +
-				                    '">Remove</a></td><td><a href="/stock-item/' + resultItems[i].id +
-				                    '"><i class="fa fa-eye ">View</i></a></td></tr>';
+				                    1 + '</td><td>' + resultItems[i].item.selling_price +
+				                    '</td></tr>';
+
+				                // <td><a class="btn btn-primary" href="/stock-item/' + resultItems[i].id +
+				                // '">Remove</a></td><td><a href="/stock-item/' + resultItems[i].id +
+				                // '"><i class="fa fa-eye ">View</i></a></td>
+
 				                table.find('tbody').append(newRow);
 				                document.getElementById("itemCodeInput").value = "";
 				                document.getElementById("trans_id").innerHTML = result.transaction_id
@@ -580,6 +649,13 @@
 				        }
 				        xhttp.open("GET", "/client/sales/transactions/hold/retrieve/" + str);
 				        xhttp.send();
+				    }
+
+				    function getTransactionId() {
+				        var id = document.getElementById("trans_id").innerHTML;
+				        if (id == "" || id == null)
+				            id = "null";
+				        return id;
 				    }
 				</script>
 @endsection

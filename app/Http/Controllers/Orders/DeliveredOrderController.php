@@ -27,9 +27,8 @@ class DeliveredOrderController extends BaseController
 
         $this->retail = $this->getRetail();
 
-        if (!$this->retail){
+        if (!$this->retail) {
             return redirect('/retails/addretail')->with('message', __('retail.create'));
-
         }
 
         $this->ordersRepo = new OrdersRepository($this->retail);
@@ -41,36 +40,21 @@ class DeliveredOrderController extends BaseController
     {
         //
         $this->ordersRepository();
+        //
+        $ordersdata = $this->ordersRepository()->getDeliveredOrders();
 
-        $orders = $this->retail->orders()->orderBy('created_at', 'DESC')
-        ->where('orderStatus',1)
-        ->where('deliveryStatus',true)
-        ->get();
-        foreach ($orders as $order) {
-            $orders->ordered_items = json_decode($order->ordered_items);
-            $orders->paymentStatus = $this->getStatus($order->paymentStatus);
-        }
-        $ordersitems = count($orders);
 
-        $allOrders["orders"] = $orders;
-
-        $ordersdata = array(
-            'allOrders' =>  $allOrders,
-            'ordersitems' => $ordersitems,
-        );
-
-        //dd( $salesdata);
         return view("client.orders.delivered.index", compact('ordersdata'));
     }
 
- 
+
     public function show($id)
     {
         //
         $this->ordersRepository();
 
         //;
-        $orders = $this->retail->orders()->where('id',$id)->first();
+        $orders = $this->retail->orders()->where('id', $id)->first();
         //
         $orders->ordered_items = json_decode($orders->ordered_items);
         $ordersitems = count((array)$orders->ordered_items);

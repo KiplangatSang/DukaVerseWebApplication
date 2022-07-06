@@ -2,6 +2,7 @@
 
 namespace App\Supplies;
 
+use App\RequiredItems\RequiredItems;
 use App\Retails\Retail;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
@@ -25,5 +26,11 @@ class Orders extends Model
     public function supplier()
     {
         return $this->belongsTo(Suppliers::class);
+    }
+
+
+    public function requiredItems()
+    {
+        return $this->hasMany(RequiredItems::class,"orders_id");
     }
 }

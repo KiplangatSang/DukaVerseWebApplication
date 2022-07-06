@@ -3,7 +3,7 @@
 
 namespace App\Loaning;
 
-use App\LoanApplication;
+use App\Loans\LoanApplication;
 use App\Loans\Loans;
 
 abstract class Loaning implements LoansContract{
@@ -12,9 +12,6 @@ abstract class Loaning implements LoansContract{
     {
         $this->loan = $loan;
 
-    }
-
-    public function setLoanType(LoanApplication $loan){
     }
 
     public function setDuration($amount){

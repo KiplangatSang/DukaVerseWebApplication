@@ -13,17 +13,6 @@
 				</div>
 				<div class="row">
 								<div class="col-md-12">
-												@if (session()->has('message'))
-																<div class="container-fluid alert alert-danger">
-																				{{ session()->get('message') }}
-																</div>
-												@endif
-
-												@if (session()->has('success'))
-																<div class="container-fluid alert alert-success">
-																				{{ session()->get('success') }}
-																</div>
-												@endif
 												<div class="tile">
 																<div class="tile-body">
 																				<div class="table-responsive">
@@ -41,7 +30,7 @@
 																																</tr>
 																												</thead>
 																												<tbody>
-																																@foreach ($empdata['emplist'] as $data)
+																																@foreach ($empdata['emplist'] as $emp)
 																																				<tr>
                                                                                                                                                     <div>
 
@@ -51,13 +40,13 @@
 
 
                                                                                                                                         </div>
-																																								<td>{{ $data['emp_name'] }}</td>
-																																								<td>{{ $data['emp_email'] }}</td>
-																																								<td>{{ $data['emp_ID'] }}</td>
-																																								<td>{{ $data['emp_role'] }}</td>
-																																								<td>{{ $data['date_employed'] }}</td>
-																																								<td>{{ $data['emp_salary'] }}</td>
-																																								<td><a href="/client/employee/show/{{ $data->id }}"><i class="fa fa-eye col">
+																																								<td>{{ $emp['emp_name'] }}</td>
+																																								<td>{{ $emp['emp_email'] }}</td>
+																																								<td>{{ $emp['emp_ID'] }}</td>
+																																								<td>{{ $emp['emp_role'] }}</td>
+																																								<td>{{ $emp['date_employed'] }}</td>
+																																								<td>{{ $emp['emp_salary'] }}</td>
+																																								<td><a href="/client/employee/show/{{ $emp->id }}"><i class="fa fa-eye col">
 																																																				View</i></a></td>
 
 																																				</tr>

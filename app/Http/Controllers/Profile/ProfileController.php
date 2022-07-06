@@ -71,7 +71,7 @@ class ProfileController extends BaseController
 
          //dd($profile);
 
-        return view('client.retailers.profile.userprofile.edit', compact('profile'));
+        return view('retailers.profile.userprofile.edit', compact('profile'));
     }
 
     /**

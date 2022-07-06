@@ -113,7 +113,7 @@ class RegisterController extends BaseController
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8',],
             'c_password' => ['required|same:password', 'string', 'min:8',],
-            'phoneno' => 'required',
+            'phoneno' => ['required', 'unique:users'],
             'terms_and_conditions' => 'required',
         ]);
 

@@ -43,23 +43,10 @@ class PendingOrderController extends BaseController
     {
         //
         $this->ordersRepository();
+        $this->ordersRepository();
 
-        $orders = $this->retail->orders()->orderBy('created_at', 'DESC')
-        ->where('orderStatus',0)
-        ->where('deliveryStatus',false)
-        ->get();
-        foreach ($orders as $order) {
-            $orders->ordered_items = json_decode($order->ordered_items);
-            $orders->paymentStatus = $this->getStatus($order->paymentStatus);
-        }
-        $ordersitems = count($orders);
+        $ordersdata =  $this->ordersRepository()->getPendingOrders();
 
-        $allOrders["orders"] = $orders;
-
-        $ordersdata = array(
-            'allOrders' =>  $allOrders,
-            'ordersitems' => $ordersitems,
-        );
 
         //dd( $salesdata);
         return view("client.orders.pending.index", compact('ordersdata'));

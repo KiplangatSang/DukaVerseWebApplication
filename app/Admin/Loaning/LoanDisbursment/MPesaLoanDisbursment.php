@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Loaning\LoanDisbursment;
+namespace App\Admin\Loaning\LoanDisbursment;
 
 
 class MPesaLoanDisbursment extends LoanDisbursment

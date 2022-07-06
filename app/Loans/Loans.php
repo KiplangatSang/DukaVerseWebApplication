@@ -14,4 +14,10 @@ class Loans extends Model
     {
         return $this->morphTo();
     }
+
+    public function applications()
+    {
+        # code...
+    return $this->hasMany(LoanApplication::class);
+    }
 }

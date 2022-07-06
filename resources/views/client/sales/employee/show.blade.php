@@ -52,6 +52,22 @@
 								</form>
 				</div>
 				<div class="row">
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small warning coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+																<div class="info">
+																				<h4>Employee Name</h4>
+																				<p class="text-warning"><b>{{ $salesdata['allSales']['emp']->emp_name }}</b></p>
+																</div>
+												</div>
+								</div>
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small danger coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+																<div class="info">
+																				<h4>Employee ID</h4>
+																				<p class="text-warning"><b>{{ $salesdata['allSales']['emp']->id }}</b></p>
+																</div>
+												</div>
+								</div>
 
 								<div class="col-md-6 col-lg-3">
 												<div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-basket fa-3x"></i>
@@ -70,22 +86,7 @@
 																</div>
 												</div>
 								</div>
-								<div class="col-md-6 col-lg-3">
-												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
-																<div class="info">
-																				<h4>Daily Sales</h4>
-																				<p class="text-warning"><b>{{ $salesdata['sales'] }}</b></p>
-																</div>
-												</div>
-								</div>
-								<div class="col-md-6 col-lg-3">
-												<div class="widget-small danger coloured-icon"><i class="icon fa fa-signal fa-3x"></i>
-																<div class="info">
-																				<h4>Growth</h4>
-																				<p class="text-warning"><b>{{ $salesdata['sales'] }}%</b></p>
-																</div>
-												</div>
-								</div>
+
 				</div>
 				<div class="row">
 								<div class="col-md-12">
@@ -96,46 +97,43 @@
 																												<thead>
 																																<tr>
 																																				<th>Item </th>
+                                                                                                                                                <th>Item Id</th>
 																																				<th>Item Name</th>
+                                                                                                                                                <th>Brand </th>
 																																				<th>Size/Type</th>
 																																				<th>Item Amount</th>
 																																				<th>Price</th>
 																																				<th>Date Sold</th>
-																																				<th>View</th>
+
 																																</tr>
 																												</thead>
 																												<tbody>
-																																@foreach ($salesdata['allSales'] as $saleitem)
-																																				<tr>
 
-																																								<td>
-																																												<div class="col-sm-6">
-																																																<img class="icon d-flex w-100"
-																																																				src="{{ $saleitem['itemImage'] ?? 'noprofile.png' }}"
-																																																				alt="{{ $saleitem['itemName'] }}">
-																																												</div>
+																																@foreach ($salesdata['allSales'] as $soldItem)
+																																				@if ($soldItem->saleitem)
+																																								<tr>
+																																												<td>
+																																																{{-- {{ dd($soldItem->saleitem->name) }} --}}
+																																																<div class="col col-md-6">
+                                                                                                                                                                                                    <img class="icon d-flex w-100"
+																																																				src="{{ $soldItem->saleitem->image ?? 'noprofile.png' }}"
+																																																				alt="{{ $soldItem->saleitem->name }}">
+                                                                                                                                                                                                </div>
 
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->itemName }}
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->itemSize }}
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->itemAmount }}
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->price }}
-																																								</td>
-																																								<td>
-																																												{{ $saleitem->created_at }}
+																																												</td>
+																																												<td>{{ $soldItem->code }}</td>
+																																												<td>{{ $soldItem['saleitem']->name }}</td>
+                                                                                                                                                                                <td>{{ $soldItem['saleitem']->brand }}</td>
+																																												<td>{{ $soldItem['saleitem']->size }}</td>																																												<td>{{ $soldItem['saleitem']->buying_price }}</td>
+																																												<td>{{ $soldItem->selling_price }}</td>
+																																												<td>{{ $soldItem['created_at'] }}</td>
+																																												{{-- <td><a href="/client/sales/delete/{{ $soldItem['id'] }}"><i
+																																																								class="fa fa-trash-o" aria-hidden="true"> Delete</i></a></td> --}}
 
-																																								</td>
-																																								<td><a href="/client/sales/show/{{ $saleitem->id }}"><i class="fa fa-eye ">
-																																																				View</i></a></td>
 
-																																				</tr>
+
+																																								</tr>
+																																				@endIf
 																																@endforeach
 																												</tbody>
 																								</table>

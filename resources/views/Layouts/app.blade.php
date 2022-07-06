@@ -11,7 +11,7 @@
 				<!-- Main CSS-->
 				<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
 				{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/cardpayments.css') }}"> --}}
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 				<!-- Font-icon css-->
 				<link rel="stylesheet" type="text/css"
 								href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -105,7 +105,8 @@
 																				</li>
 																				<li><a class="dropdown-item" href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a>
 																				</li>
-																				<li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+																				<li><a class="dropdown-item" href="{{ route('logout') }}"
+																												onclick="event.preventDefault();
 																														document.getElementById('logout-form').submit();"><i
 																																class="fa fa-sign-out fa-lg"></i>{{ __('Logout') }}</a>
 																								<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -127,7 +128,7 @@
 												<div>
 																<a href="/client/retails/profile" class="text-light">
 																				<p class="app-sidebar__user-name">
-																								{{  (Auth::user()->username ?? 'guest') }}</p>
+																								{{ Auth::user()->username ?? 'guest' }}</p>
 																</a>
 																<br>
 
@@ -146,6 +147,7 @@
 
 																@endif
 																<br>
+
 																<p class="app-sidebar__user-designation">{{ $data['retail']->complete }}% Complete</p>
 
 												</div>
@@ -158,42 +160,43 @@
 																								class="app-menu__icon fa fa-shopping-bag"></i><span class="app-menu__label">Sales</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item   " href="/client/sales/index"><i class="icon fa fa-circle-o"></i>Sold
+																				<li><a class="treeview-item   " href="/client/sales/index"><i
+																																class="icon fa fa-circle-o"></i>Sold
 																												Items</a></li>
-																				<li><a class="treeview-item " href="/soldPaidItems"><i class="icon fa fa-circle-o"></i> Paid
+																				<li><a class="treeview-item " href="/client/sales/paiditems/index"><i
+																																class="icon fa fa-circle-o"></i> Paid
 																												Items</a></li>
-																				<li><a class="treeview-item  " href="/salesitemsoncredit"><i class="icon fa fa-circle-o "></i>Items
+																				<li><a class="treeview-item  " href="/client/sales/credit/index"><i
+																																class="icon fa fa-circle-o "></i>Items
 																												On Credit</a></li>
 																				<li><a class="treeview-item  " href="/client/sales/employee/index"><i
 																																class="icon fa fa-circle-o "></i>Employee Sales
 																								</a></li>
-																				<li><a class="treeview-item  " href="/client/sales/create"><i class="icon fa fa-circle-o "></i>
-																												Add item sold</a></li>
+																				{{-- <li><a class="treeview-item  " href="/client/sales/create"><i class="icon fa fa-circle-o "></i>
+																												Add item sold</a></li> --}}
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-shopping-basket"></i><span class="app-menu__label">Stock</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu ">
-																				<li><a class="treeview-item  " href="/show-all-stock"><i class="icon fa fa-circle-o"></i>All
-																												Stock</a></li>
-																				<li><a class="treeview-item " href="/updateAStock"><i class="icon fa fa-circle-o"></i> Update
+																				<li><a class="treeview-item  " href="/client/stock/index"><i class="icon fa fa-circle-o"></i>All
 																												Stock</a></li>
 																				<li><a class="treeview-item " href="/create-stock"><i class="icon fa fa-circle-o "></i>Add a
 																												stock</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">Required Items</span><i
-																								class="treeview-indicator fa fa-angle-right"></i></a>
+																								class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">Required
+																								Items</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  " href="/requireditem/show-all-required-item"><i
+																				<li><a class="treeview-item  " href="/client/requireditem/index"><i
 																																class="icon fa fa-circle-o"></i>All Required Items</a></li>
-																				<li><a class="treeview-item " href="https://fontawesome.com/v4.7.0/icons/" rel="noopener"><i
-																																class="icon fa fa-circle-o"></i>Order Required Items</a>
-																				</li>
-																				<li><a class="treeview-item  " href="/create-requireditems"><i class="icon fa fa-circle-o "></i>
-																												Add Required Items</a></li>
+																				<li><a class="treeview-item  " href="/client/requireditem/ordered/index"><i class="icon fa fa-circle-o "></i>
+																												Ordered Items</a></li>
+
+																				<li><a class="treeview-item  " href="/client/requireditem/placeorder/index"><i class="icon fa fa-circle-o "></i>
+																												Place Order</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
@@ -214,16 +217,17 @@
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-address-card-o"></i><span class="app-menu__label">Customers</span><i
+																								class="app-menu__icon fa fa-address-card-o"></i><span
+																								class="app-menu__label">Customers</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu ">
-																				<li><a class="treeview-item  " href="/customers/index"><i class="icon fa fa-circle-o"></i>
+																				<li><a class="treeview-item  " href="/client/customers/index"><i class="icon fa fa-circle-o"></i>
 																												Customer List</a></li>
-																				<li><a class="treeview-item " href="/customers/credit/index"><i class="icon fa fa-circle-o"></i>
+																				<li><a class="treeview-item " href="/client/customers/credit/index"><i
+																																class="icon fa fa-circle-o"></i>
 																												Customers with credit</a></li>
-																				<li><a class="treeview-item  " href="ui-cards.html"><i class="icon fa fa-circle-o "></i> Customer
-																												Transactions</a></li>
-																				<li><a class="treeview-item  " href="/customers/create"><i class="icon fa fa-circle-o "></i>
+																				<li><a class="treeview-item  " href="/client/customers/create"><i
+																																class="icon fa fa-circle-o "></i>
 																												Add a Customer</a></li>
 																</ul>
 												</li>
@@ -244,7 +248,8 @@
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-cart-arrow-down"></i><span class="app-menu__label ">Supplies</span><i
+																								class="app-menu__icon fa fa-cart-arrow-down"></i><span
+																								class="app-menu__label ">Supplies</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item " href="/supplies/suppliers/index"><i
@@ -279,9 +284,10 @@
 																								class="app-menu__icon fa fa-credit-card-alt"></i><span class="app-menu__label">Loans</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item" href="/get-available-loans"><i
+																				<li><a class="treeview-item" href="/client/loans/index"><i
 																																class="icon fa fa-circle-o"></i>Request A Loan</a></li>
-																				<li><a class="treeview-item" href="/loans/show-my-loans"><i class="icon fa fa-circle-o"></i> Loan
+																				<li><a class="treeview-item" href="/client/loans/applied/index"><i
+																																class="icon fa fa-circle-o"></i> Loan
 																												History
 																								</a></li>
 																				<li><a class="treeview-item" href="/loans/show-my-loans"><i class="icon fa fa-circle-o"></i> Pay
@@ -291,14 +297,16 @@
 												</li>
 
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Bills</span><i
+																								class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Bills Credit & TV</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item " href="/bills/index"><i class="icon fa fa-circle-o"></i>All Bills</a>
+																				<li><a class="treeview-item " href="/client/bills/index"><i class="icon fa fa-circle-o"></i>All
+																												Bills</a>
 																				</li>
-																				<li><a class="treeview-item " href="/bills/payment/index"><i class="icon fa fa-circle-o"></i>Pay
-																												Bill</a></li>
-																				<li><a class="treeview-item " href="/bills/create"><i class="icon fa fa-circle-o"></i>Add a
+																				<li><a class="treeview-item " href="/client/bills/history/index'"><i
+																																class="icon fa fa-circle-o"></i>Bill History</a></li>
+																				<li><a class="treeview-item " href="/client/bills/create"><i class="icon fa fa-circle-o"></i>Add
+																												a
 																												Bill</a></li>
 																</ul>
 												</li>
@@ -312,7 +320,8 @@
 																				<li><a class="treeview-item " href="/client/retails/show"><i
 																																class="icon fa fa-circle-o"></i>Retail
 																												Information</a></li>
-																				<li><a class="treeview-item " href="/client/retails/create"><i class="icon fa fa-circle-o"></i>Add
+																				<li><a class="treeview-item " href="/client/retails/create"><i
+																																class="icon fa fa-circle-o"></i>Add
 																												a
 																												Retail</a></li>
 																</ul>
