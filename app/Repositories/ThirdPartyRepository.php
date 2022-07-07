@@ -19,7 +19,7 @@ class ThirdPartyRepository
             'MoneyPayments' => $this->thirdpartyPayments(),
             'Airtime' => $this->thirdpartyAirtime(),
             'Electricity' => $this->thirdpartyElectricity(),
-            'Electricity' => $this->thirdpartyElectricity(),
+            // 'Electricity' => $this->thirdpartyElectricity(),
             'Water' => $this->thirdpartyWater(),
             'TV' => $this->thirdpartyTV(),
         );
@@ -51,7 +51,7 @@ class ThirdPartyRepository
     }
     public function thirdpartyAirtime()
     {
-        $thirdParties = array('airtel.png', 'safaricom.png', 'telkom.png');
+        $thirdParties = array('AIRTEL.png', 'SAFARICOM.png', 'TELKOM.png');
         $thirdPartyImagePaths = array();
 
         foreach ($thirdParties as $thirdParty) {

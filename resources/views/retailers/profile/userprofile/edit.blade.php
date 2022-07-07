@@ -15,7 +15,7 @@
 																												onclick="openForm()"><Strong>Home</Strong></a>
 																				</div>
 																				<img class="app-sidebar__user-avatar d-flex w-100 well"
-																								src="/storage/ProfilePictures/{{ $profile->profile_image ?? 'noprofile.png' }}" alt="User Image">
+																								src="{{ $profile->profile_image }}" alt="User Image">
 																				<div class="mt-4"> <a href="#" class="btn btn-primary" onclick="openForm()">Change Profile</a>
 																				</div>
 																</div>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\AppRepository;
+use App\Repositories\FirebaseRepository;
 use App\Retails\Retail;
 use App\User;
 use Illuminate\Http\Request;
@@ -19,6 +21,19 @@ class BaseController extends Controller
      */
 
     //gets retails list sent to home controller for choosing
+ public function appRepository()
+ {
+    # code...
+    $baseRepo = new AppRepository();
+    return $baseRepo;
+ }
+
+ public function getBaseImages()
+ {
+    # code...
+    $baseImages = $this->appRepository()->getBaseImages();
+    return $baseImages;
+ }
     public function getRetailList()
     {
         $retails = null;
@@ -113,17 +128,21 @@ class BaseController extends Controller
         return $total;
     }
 
-    public function saveFile($request)
+    public function saveFile($folder,$file)
     {
         # code...
+        $user = User::where('id',auth()->id())->first();
         $fileNameToStore = "";
 
-        $jobDescFileWithExt = $request->getClientOriginalName();
-        $filename = pathinfo($jobDescFileWithExt, PATHINFO_FILENAME);
-        $extension = $request->getClientOriginalExtension();
-        $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-        //   Log::info("File" .$fileNameToStore);
-        //storage_path()
+        $firebase = new FirebaseRepository($this->getRetail());
+        $fileNameToStore =  $firebase->store( $user,$folder,$file);
+
+        // $jobDescFileWithExt = $file->getClientOriginalName();
+        // $filename = pathinfo($jobDescFileWithExt, PATHINFO_FILENAME);
+        // $extension = $file->getClientOriginalExtension();
+        // $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        // //   Log::info("File" .$fileNameToStore);
+        // //storage_path()
         return $fileNameToStore;
     }
 }

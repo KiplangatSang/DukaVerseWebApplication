@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Bills;
 use App\Bills\Bills;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Repositories\ThirdPartyRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -22,20 +23,24 @@ class BillController extends BaseController
      */
     public function index()
     {
-        //
-        //$retail = auth()->user()->Retails()->get();
 
-       // $billslist = $retail->bills;
+        // $billslist = Bills::all();
 
-        $billslist = Bills::all();
+        $thirdPartyRepo = new ThirdPartyRepository();
+        $thirdPartyImages = $thirdPartyRepo->getThirdPartyImages();
+        // $bill = Bills::where('id',$bill_id)->first();
+                $billPaymentData = array(
+            'thirdPartyImages' => $thirdPartyImages,
+            // 'bill'  => $bill,
+        );
 
 
         //dd($billslist);
-        $billsdata = array(
-            'billslist' => $billslist,
-        );
+        // $billsdata = array(
+        //     'billslist' => $billslist,
+        // );
 
-        return view('client.bills.index',compact('billsdata'));
+        return view('client.bills.index',compact('billPaymentData'));
     }
 
     /**
@@ -91,7 +96,7 @@ class BillController extends BaseController
     public function edit($id)
     {
         //
-        $retail = auth()->user()->retails()->get();
+        $retail = $this->getRetail();
         $billslist = $retail->bills->where('id',$id)->first();
 
         $billsdata = array(

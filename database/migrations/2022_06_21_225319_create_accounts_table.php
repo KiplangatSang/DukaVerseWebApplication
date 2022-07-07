@@ -25,6 +25,8 @@ class CreateAccountsTable extends Migration
             $table->double("max_amount")->nullable();
             $table->double("min_amount")->nullable();;
             $table->string("account_status")->default(true);
+            $table->string("is_active")->default(false);
+            $table->string("account_type")->default("business");
             $table->timestamps();
         });
     }

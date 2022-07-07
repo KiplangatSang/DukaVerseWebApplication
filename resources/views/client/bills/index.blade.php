@@ -1,78 +1,114 @@
 @extends('layouts.app')
 @section('content')
-
-
 				<div class="app-title">
 								<div>
 												<h1><i class="fa fa-th-list"></i> Bills</h1>
-												<p>Bills due for Payment</p>
+												<p>Bills Payment </p>
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
 												<li class="breadcrumb-item">Bills</li>
-												<li class="breadcrumb-item active"><a href="#">Bills View</a></li>
+												<li class="breadcrumb-item active"><a href="#">Bills Payment</a></li>
 								</ul>
 				</div>
 				<div class="row">
-
 								<div class="col-md-12">
+												<div class="tile-body">
 
-												@if (count($billsdata) < 1)
-
-																<div class="container-fluid alert alert-success">
-																				<h3 class="text-display-4 text-info">You have no bills</h3>
-
-																				<a href="/home" class="button btn btn-secondary">Back to Dashbord</a>
+																<div class="d-flex justify-content-center m-2">
+																				<h2 class="text-display-4 tile-title text-info mx-auto">Choose a bill to pay</h2>
 																</div>
-												@endif
-
-
-
-												@foreach ($billsdata['billslist'] as $bill)
-																<div class="tile-body">
-																				<div class="clearix"></div>
-																				<div class="col-md-12">
-
-																								<form method="POST" action="/client/bills/show/{{ $bill->id }}" id="loanForm">
-
-																												@csrf
-
-																												<div class="tile ">
-																																<h3 class="tile-title">{{ $bill->billName }} </h3>
-																																<div class="tile-body row">
-																																				<div class="form-group col-md-3">
-																																								<label class="control-label"><strong>Bill Type</strong></label>
-																																								<img class="app-sidebar__user-avatar d-flex w-25"
-																																												src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
-																																												alt="{{ $bill->billName }}">
+																<div class="clearix"></div>
+																<div class="col-md container  well">
+																				<form method="post" action="/request-loan/" id="loanForm">
+																								@csrf
+																								<div class="tile mx-auto m-3">
+																												<div class="col-md-6 mx-auto">
+																																<h3 class="tile-title">Airtime Purchase</h3>
+																												</div>
+																												<div class="tile-body row">
+																																@foreach ($billPaymentData['thirdPartyImages']['Airtime'] as $key => $value)
+																																				<div class="form-group col-md-6">
+																																								<a href="/bills/payment/show/{{ $key }}" class="">
+																																												<div class=" tile d-flex justify-content-center">
+																																																<img class="app-sidebar__user-avatar d-flex w-50" src="{{ $value }}"
+																																																				alt="{{ $key }}">
+																																																<h4 class="text-diplay-4">{{ $key }}</h4>
+																																												</div>
+																																								</a>
 
 																																				</div>
-																																				<div class="form-group col-md-3">
-																																								<label class="control-label"><strong>Amount</strong> </label>
-																																								<h5 class="text-display-6 text-danger">Ksh {{ $bill->billAmount }} <br>
-																																												</h3>
+																																@endforeach
+																												</div>
+																												<div class="col-md-6 mx-auto">
+																																<h3 class="tile-title">Kenya Power Token</h3>
+																												</div>
+																												<div class="tile-body row">
+																																@foreach ($billPaymentData['thirdPartyImages']['Electricity'] as $key => $value)
+																																				<div class="form-group col-md-6">
+																																								<a href="/bills/payment/show/{{ $key }}" class="">
+																																												<div class=" tile  d-flex justify-content-center">
+																																																<img class="d-flex w-50" src="{{ $value }}"
+																																																				alt="{{ $key }}">
+																																																<h4 class="text-diplay-4">{{ $key }}</h4>
+
+
+																																												</div>
+																																								</a>
+
 																																				</div>
-																																				<div class="form-group col-md-3">
-																																								<label class="control-label"><strong>Bill Description</strong></label>
-																																								<h6 class="text-display-6 text-info">{{ $bill->billDescription }}</h6>
+																																@endforeach
+																												</div>
 
+																												<div class="col-md-6 mx-auto">
+																																<h3 class="tile-title">Water Bill Payment</h3>
+																												</div>
+																												<div class="tile-body row">
+																																@foreach ($billPaymentData['thirdPartyImages']['Water'] as $key => $value)
+																																				<div class="form-group col-md-6">
+																																								<a href="/bills/payment/show/{{ $key }}" class="">
+																																												<div class=" tile d-flex justify-content-center">
+																																																<img class="app-sidebar__user-avatar d-flex w-50" src="{{ $value }}"
+																																																				alt="{{ $key }}">
+																																																<h4 class="text-diplay-4">{{ $key }}</h4>
+
+
+																																												</div>
+																																								</a>
 
 																																				</div>
-																																				<div class="form-group col-md-3 align-self-end">
+																																@endforeach
+																												</div>
+																												<div class="col-md-6 mx-auto">
+																																<h3 class="tile-title">TV Bill Payment</h3>
+																												</div>
+																												<div class="tile-body row">
+																																@foreach ($billPaymentData['thirdPartyImages']['TV'] as $key => $value)
+																																				<div class="form-group col-md-6">
+																																								<a href="/bills/payment/show/{{ $key }}" class="">
+																																												<div class=" tile d-flex justify-content-center">
+																																																<img class="app-sidebar__user-avatar d-flex w-50" src="{{ $value }}"
+																																																				alt="{{ $key }}">
+																																																<h4 class="text-diplay-4">{{ $key }}</h4>
 
-																																								<button class="btn btn-success" type="submit">Pay
-																																												Bill</button>
+
+																																												</div>
+																																								</a>
+
 																																				</div>
-
-
-
-																																</div>
-																								</form>
-																				</div>
+																																@endforeach
+																												</div>
+																				</form>
 																</div>
+												</div>
 
 								</div>
-								@endforeach
+
+
+
+
+
+
 
 				</div>
 				</div>
@@ -80,5 +116,4 @@
 
 
 				</div>
-
 @endsection

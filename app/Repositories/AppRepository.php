@@ -23,6 +23,15 @@ use Illuminate\Support\Facades\DB;
 
 class AppRepository
 {
+    public function getBaseImages()
+    {
+
+     $images = array(
+      "noprofile" => "https://storage.googleapis.com/dukaverse-e4f47.appspot.com/app/noprofile.png",
+      "nofile" => "https://storage.googleapis.com/dukaverse-e4f47.appspot.com/app/nofile.png",
+     );
+     return $images;
+    }
 
     public function getRegisteredMonths()
     {

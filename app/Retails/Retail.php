@@ -16,6 +16,7 @@ use App\RequiredItems\RequiredItems;
 use App\Retail\RetailItems;
 use App\Sales\SaleTransactions;
 use App\Stock\Stock;
+use App\Subscriptions\Subscription;
 use App\Supplies\Orders;
 use App\Supplies\Supplies;
 use Illuminate\Database\Eloquent\Model;
@@ -136,4 +137,7 @@ class Retail extends Model
         return $this->morphOne(Account::class,"accountable");
     }
 
+    public function subscriptions(){
+        return $this->hasOne(Subscription::class,"subscription_id");
+    }
 }

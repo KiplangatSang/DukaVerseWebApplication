@@ -66,57 +66,26 @@ class FirebaseStorageController extends BaseController
     public function create()
     {
 
-        /*
-        $this->factory = (new Factory)
-            // ->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')))
-            ->withServiceAccount(base_path("storage/app/firebase/firebase_credentials.json"))
-            ->withDatabaseUri('https://storage.googleapis.com/' . env('FIREBASE_PROJECT_ID') . '.appspot.com');
+        /**/
 
-        $file = fopen(base_path('storage/app/public/3rdPartyPictures/noprofile.png'), 'r');
 
-         $path = base_path("storage/app/firebase/firebase_credentials.json");
-         //$path =base_path('storage/app/public/3rdPartyPictures/noprofile.png');
-        //  dd($path);
 
-        try {
-            $storage = app('firebase.storage'); // This is an instance of Google\Cloud\Storage\StorageClient from kreait/firebase-php library
-           // dd($storage);
-            $defaultBucket = $storage->getBucket();
-            Log::debug($defaultBucket->getMessage());
-        //    $defaultBucket = ;
-            $image = $file;
-            //    $name = (string) Str::uuid().".png".$image->getClientOriginalExtension(); // use Illuminate\Support\Str;
-
-            $name = "NOPROFILE.jpg";
-            $object = $defaultBucket->upload($file, [
-                //  'name' => auth()->user()->id."/". $name,
-                'name' => "app/" . $name,
-                'predefinedAcl' => 'publicRead'
-            ]);
-            $image_url = 'https://storage.googleapis.com/' . env('FIREBASE_PROJECT_ID') . '.appspot.com/' . "app/" . $name;
-            //dd($file);
-            return $image_url;
-        } catch (Exception $e) {
-            Log::debug($e->getMessage());
-            return $e->getMessage();
-
-        }
-*/
-        $file = fopen(base_path('storage/app/public/3rdPartyPictures/noprofile.png'), 'r');
+        $file = fopen(base_path('storage/app/public/3rdPartyPictures/nofile.png'), 'r');
         try {
             $storage = app('firebase.storage'); // This is an instance of Google\Cloud\Storage\StorageClient from kreait/firebase-php library
             $defaultBucket = $storage->getBucket();
             $image = $file;
-            $name = (string) Str::uuid() . ".png"; // use Illuminate\Support\Str;
-            $pathName = base_path('storage/app/public/3rdPartyPictures/noprofile.png');
+            $name = "nofile" . ".png"; // use Illuminate\Support\Str;
+            $name ="app/" . $name;
+            $pathName = base_path('storage/app/public/3rdPartyPictures/nofile.png');
 
 
             $file = fopen($pathName, 'r');
             $object = $defaultBucket->upload($file, [
-                'name' => auth()->user()->id . "/" . $name,
+                'name' => $name,
                 'predefinedAcl' => 'publicRead'
             ]);
-            $image_url = 'https://storage.googleapis.com/' . env('FIREBASE_PROJECT_ID') . '.appspot.com/' . auth()->user()->id . "/" . $name;
+            $image_url = 'https://storage.googleapis.com/' . env('FIREBASE_PROJECT_ID') . '.appspot.com/' .$name;
             //dd($file);
             return $image_url;
         } catch (Exception $e) {

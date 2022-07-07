@@ -123,16 +123,17 @@
 				<aside class="app-sidebar">
 								<div class="app-sidebar__user bg-dark">
 												<a href="/client/retails/profile"><img class="app-sidebar__user-avatar d-flex w-50"
-																				src="/storage/RetailPictures/{{ $data['retail']->retail_profile ?? 'noprofile.png' }}"
+																				src="{{ $data['retail']->retail_profile ?? 'noprofile.png' }}"
 																				alt="User Image"></a>
 												<div>
 																<a href="/client/retails/profile" class="text-light">
 																				<p class="app-sidebar__user-name">
-																								{{ Auth::user()->username ?? 'guest' }}</p>
+																								{{ Auth::user()->username ?? 'Guest' }}</p>
 																</a>
 																<br>
 
-																@if (Auth::user()->isOnwer)
+																@if (Auth::user()->isOwner)
+
 																				<a href="/client/retails/profile" class="text-light">
 																								<p class="app-sidebar__user-designation">Retail Owner</p>
 																				</a>
@@ -172,8 +173,8 @@
 																				<li><a class="treeview-item  " href="/client/sales/employee/index"><i
 																																class="icon fa fa-circle-o "></i>Employee Sales
 																								</a></li>
-																				{{-- <li><a class="treeview-item  " href="/client/sales/create"><i class="icon fa fa-circle-o "></i>
-																												Add item sold</a></li> --}}
+																				<li><a class="treeview-item  " href="/client/sell"><i class="icon fa fa-circle-o "></i>
+																												Add item sold</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
@@ -329,7 +330,7 @@
 												<li><a class="app-menu__item" href="/settigs/index"><i class="app-menu__icon fa fa-cogs"></i><span
 																								class="app-menu__label">Settings</span></a>
 												</li>
-												<li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon fa fa-server"></i><span
+												<li><a class="app-menu__item" href="/client/dukaverse/index"><i class="app-menu__icon fa fa-server"></i><span
 																								class="app-menu__label">DukaVerse
 																								Account</span></a></li>
 												<li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon fa fa-file-code-o"></i><span

@@ -14,7 +14,7 @@
 																				<div class="m-2"> <a href="/home" class="text-info " onclick="openForm()"><Strong>Home</Strong></a>
 																				</div>
 																				<img class="app-sidebar__user-avatar d-flex w-100 well"
-																								src="/storage/RetailPictures/{{ $retail->retail_profile ?? 'noprofile.png' }}" alt="User Image">
+																								src="{{ $retail->retail_profile }}" alt="User Image">
 																				<div class="mt-4"> <a class="btn btn-primary" onclick="openForm()">Change Profile</a>
 																				</div>
 																</div>

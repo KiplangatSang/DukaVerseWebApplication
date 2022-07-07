@@ -22,9 +22,8 @@
 				<!-- date select -->
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/select2.min.js') }}"></script>
 
-				<title> Storm5 Admin Login</title>
+				<title>DukaVerse</title>
 </head>
-
 <body>
 				<main>
 								@yield('content')

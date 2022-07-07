@@ -1,5 +1,6 @@
 <?php
 
+use App\Subscriptions\Subscription;
 use Illuminate\Database\Seeder;
 
 class SubscriptionSeeder extends Seeder
@@ -12,5 +13,8 @@ class SubscriptionSeeder extends Seeder
     public function run()
     {
         //
+
+       factory(Subscription::class,3)
+       ->create();
     }
 }

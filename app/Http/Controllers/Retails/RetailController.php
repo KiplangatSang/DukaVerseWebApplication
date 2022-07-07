@@ -39,8 +39,6 @@ class RetailController extends BaseController
             $request->all(),
         );
 
-
-
         return redirect('/home');
     }
 
@@ -121,14 +119,15 @@ class RetailController extends BaseController
 
     public function updateRetailProfile(Request $request)
     {
-        $fileNameToStore = "";
-        if (request()->hasFile('file')) {
-            $fileNameToStore = $this->saveFile(request()->file('file'));
-        } else {
-            $fileNameToStore = 'nofile.png';
-        }
-        $path = request()->file('file')->storeAs('public/RetailPictures', $fileNameToStore);
         $retail = $this->getRetail();
+        $fileNameToStore = $this->getBaseImages()['nofile'];
+        if (request()->hasFile('file')) {
+            $fileNameToStore = $this->saveFile("retail_profile", request()->file('file'));
+        } else
+            Log::info("No File " . $fileNameToStore);
+
+        // $path = request()->file('file')->storeAs('public/RetailPictures', $fileNameToStore);
+
         Log::info("updated" . json_encode($request->all()));
         $retail->update([
             "retail_profile" => $fileNameToStore,
@@ -139,17 +138,16 @@ class RetailController extends BaseController
     public function uploadRetailDocuments(Request $request)
     {
         # code...
-        $fileNameToStore = "";
-        if (request()->hasFile('file')) {
-            $fileNameToStore = $this->saveFile(request()->file('file'));
-            Log::info("File" . $fileNameToStore);
-        } else {
-
-            $fileNameToStore = 'nofile.png';
-            Log::info("No File " . $fileNameToStore);
-        }
-        $path = request()->file('file')->storeAs('storage/RetailBusinessPermit', $fileNameToStore);
         $retail = $this->getRetail();
+        $fileNameToStore = $this->getBaseImages()['nofile'];
+        if (request()->hasFile('file')) {
+            $fileNameToStore = $this->saveFile("business_permit", request()->file('file'));
+            Log::info("File" . $fileNameToStore);
+        } else
+            Log::info("No File " . $fileNameToStore);
+
+        // $path = request()->file('file')->storeAs('storage/RetailBusinessPermit', $fileNameToStore);
+
         //Log::info("updated" .$path);
         $documents = null;
 
@@ -169,19 +167,18 @@ class RetailController extends BaseController
     }
     public function uploadRelevantDocuments(Request $request)
     {
-        # code...
-        $fileNameToStore = "";
-        if (request()->hasFile('file')) {
-            $fileNameToStore = $this->saveFile(request()->file('file'));
-            Log::info("File" . $fileNameToStore);
-        } else {
-
-            $fileNameToStore = 'nofile.png';
-            Log::info("No File " . $fileNameToStore);
-        }
-        $path = request()->file('file')->storeAs('storage/RetailRelevantDocuments', $fileNameToStore);
-
         $retail = $this->getRetail();
+        # code...
+        $fileNameToStore = $this->getBaseImages()['nofile'];
+        if (request()->hasFile('file')) {
+            $fileNameToStore = $this->saveFile("retail_relevant_documents", request()->file('file'));
+            Log::info("File" . $fileNameToStore);
+        } else
+            Log::info("No File " . $fileNameToStore);
+
+        // $path = request()->file('file')->storeAs('storage/RetailRelevantDocuments', $fileNameToStore);
+
+
         //Log::info("updated" .$path);
 
 

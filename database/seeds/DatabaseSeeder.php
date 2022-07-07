@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             CustomerCreditSeeder::class,
             RetailItemsSeeder::class,
             AccountSeeder::class,
+            SubscriptionSeeder::class,
             //UserSeeder::class,
             //SalesSeeder::class,
             // SaleTransactionsSeeder::class,

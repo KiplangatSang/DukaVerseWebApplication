@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 $factory->define(Employees::class, function (Faker $faker) {
     return [
         //'employeeable_id'=>rand(1,13),
+        'user_id'=>1,
         'employeeable_id' => 1,
         'employeeable_type' => "App\Retails\Retail",
         'emp_name' => $faker->name,

@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('phoneno');
             $table->string('terms_and_conditions')->nullable();
             $table-> unsignedBigInteger('userpin')->nullable()->default(null);
-            $table-> boolean('isOwner')->default(false);
+            $table-> boolean('isOwner')->default(true);
             $table-> boolean('isEmployee')->default(false);
             $table->boolean('isAdmin')->default(false);
             $table->integer('role')->default(1);

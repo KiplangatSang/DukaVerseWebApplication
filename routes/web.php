@@ -34,6 +34,7 @@ use App\Http\Controllers\Bills\BillController;
 use App\Http\Controllers\Bills\BillPaymentController;
 use App\Http\Controllers\Customers\CustomerController;
 use App\Http\Controllers\Customers\CustomerCreditController;
+use App\Http\Controllers\DukaVerseController;
 use App\Http\Controllers\Employees\EmployeeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\payments\mpesa\MpesaController;
@@ -69,6 +70,7 @@ use App\Http\Controllers\Sales\SaleTransactionController;
 use App\Http\Controllers\Sales\YearlySaleController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\stock\StockController;
+use App\Http\Controllers\Subscriptions\SubscriptionController;
 use App\Http\Controllers\Supplies\SuppliersController;
 use App\Http\Controllers\Supplies\SuppliesController;
 use App\Jobs\SendEmailJob;
@@ -92,6 +94,9 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/firebase', [FirebaseStorageController::class, 'create']);
 
+//dukaverse account
+Route::get('/client/dukaverse/index',[DukaVerseController::class, 'index']);
+
 Route::get('/home', function () {
     $routes = new RoutesRepository();
 
@@ -102,17 +107,13 @@ Route::get('/admin/home', function () {
     return view('admin.home');
 })->middleware('auth');
 
-Route::get('/client/subscriptions', function () {
-    return view('subscriptions.index');
-});
+Route::get('/client/subscriptions',[SubscriptionController::class,'index']);
 
-Route::get('/sell', function () {
+Route::get('/client/sell', function () {
     return view('pos.sales.index');
 });
 
-Route::get('/client/subscriptions/show', function () {
-    return view('subscriptions.show');
-});
+Route::post('/client/subscriptions/show/{id}' ,[SubscriptionController::class,'show']);
 
 
 Route::get('/user/retail', [HomeController::class, 'retails'])->middleware('auth');

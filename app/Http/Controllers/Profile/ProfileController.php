@@ -69,7 +69,7 @@ class ProfileController extends BaseController
         $profile['user'] = $user;
 
 
-         //dd($profile);
+        //dd($profile);
 
         return view('retailers.profile.userprofile.edit', compact('profile'));
     }
@@ -109,13 +109,13 @@ class ProfileController extends BaseController
 
         Log::info("Request " . json_encode($request->all()));
 
-        $fileNameToStore = "";
+        $fileNameToStore = $this->getBaseImages()['nofile'];
         if (request()->hasFile('file')) {
-            $fileNameToStore = $this->saveFile(request()->file('file'));
-        } else {
-            $fileNameToStore = 'nofile.png';
-        }
-        $path = request()->file('file')->storeAs('public/ProfilePictures', $fileNameToStore);
+            $fileNameToStore = $this->saveFile("profile_image",request()->file('file'));
+        } else
+            Log::info("Error");
+
+        // $path = request()->file('file')->storeAs('public/ProfilePictures', $fileNameToStore);
 
         Log::info("updated" . json_encode($request->all()));
         profiles::updateOrCreate([
@@ -131,16 +131,14 @@ class ProfileController extends BaseController
         $user = User::where('id', auth()->id())->first();
         $profile = $user->profiles()->first();
         # code...
-        $fileNameToStore = "";
+        $fileNameToStore = $this->getBaseImages()['nofile'];
         if (request()->hasFile('file')) {
-            $fileNameToStore = $this->saveFile(request()->file('file'));
+            $fileNameToStore = $this->saveFile("national_id", request()->file('file'));
             Log::info("File" . $fileNameToStore);
-        } else {
-
-            $fileNameToStore = 'nofile.png';
+        } else
             Log::info("No File " . $fileNameToStore);
-        }
-        $path = request()->file('file')->storeAs('storage/UserNationalId', $fileNameToStore);
+
+        // $path = request()->file('file')->storeAs('storage/UserNationalId', $fileNameToStore);
 
         $documents = null;
 
@@ -163,21 +161,14 @@ class ProfileController extends BaseController
         $user = User::where('id', auth()->id())->first();
         $profile = $user->profiles()->first();
         # code...
-        $fileNameToStore = "";
+        $fileNameToStore = $this->getBaseImages()['nofile'];
         if (request()->hasFile('file')) {
-            $fileNameToStore = $this->saveFile(request()->file('file'));
+            $fileNameToStore = $this->saveFile("relevant_documents", request()->file('file'));
             // Log::info("File" . $fileNameToStore);
-        } else {
+        } else
+            Log::info("No File " . $fileNameToStore);
 
-            $fileNameToStore = 'nofile.png';
-            //  Log::info("No File " . $fileNameToStore);
-        }
-        $path = request()->file('file')->storeAs('storage/UserRelevantDocuments', $fileNameToStore);
-
-
-        Log::info("profile" . $profile);
-
-
+        // $path = request()->file('file')->storeAs('storage/UserRelevantDocuments', $fileNameToStore);
         $documents = null;
         if ($profile) {
             if ($profile->relevant_documents) {
