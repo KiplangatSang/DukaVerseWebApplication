@@ -162,40 +162,64 @@
 				@can('view-retaildata', Auth::user())
 				@endcan
 				<div class="row">
-								<div class="col-md-6">
-												<div class="tile">
-																<h3 class="tile-title">Sales </h3>
-																<div class="embed-responsive embed-responsive-16by9">
-																				<canvas class="embed-responsive-item" id="usersLineChart"></canvas>
+								<div class="container">
+												<div class="col-md-10 col-xl-10 mx-auto">
+																<div class="tile m-2 ">
+																				<h3 class="tile-title ">Sales Revenue and Expenses for {{ date('Y') }}</h3>
+																				<div class="embed-responsive embed-responsive-16by9 m-2">
+																								<canvas class="embed-responsive-item " id="salesrevexpLineChart"></canvas>
+																				</div>
+																				<div class="row d-flex justify-content-center">
+																								<h5 class="p-1"><span class="badge badge-success">Sales</span></h5>
+																								<h5 class="p-1"><span class="badge badge-danger">Expenses</span></h5>
+																								<h5 class="p-1"><span class="badge badge-info">Revenue</span></h5>
+																				</div>
 																</div>
 												</div>
 								</div>
 								<div class="col-md-6">
 												<div class="tile">
-																<h3 class="tile-title">Sales</h3>
+																<h3 class="tile-title">Sales Revenue Expenses Profit for {{ date('M') . ' ' . date('Y') }}</h3>
+																<div class="embed-responsive embed-responsive-16by9">
+																				<canvas class="embed-responsive-item" id="stockPieChart">
+																				</canvas>
+																</div>
+																<div class="row d-flex justify-content-center">
+																				<h5 class="p-1"><span class="badge badge-success">Sales</span></h5>
+																				<h5 class="p-1"><span class="badge badge-danger">Expenses</span></h5>
+																				<h5 class="p-1"><span class="badge badge-warning">Revenue</span></h5>
+																				<h5 class="p-1"><span class="badge badge-info">Profit</span></h5>
+																</div>
+												</div>
+								</div>
+								<div class="col-md-6">
+												<div class="tile">
+																<h3 class="tile-title">Sales for {{ date('Y') }}</h3>
 
 																<div class="embed-responsive embed-responsive-16by9">
 																				<canvas class="embed-responsive-item" id="usersPieChart">
-
-
 																				</canvas>
 																</div>
 												</div>
 								</div>
-								<div class="col-md-6">
+								{{-- <div class="col-md-6">
 												<div class="tile">
 																<h3 class="tile-title">Expense</h3>
 																<div class="embed-responsive embed-responsive-16by9">
 																				<canvas class="embed-responsive-item" id="expenseLineChart">
-
 																				</canvas>
 																</div>
-												</div>
-								</div>
 
+																<div class="row">
+																				<h5 class="p-1"><span class="badge badge-success">Sales</span></h5>
+																				<h5 class="p-1"><span class="badge badge-danger">Expenses</span></h5>
+																				<h5 class="p-1"><span class="badge badge-info">Revenue</span></h5>
+																</div>
+												</div>
+								</div> --}}
 								<div class="col-md-6">
 												<div class="tile">
-																<h3 class="tile-title">Expense</h3>
+																<h3 class="tile-title">Expense for {{ date('Y') }}</h3>
 
 																<div class="embed-responsive embed-responsive-16by9">
 																				<canvas class="embed-responsive-item" id="expensePieChart">
@@ -205,17 +229,17 @@
 																</div>
 												</div>
 								</div>
-								<div class="col-md-6">
+								{{-- <div class="col-md-6">
 												<div class="tile">
 																<h3 class="tile-title">Revenue</h3>
 																<div class="embed-responsive embed-responsive-16by9">
 																				<canvas class="embed-responsive-item" id="revenueLineChart"></canvas>
 																</div>
 												</div>
-								</div>
+								</div> --}}
 								<div class="col-md-6">
 												<div class="tile">
-																<h3 class="tile-title">Revenue</h3>
+																<h3 class="tile-title">Revenue for {{ date('Y') }}</h3>
 																<div class="embed-responsive embed-responsive-16by9">
 																				<canvas class="embed-responsive-item" id="revenuePieChart">
 
@@ -224,42 +248,34 @@
 																</div>
 												</div>
 								</div>
-								<div class="col-md-6">
+								{{-- <div class="col-md-6">
 												<div class="tile">
 																<h3 class="tile-title">Stock</h3>
 																<div class="embed-responsive embed-responsive-16by9">
 																				<canvas class="embed-responsive-item" id="stockLineChart"></canvas>
 																</div>
 												</div>
-								</div>
-								<div class="col-md-6">
-												<div class="tile">
-																<h3 class="tile-title">Stock</h3>
-																<div class="embed-responsive embed-responsive-16by9">
-																				<canvas class="embed-responsive-item" id="stockPieChart">
+								</div> --}}
+								<div class="container-fluid row">
 
-
-																				</canvas>
+												<div class="col-md-6">
+																<div class="tile">
+																				<h3 class="tile-title">Loans for {{ date('Y') }}</h3>
+																				<div class="embed-responsive embed-responsive-16by9">
+																								<canvas class="embed-responsive-item" id="loansLineChart"></canvas>
+																				</div>
+																				<div class="row d-flex justify-content-center">
+																								<h5 class="p-1"><span class="badge badge-danger">Loans in ksh</span></h5>
+																				</div>
 																</div>
 												</div>
-								</div>
-
-								<div class="col-md-6">
-												<div class="tile">
-																<h3 class="tile-title">Loans</h3>
-																<div class="embed-responsive embed-responsive-16by9">
-																				<canvas class="embed-responsive-item" id="loansLineChart"></canvas>
-																</div>
-												</div>
-								</div>
-								<div class="col-md-6">
-												<div class="tile">
-																<h3 class="tile-title">Loans</h3>
-																<div class="embed-responsive embed-responsive-16by9">
-																				<canvas class="embed-responsive-item" id="loansPieChart">
-
-
-																				</canvas>
+												<div class="col-md-6">
+																<div class="tile">
+																				<h3 class="tile-title">Loans for {{ date('Y') }}</h3>
+																				<div class="embed-responsive embed-responsive-16by9">
+																								<canvas class="embed-responsive-item" id="loansPieChart">
+																								</canvas>
+																				</div>
 																</div>
 												</div>
 								</div>
@@ -267,61 +283,48 @@
 				</div>
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/chart.js') }}"></script>
 				<script type="text/javascript">
-				    var data = {
-				        labels: @json($data['months']),
-				        datasets: [{
-				                label: "My First dataset",
-				                fillColor: "rgba(220,220,220,0.2)",
-				                strokeColor: "rgba(220,220,220,1)",
-				                pointColor: "rgba(220,220,220,1)",
-				                pointStrokeColor: "#fff",
-				                pointHighlightFill: "#fff",
-				                pointHighlightStroke: "rgba(220,220,220,1)",
-				                data: @json($data['salesData'])
-				            },
-				            {
-				                label: "My Second dataset",
-				                fillColor: "rgba(151,187,205,0.2)",
-				                strokeColor: "rgba(151,187,205,1)",
-				                pointColor: "rgba(151,187,205,1)",
-				                pointStrokeColor: "#fff",
-				                pointHighlightFill: "#fff",
-				                pointHighlightStroke: "rgba(151,187,205,1)",
-				                data: @json($data['salesData'])
+				    /*
+																								                   var data = {
+																												        labels: @json($data['months']),
+																												        datasets: [{
+																												                label: "My First dataset",
+																												                fillColor: "rgba(220,220,220,0.2)",
+																												                strokeColor: "rgba(220,220,220,1)",
+																												                pointColor: "rgba(220,220,220,1)",
+																												                pointStrokeColor: "#fff",
+																												                pointHighlightFill: "#fff",
+																												                pointHighlightStroke: "rgba(220,220,220,1)",
+																												                data: @json($data['salesData'])
+																												            },
+																												            {
+																												                label: "My Second dataset",
+																												                fillColor: "rgba(151,187,205,0.2)",
+																												                strokeColor: "rgba(151,187,205,1)",
+																												                pointColor: "rgba(151,187,205,1)",
+																												                pointStrokeColor: "#fff",
+																												                pointHighlightFill: "#fff",
+																												                pointHighlightStroke: "rgba(151,187,205,1)",
+																												                data: @json($data['salesData'])
 
 
 
-				            }
-				        ]
-				    };
+																												            }
+																												        ]
+																												    };
+
+																								                    */
 				    var loansLdata = {
 				        labels: @json($data['months']),
 				        datasets: [{
-				                label: "My First dataset",
-				                fillColor: "rgba(220,220,220,0.2)",
-				                strokeColor: "rgba(220,220,220,1)",
-				                pointColor: "rgba(220,220,220,1)",
-				                pointStrokeColor: "#fff",
-				                pointHighlightFill: "#fff",
-				                pointHighlightStroke: "rgba(220,220,220,1)",
-				                data: @json($data['salesData'])
-
-
-				            },
-				            {
-				                title: "My Second dataset",
-				                fillColor: "rgba(151,187,205,0.2)",
-				                strokeColor: "rgba(151,187,205,1)",
-				                pointColor: "rgba(151,187,205,1)",
-				                pointStrokeColor: "#fff",
-				                pointHighlightFill: "#fff",
-				                pointHighlightStroke: "rgba(151,187,205,1)",
-				                data: @json($data['loansData'])
-
-
-
-				            }
-				        ],
+				            title: "My Second dataset",
+				            fillColor: "rgba(255,0,0,0.2)",
+				            strokeColor: "rgba(255,0,0,1)",
+				            pointColor: "rgba(255,0,0,1)",
+				            pointStrokeColor: "#fff",
+				            pointHighlightFill: "#fff",
+				            pointHighlightStroke: "rgba(151,187,205,1)",
+				            data: @json($data['loansData'])
+				        }],
 				        options: {
 				            responsive: true,
 				            title: {
@@ -331,40 +334,76 @@
 				        }
 				    }
 
-				    var creditLdata = {
+				    var salesexprevLdata = {
 				        labels: @json($data['months']),
 				        datasets: [{
 				                title: "Sales",
-                                display: true,
-				                fillColor: "rgba(220,220,220,0.3)",
-				                strokeColor: "rgba(255,0,220,1)",
-				                pointColor: "rgba(255,0,220,1)",
+				                display: true,
+				                fillColor: "rgba(225,225,220,0.1)",
+				                strokeColor: "rgba(0,255,0,1)",
+				                pointColor: "rgba(127,255,0,1)",
 				                pointStrokeColor: "#fff",
 				                pointHighlightFill: "#fff",
 				                pointHighlightStroke: "rgba(220,220,220,1)",
 				                data: @json($data['salesData'])
-
-
 				            },
 				            {
-				                title: "Expenses",
+
+				                title: "Revenue",
 				                fillColor: "rgba(151,187,205,0.2)",
-				                strokeColor: "rgba(151,187,205,1)",
-				                pointColor: "rgba(151,187,205,1)",
+				                strokeColor: "rgba(0,0,255,1)",
+				                pointColor: "rgba(0,187,255,1)",
 				                pointStrokeColor: "#fff",
 				                pointHighlightFill: "#fff",
 				                pointHighlightStroke: "rgba(151,187,205,1)",
-				                data: @json($data['expenseData'])
+				                data: @json($data['revenueData'])
 				            },
 				            {
-				                title: "Revenue",
-				                fillColor: "rgba(151,187,205,0.7)",
-				                strokeColor: "rgba(127,255,0,1)",
-				                pointColor: "rgba(127,255,0,1)",
+				                title: "Expenses",
+				                fillColor: "rgba(240,0,0,0.1)",
+				                strokeColor: "rgba(255,0,0,1)",
+				                pointColor: "rgba(255,0,0,1)",
 				                pointStrokeColor: "#fff",
 				                pointHighlightFill: "#fff",
 				                pointHighlightStroke: "rgba(127,255,0,1)",
+				                data: @json($data['expenseData'])
+				            }
+				        ]
+				    };
+
+				    var creditLdata = {
+				        labels: @json($data['months']),
+				        datasets: [{
+				                title: "Sales",
+				                display: true,
+				                fillColor: "rgba(225,225,220,0.1)",
+				                strokeColor: "rgba(0,255,0,1)",
+				                pointColor: "rgba(127,255,0,1)",
+				                pointStrokeColor: "#fff",
+				                pointHighlightFill: "#fff",
+				                pointHighlightStroke: "rgba(220,220,220,1)",
+				                data: @json($data['salesData'])
+				            },
+				            {
+
+				                title: "Revenue",
+				                fillColor: "rgba(151,187,205,0.2)",
+				                strokeColor: "rgba(0,0,255,1)",
+				                pointColor: "rgba(0,187,255,1)",
+				                pointStrokeColor: "#fff",
+				                pointHighlightFill: "#fff",
+				                pointHighlightStroke: "rgba(151,187,205,1)",
 				                data: @json($data['revenueData'])
+				            },
+				            {
+				                title: "Expenses",
+				                fillColor: "rgba(240,0,0,0.1)",
+				                strokeColor: "rgba(255,0,0,1)",
+				                pointColor: "rgba(255,0,0,1)",
+				                pointStrokeColor: "#fff",
+				                pointHighlightFill: "#fff",
+				                pointHighlightStroke: "rgba(127,255,0,1)",
+				                data: @json($data['expenseData'])
 				            }
 				        ]
 				    };
@@ -395,18 +434,54 @@
 				        ]
 				    };
 
+				    var options = {
+				        scaleShowLabels: true, // to hide vertical lables
+				        xAxes: [{
+				            display: false
+				        }],
+				        yAxes: [{
+				            display: false
+				        }],
+				    };
 
-				    var ctxl = $("#usersLineChart").get(0).getContext("2d");
-				    var lineChart = new Chart(ctxl).Line(data);
+				    var pdata = [{
+				            value: @json($data['expenses_value']),
+				            color: "red",
+				            highlight: "red",
+				            label: "Expenses"
+				        },
+				        {
+				            value: @json($data['sales_value']),
+				            color: "green",
+				            highlight: "lightgreen",
+				            label: "Sales"
+				        },
+				        {
+				            value: @json($data['revenue_value']),
+				            color: "yellow",
+				            highlight: "#FFC870",
+				            label: "Revenue"
+				        },
+				        {
+				            value: @json($data['profit_value']),
+				            color: "blue",
+				            highlight: "lightblue",
+				            label: "Profit"
+				        }
+				    ]
 
-				    var ctxl = $("#expenseLineChart").get(0).getContext("2d");
-				    var lineChart = new Chart(ctxl).Line(creditLdata);
 
-				    var ctxl = $("#revenueLineChart").get(0).getContext("2d");
-				    var lineChart = new Chart(ctxl).Line(creditLdata);
+				    var ctxl = $("#salesrevexpLineChart").get(0).getContext("2d");
+				    var lineChart = new Chart(ctxl).Line(salesexprevLdata);
 
-				    var ctxl = $("#stockLineChart").get(0).getContext("2d");
-				    var lineChart = new Chart(ctxl).Line(creditLdata);
+				    // var ctxl = $("#expenseLineChart").get(0).getContext("2d");
+				    // var lineChart = new Chart(ctxl).Line(creditLdata);
+
+				    // var ctxl = $("#revenueLineChart").get(0).getContext("2d");
+				    // var lineChart = new Chart(ctxl).Line(creditLdata);
+
+				    // var ctxl = $("#stockLineChart").get(0).getContext("2d");
+				    // var lineChart = new Chart(ctxl).Line(creditLdata);
 
 
 				    var ctxl = $("#loansLineChart").get(0).getContext("2d");
@@ -428,7 +503,7 @@
 				    var pieChart = new Chart(ctxp).Pie(revenuePdata);
 
 				    var ctxp = $("#stockPieChart").get(0).getContext("2d");
-				    var pieChart = new Chart(ctxp).Pie(stockPdata);
+				    var pieChart = new Chart(ctxp).Pie(pdata);
 
 				    var ctxp = $("#loansPieChart").get(0).getContext("2d");
 				    var pieChart = new Chart(ctxp).Pie(loansPdata);
