@@ -309,7 +309,7 @@
 
 				            },
 				            {
-				                label: "My Second dataset",
+				                title: "My Second dataset",
 				                fillColor: "rgba(151,187,205,0.2)",
 				                strokeColor: "rgba(151,187,205,1)",
 				                pointColor: "rgba(151,187,205,1)",
@@ -321,15 +321,24 @@
 
 
 				            }
-				        ]
-				    };
+				        ],
+				        options: {
+				            responsive: true,
+				            title: {
+				                display: true,
+				                text: 'Chart.js Line Chart'
+				            },
+				        }
+				    }
+
 				    var creditLdata = {
 				        labels: @json($data['months']),
 				        datasets: [{
-				                label: "My First dataset",
-				                fillColor: "rgba(220,220,220,0.2)",
-				                strokeColor: "rgba(220,220,220,1)",
-				                pointColor: "rgba(220,220,220,1)",
+				                title: "Sales",
+                                display: true,
+				                fillColor: "rgba(220,220,220,0.3)",
+				                strokeColor: "rgba(255,0,220,1)",
+				                pointColor: "rgba(255,0,220,1)",
 				                pointStrokeColor: "#fff",
 				                pointHighlightFill: "#fff",
 				                pointHighlightStroke: "rgba(220,220,220,1)",
@@ -338,7 +347,7 @@
 
 				            },
 				            {
-				                label: "My Second dataset",
+				                title: "Expenses",
 				                fillColor: "rgba(151,187,205,0.2)",
 				                strokeColor: "rgba(151,187,205,1)",
 				                pointColor: "rgba(151,187,205,1)",
@@ -346,9 +355,16 @@
 				                pointHighlightFill: "#fff",
 				                pointHighlightStroke: "rgba(151,187,205,1)",
 				                data: @json($data['expenseData'])
-
-
-
+				            },
+				            {
+				                title: "Revenue",
+				                fillColor: "rgba(151,187,205,0.7)",
+				                strokeColor: "rgba(127,255,0,1)",
+				                pointColor: "rgba(127,255,0,1)",
+				                pointStrokeColor: "#fff",
+				                pointHighlightFill: "#fff",
+				                pointHighlightStroke: "rgba(127,255,0,1)",
+				                data: @json($data['revenueData'])
 				            }
 				        ]
 				    };
@@ -375,9 +391,6 @@
 				                pointHighlightFill: "#fff",
 				                pointHighlightStroke: "rgba(151,187,205,1)",
 				                data: @json($data['revenueData'])
-
-
-
 				            }
 				        ]
 				    };
@@ -386,21 +399,21 @@
 				    var ctxl = $("#usersLineChart").get(0).getContext("2d");
 				    var lineChart = new Chart(ctxl).Line(data);
 
-                    var ctxl = $("#expenseLineChart").get(0).getContext("2d");
+				    var ctxl = $("#expenseLineChart").get(0).getContext("2d");
 				    var lineChart = new Chart(ctxl).Line(creditLdata);
 
 				    var ctxl = $("#revenueLineChart").get(0).getContext("2d");
 				    var lineChart = new Chart(ctxl).Line(creditLdata);
 
-                    var ctxl = $("#stockLineChart").get(0).getContext("2d");
+				    var ctxl = $("#stockLineChart").get(0).getContext("2d");
 				    var lineChart = new Chart(ctxl).Line(creditLdata);
 
 
-                    var ctxl = $("#loansLineChart").get(0).getContext("2d");
+				    var ctxl = $("#loansLineChart").get(0).getContext("2d");
 				    var lineChart = new Chart(ctxl).Line(loansLdata);
 
-                    //piecharts
-                    console.log(@json($data['salesPData']));
+				    //piecharts
+				    console.log(@json($data['salesPData']));
 				    var salesPdata = @json($data['salesPData']);
 				    var espensePdata = @json($data['expensePData']);
 				    var revenuePdata = @json($data['revenuePData']);
@@ -419,6 +432,5 @@
 
 				    var ctxp = $("#loansPieChart").get(0).getContext("2d");
 				    var pieChart = new Chart(ctxp).Pie(loansPdata);
-
 				</script>
 @endsection

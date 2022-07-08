@@ -73,19 +73,16 @@ class ExpenseRepository
     public function getMonthlyExpenses($month = null, $year = null)
     {
         $expenses = null;
-
-
         if (!$year)
             $year = date('Y');
-
         if ($month)
             $expenses = $this->retail->expenses()
                 ->whereMonth('created_at', '=', $month)
-                ->whereMonth('created_at', '=', $year)
+                ->whereYear('created_at', '=', $year)
                 ->get();
         else
             $expenses = $this->retail->expenses()
-                ->whereMonth('created_at', '=', $year)
+                ->whereYear('created_at', '=', $year)
                 ->get();
         //dd($expenses->expense);
         return $expenses;

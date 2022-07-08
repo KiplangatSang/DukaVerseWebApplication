@@ -6,11 +6,9 @@ use App\Accounts\Account;
 use App\Accounts\Transaction;
 use App\Bills\Bills;
 use App\Employees\Employees;
-use App\Loans\Loans;
-use App\Profiles\profiles;
+use App\Profiles\Profiles;
 use App\Retails\Retail;
 use App\Retails\SessionRetail;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -73,7 +71,7 @@ class User extends Authenticatable
     }
 
     public function profiles(){
-        return $this->hasOne(profiles::class);
+        return $this->hasOne(Profiles::class);
     }
 
     public function account(){

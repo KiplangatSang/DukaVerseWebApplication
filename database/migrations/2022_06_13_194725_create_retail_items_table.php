@@ -26,6 +26,7 @@ class CreateRetailItemsTable extends Migration
             $table->longText('description')->nullable();
             $table->longText('regulation')->nullable();
             $table->string('suppliers_id')->nullable();
+            $table->boolean('is_required')->nullable()->default(false);
             $table->timestamps();
         });
     }

@@ -58,7 +58,7 @@
 																<div class="info">
 																				<h5> Required Items</h5>
 
-																				<p class="text-warning"><b>{{ $stocksdata['stocksitems'] }}</b></p>
+																				<p class="text-warning"><b>{{ $stocksdata['requireditems'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -66,7 +66,7 @@
 												<div class="widget-small info coloured-icon"><i class="icon fa fa-money fa-3x"></i>
 																<div class="info">
 																				<h5> Estimated Cost</h5>
-																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }} ksh</b></p>
+																				<p class="text-warning"><b>{{ $stocksdata['requireditemscost'] }} ksh</b></p>
 																</div>
 												</div>
 								</div>
@@ -74,7 +74,7 @@
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
 																				<h5>Ordered Items</h5>
-																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }}</b></p>
+																				<p class="text-warning"><b>{{ $stocksdata['ordereditems'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -82,7 +82,7 @@
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
 																				<h5>Items to Order</h5>
-																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }}</b></p>
+																				<p class="text-warning"><b>{{ $stocksdata['pendingitems'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -144,7 +144,7 @@
 																																												<tr href="/sales-item/{{ $stockitem->id }}">
 
 																																																<td>
-																																																				<div class="col-sm-6">
+																																																				<div class="col-sm col-xl">
 																																																								<img class="icon d-flex w-100"
 																																																												src="{{ $stockitem->item->image ?? 'noprofile.png' }}"
 																																																												alt="{{ $stockitem->item->name }}">
@@ -163,7 +163,7 @@
 																																																				{{ $stockitem->required_amount }}
 																																																</td>
 																																																<td>
-																																																				{{ $stockitem->ordered_amount }}
+																																																				{{ $stockitem->ordered_amount ?? "N/A" }}
 																																																</td>
 																																																<td>
 																																																				{{ $stockitem->projected_cost }}

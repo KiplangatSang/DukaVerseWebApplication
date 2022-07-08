@@ -91,15 +91,30 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+Route::get('/date', function () {
+    $start_date ="2022-01-01";
+    $end_date = "2022-12-10";
+        // Convert to timetamps
+        $min = strtotime($start_date);
+        $max = strtotime($end_date);
+
+        // Generate random number using above bounds
+        $val = rand($min, $max);
+
+        $date = date('M', $val);
+    //    $month = $date->format('F');
+        // Convert back to desired date format
+        return $date;
+
+});
 
 Route::get('/firebase', [FirebaseStorageController::class, 'create']);
 
 //dukaverse account
-Route::get('/client/dukaverse/index',[DukaVerseController::class, 'index']);
+Route::get('/client/dukaverse/index', [DukaVerseController::class, 'index']);
 
 Route::get('/home', function () {
     $routes = new RoutesRepository();
-
     return redirect($routes->userRedirectRoute());
 })->middleware('auth');
 
@@ -107,13 +122,13 @@ Route::get('/admin/home', function () {
     return view('admin.home');
 })->middleware('auth');
 
-Route::get('/client/subscriptions',[SubscriptionController::class,'index']);
+Route::get('/client/subscriptions', [SubscriptionController::class, 'index']);
 
 Route::get('/client/sell', function () {
     return view('pos.sales.index');
 });
 
-Route::post('/client/subscriptions/show/{id}' ,[SubscriptionController::class,'show']);
+Route::post('/client/subscriptions/show/{id}', [SubscriptionController::class, 'show']);
 
 
 Route::get('/user/retail', [HomeController::class, 'retails'])->middleware('auth');

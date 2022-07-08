@@ -14,15 +14,9 @@ $factory->define(Sales::class, function (Faker $faker) {
         'retailsaleable_type' => "App\Retails\Retail",
         'code' => $faker->imei,
         'on_credit' => $faker->boolean(),
-        'selling_price' => rand(200 , 300),
+        'selling_price' => rand(200, 300),
         'employees_id' => 1,
         'retail_items_id' => 2,
-      //  'supplier_id' => 1,
         'sale_transaction_id' => 1,
-
     ];
-    // 'created_at' => $faker->date("Y-m-d H:i:s"),
-    // 'updated_at' =>  $faker->date("Y-m-d H:i:s"),
-    //'itemImage' =>
-
 });

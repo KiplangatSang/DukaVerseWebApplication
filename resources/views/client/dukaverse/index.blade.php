@@ -13,7 +13,7 @@
 				<div class="row">
 								<div class="col-md-6 col-lg-3">
 
-												<div class="widget-small primary coloured-icon"><i class="icon fa fa-etsy fa-3x"></i>
+												<div class="widget-small primary coloured-icon"><i class="icon fa fa-suitcase fa-3x"></i>
 																<div class="info">
 																				<h4>Account Number</h4>
 																				<p><b>{{ $dukaversedata['account']->account }}</b></p>
@@ -22,7 +22,7 @@
 
 								</div>
 								<div class="col-md-6 col-lg-3">
-												<div class="widget-small info coloured-icon"><i class="icon fa fa-cart-arrow-down fa-2x"></i>
+												<div class="widget-small info coloured-icon"><i class="icon fa fa-suitcase fa-2x"></i>
 																<div class="info">
 																				<h4>Account Status</h4>
 																				@if ($dukaversedata['account']->is_active)
@@ -34,7 +34,7 @@
 												</div>
 								</div>
 								<div class="col-md-6 col-lg-3">
-												<div class="widget-small warning coloured-icon"><i class="icon fa fa-cart-plus fa-2x"></i>
+												<div class="widget-small warning coloured-icon"><i class="icon fa fa-suitcase fa-2x"></i>
 																<div class="info">
 																				<h4>Account Type</h4>
 																				<p><b>{{ $dukaversedata['account']->account_type ?? ' N/A ' }}</b></p>
@@ -42,7 +42,7 @@
 												</div>
 								</div>
 								<div class="col-md-6 col-lg-3">
-												<div class="widget-small danger coloured-icon"><i class="icon fa fa-credit-card-alt fa-2x"></i>
+												<div class="widget-small danger coloured-icon"><i class="icon fa fa-suitcase fa-2x"></i>
 																<div class="info">
 																				<h4>Account Owner</h4>
 																				<p><b>{{ $dukaversedata['account']->accountable()->first()->retail_name }}</b></p>
@@ -54,7 +54,7 @@
 				<div class="row">
 								<div class="col-md-6 col-lg-3">
 
-												<div class="widget-small primary coloured-icon"><i class="icon fa fa-etsy fa-3x"></i>
+												<div class="widget-small primary coloured-icon"><i class="icon fa fa-fire fa-3x"></i>
 																<div class="info">
 																				<h4>Subscription</h4>
 																				@if ($dukaversedata['retail']->is_subscribed)
@@ -67,7 +67,7 @@
 
 								</div>
 								<div class="col-md-6 col-lg-3">
-												<div class="widget-small info coloured-icon"><i class="icon fa fa-cart-arrow-down fa-2x"></i>
+												<div class="widget-small info coloured-icon"><i class="icon fa fa-fire fa-2x"></i>
 																<div class="info">
 																				<h4>Subscription Type</h4>
 																				<p><b>{{ $dukaversedata['retail']->retail_subscription }}</b></p>
@@ -75,7 +75,7 @@
 												</div>
 								</div>
 								<div class="col-md-6 col-lg-3">
-												<div class="widget-small warning coloured-icon"><i class="icon fa fa-cart-plus fa-2x"></i>
+												<div class="widget-small warning coloured-icon"><i class="icon fa fa-fire fa-2x"></i>
 																<div class="info">
 																				<h4>Subscription Cost</h4>
 																				<p><b>{{ $dukaversedata['retail']->retail_subscription_paid }}</b></p>
@@ -83,7 +83,7 @@
 												</div>
 								</div>
 								<div class="col-md-6 col-lg-3">
-												<div class="widget-small danger coloured-icon"><i class="icon fa fa-credit-card-alt fa-2x"></i>
+												<div class="widget-small danger coloured-icon"><i class="icon fa fa-fire fa-2x"></i>
 																<div class="info">
 																				<h4>Account Subscriber</h4>
 																				<p><b>{{ $dukaversedata['retail']->retail_name }}</b></p>
@@ -95,7 +95,7 @@
 				<div class="row">
 								<div class="col-md-6 col-lg-3">
 
-												<div class="widget-small primary coloured-icon"><i class="icon fa fa-etsy fa-3x"></i>
+												<div class="widget-small primary coloured-icon"><i class="icon fa fa-credit-card-alt fa-3x"></i>
 																<div class="info">
 																				<h4>Loans</h4>
 																				@if ($dukaversedata['retail']->is_loanable)
@@ -108,7 +108,7 @@
 
 								</div>
 								<div class="col-md-6 col-lg-3">
-												<div class="widget-small info coloured-icon"><i class="icon fa fa-cart-arrow-down fa-2x"></i>
+												<div class="widget-small info coloured-icon"><i class="icon fa fa-credit-card-alt fa-2x"></i>
 																<div class="info">
 																				<h4>Loan Access </h4>
 																				@if ($dukaversedata['retail']->is_loanable)
@@ -120,7 +120,7 @@
 												</div>
 								</div>
 								<div class="col-md-6 col-lg-3">
-												<div class="widget-small warning coloured-icon"><i class="icon fa fa-cart-plus fa-2x"></i>
+												<div class="widget-small warning coloured-icon"><i class="icon fa fa-credit-card-alt fa-2x"></i>
 																<div class="info">
 																				<h4>Loan Limit</h4>
 																				<p><b>{{ $dukaversedata['retail']->loan_limit }}</b></p>

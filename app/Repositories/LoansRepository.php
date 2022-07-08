@@ -20,6 +20,29 @@ class LoansRepository
         $this->retail = $retail;
     }
 
+    //getApplied loans
+    public function getAppliedLoans($month = null,$year = null)
+    {
+        # code...
+            if (!$year)
+                $year = date('Y');
+
+            if ($month)
+            $loanApplications = $this->retail->loanApplications()
+                ->whereMonth('created_at', '=', $month)
+                ->whereYear('created_at', '=', $year)
+                ->get();
+        else
+            $loanApplications = $this->retail->loanApplications()
+                ->whereMonth('created_at', '=', date('m'))
+                ->whereYear('created_at', '=', $year)
+                ->get();
+            foreach ($loanApplications as $application) {
+                $application['loan'] =  $application->loans()->first();
+            }
+            return $loanApplications;
+    }
+
     //get all Loans
     public function getLoanApplications()
     {

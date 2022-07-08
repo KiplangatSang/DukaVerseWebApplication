@@ -13,67 +13,66 @@ class SalesRepository
     }
 
 
-public function indexData()
-{
-    # code...
-    $allSales = $this->getAllSales();
-    $soldItems = $this->getItems();
-    //dd( $soldItems);
+    public function indexData()
+    {
+        # code...
+        $allSales = $this->getAllSales();
+        $soldItems = $this->getItems();
+        //dd( $soldItems);
 
-    $solditemscount = count($allSales);
-    $salesTotalPrice = $allSales->sum('selling_price');
-    $salesrevenue = $this->getRevenue();
-    $meansales = $this->retail->sales()->get()->Avg('selling_price');
-    $meansales = round($meansales, 2);
-    $growth = $this->getProfitPercentage();
-    $growth = round($growth, 2);
+        $solditemscount = count($allSales);
+        $salesTotalPrice = $allSales->sum('selling_price');
+        $salesrevenue = $this->getRevenue();
+        $meansales = $this->retail->sales()->get()->Avg('selling_price');
+        $meansales = round($meansales, 2);
+        $growth = $this->getProfitPercentage();
+        $growth = round($growth, 2);
 
-    
-    $salesdata = array(
-        'soldItems' => $soldItems,
-        'allSales' =>  $allSales,
-        'solditemscount' => $solditemscount,
-        'salesTotalPrice' => $salesTotalPrice,
-        'salesrevenue' => $salesrevenue,
-        'meansales' => $meansales,
-        'growth' => $growth,
-    );
 
-    return $salesdata;
-}
+        $salesdata = array(
+            'soldItems' => $soldItems,
+            'allSales' =>  $allSales,
+            'solditemscount' => $solditemscount,
+            'salesTotalPrice' => $salesTotalPrice,
+            'salesrevenue' => $salesrevenue,
+            'meansales' => $meansales,
+            'growth' => $growth,
+        );
 
-public function createData()
-{
-    # code...
-    $stockdata = array(
-        "allStock"  => $this->retail->stocks()->get(),
+        return $salesdata;
+    }
 
-    );
+    public function createData()
+    {
+        # code...
+        $stockdata = array(
+            "allStock"  => $this->retail->stocks()->get(),
 
-    return  $stockdata;
-}
+        );
 
-public function showData($id)
-{
-    # code...
-    $allSales = $this->getSaleItem($id);
-    // dd( $allSales);
-    $salesdata = array(
-        'allSales' =>  $allSales,
-    );
+        return  $stockdata;
+    }
 
-    return  $salesdata;
+    public function showData($id)
+    {
+        # code...
+        $allSales = $this->getSaleItem($id);
+        // dd( $allSales);
+        $salesdata = array(
+            'allSales' =>  $allSales,
+        );
 
-}
+        return  $salesdata;
+    }
 
-public function destroy($id)
-{
-    //
-    $result = $this->retail->sales()->destroy($id);
-    if (!$result)
-        return false;
-    return $result;
-}
+    public function destroy($id)
+    {
+        //
+        $result = $this->retail->sales()->destroy($id);
+        if (!$result)
+            return false;
+        return $result;
+    }
 
     //store sales item
     public function saveSalesItem($request)
@@ -86,7 +85,7 @@ public function destroy($id)
     public function saveSalesItemFromStock($request)
     {
         // dd($request);
-      //  dd($request->retail_items_id);
+        //  dd($request->retail_items_id);
 
         $result = $this->retail->sales()->create(
             [
@@ -257,7 +256,6 @@ public function destroy($id)
 
     public function getMonthlySales($month =  null, $year = null)
     {
-
         if (!$year)
             $year = date('Y');
         $transactions = null;
@@ -271,6 +269,8 @@ public function destroy($id)
                 ->whereMonth('created_at', '=', date('m'))
                 ->whereYear('created_at', '=', $year)
                 ->get();
+
+        //dd($transactions);
         return $transactions;
     }
 

@@ -57,8 +57,7 @@
 												<div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-basket fa-3x"></i>
 																<div class="info">
 																				<h5> Required Items</h5>
-
-																				<p class="text-warning"><b>{{ $stocksdata['stocksitems'] }}</b></p>
+																				<p class="text-warning"><b>{{ $stocksdata['requireditems'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -66,7 +65,7 @@
 												<div class="widget-small info coloured-icon"><i class="icon fa fa-money fa-3x"></i>
 																<div class="info">
 																				<h5> Estimated Cost</h5>
-																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }} ksh</b></p>
+																				<p class="text-warning"><b>{{ $stocksdata['requireditemscost'] }} ksh</b></p>
 																</div>
 												</div>
 								</div>
@@ -74,7 +73,7 @@
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
 																				<h5>Ordered Items</h5>
-																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }}</b></p>
+																				<p class="text-warning"><b>{{ $stocksdata['ordereditems'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -82,7 +81,7 @@
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
 																				<h5>Items to Order</h5>
-																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }}</b></p>
+																				<p class="text-warning"><b>{{ $stocksdata['pendingitems'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -96,31 +95,6 @@
 																								<form action="/client/requireditems/order" enctype="application/x-www-form-urlencoded"
 																												method="POST">
 																												@csrf
-
-																												{{-- <div class="row m-3">
-																																<div class="col col-md-6 col-xl-6">
-																																				<div class="row">
-																																								<div class="animated-checkbox d-flex m-2">
-																																												<label>
-																																																<input type="checkbox" id="cbcheckall"><span class="label-text"><strong
-																																																								id="checkall">Select all</strong></span>
-																																												</label>
-																																								</div>
-																																								<div class="text-success row m-2 mx-auto">
-																																												<h3 class="ml-2">Items</h3>
-																																												<h3 class="ml-2" id="items_selected">0</h3>
-																																								</div>
-																																				</div>
-																																</div>
-																																<div class="col col-md-6 col-xl-6">
-																																				<div class=" float-right">
-																																								<button class="btn btn-danger" type="Submit" id="btn_order" disabled>Order
-																																												Selected</button>
-
-																																				</div>
-
-																																</div>
-																												</div> --}}
 																												<table class="table table-hover table-bordered" id="sampleTable">
 																																<thead>
 																																				<tr>
@@ -143,7 +117,7 @@
 																																												<tr href="/sales-item/{{ $stockitem->id }}">
 
 																																																<td>
-																																																				<div class="col-sm-6">
+																																																				<div class="col-sm col-xl">
 																																																								<img class="icon d-flex w-100"
 																																																												src="{{ $stockitem->item->image ?? 'noprofile.png' }}"
 																																																												alt="{{ $stockitem->item->name }}">

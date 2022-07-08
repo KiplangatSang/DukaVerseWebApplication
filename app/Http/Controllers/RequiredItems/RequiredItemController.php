@@ -40,7 +40,7 @@ class RequiredItemController extends BaseController
 
     public function index()
     {
-        $stocksdata = $requiredItems = $this->requiredItemsRepsitory()->indexData();
+        $stocksdata = $this->requiredItemsRepsitory()->indexData();
         return view('client.requireditems.index', compact('stocksdata'));
     }
 
@@ -107,7 +107,7 @@ class RequiredItemController extends BaseController
     {
         //
 
-        $stocksdata =$this->requiredItemsRepsitory()->showData($id);
+        $stocksdata = $this->requiredItemsRepsitory()->showData($id);
         return view('client.stock.requireditems.show', compact('stocksdata'));
         //
     }
@@ -168,27 +168,27 @@ class RequiredItemController extends BaseController
 
         for ($i = $countStart; $i < count($request->all()); $i++) {
 
-            $requireditem =$this->getRetail()->requiredItems()->where('id', $requestValues[$i])->first();
-
+            $requireditem = $this->getRetail()->requiredItems()->where('id', $requestValues[$i])->first();
             $requiredItems[$requireditem->id] = $requireditem;
-            // $requiredItems = array_merge($requiredItems,$data);
-
         }
         if (empty($requiredItems)) {
             return back()->with('message', "You have not selected any item");
         }
-        foreach($requiredItems as $requiredItem){
+        foreach ($requiredItems as $requiredItem) {
+
             $requiredItem['item'] = $requiredItem->items()->first();
         }
         $allStocks = $requiredItems;
 
-       // Session::put('requiredItems', $requiredItems);
+        // Session::put('requiredItems', $requiredItems);
         $stocksdata = array(
             'allStocks' =>  $allStocks,
         );
         return view('client.requireditems.order.index', compact('stocksdata'));
         //dd($requiredItems);
     }
+
+
 
 
     /**

@@ -14,6 +14,5 @@ $factory->define(Stock::class, function (Faker $faker) {
         'stockable_id' =>  1,
         'stockable_type' => 'App\Retails\Retail',
         'retail_items_id' => rand(1, 10),
-        'isRequired' => $faker->boolean,
     ];
 });

@@ -105,7 +105,8 @@
 																																				<th>Selling Price</th>
 																																				<th>Description</th>
 																																				<th>Regulation</th>
-                                                                                                                                                <th>Update</th>
+                                                                                                                                                <th>Required</th>
+																																				<th>Update</th>
 																																				<th>View</th>
 																																</tr>
 																												</thead>
@@ -115,7 +116,8 @@
 																																				<tr>
 
 																																								<td>
-																																												<img class="icon d-flex w-50" src="{{ $stockitem->image ?? 'noprofile.png' }}"
+																																												<img class="icon d-flex w-100"
+																																																src="{{ $stockitem->image ?? 'noprofile.png' }}"
 																																																alt="{{ $stockitem['name'] }}">
 
 																																								</td>
@@ -140,17 +142,24 @@
 																																								</td>
 																																								<td>{{ $stockitem->description }}</td>
 																																								<td>{{ $stockitem->regulation }}</td>
+																																								@if (!$stockitem->is_required)
+																																												<td><a href="/client/stock/set-as-Required/{{ $stockitem['id'] }}">
+																																																				<h5><span class="badge badge-warning">Mark required</span></h5>
+																																																</a></td>
+																																								@elseIf($stockitem->is_required)
+																																												<td>
+                                                                                                                                                                                    <h5><span class="badge badge-danger">Required</span></h5>
+                                                                                                                                                                                    </td>
+																																								@endif
 																																								<td><a class="text-info" href="/client/stock/edit/{{ $stockitem->id }}"><i
 																																																				class="fa fa-pencil-square">
 																																																				Update</i></a></td>
 
 																																								@if (count($stockitem->item) > 0)
-																																												<td><a href="/client/stock/show/{{ $stockitem->id }}"><i
-																																																								class="fa fa-eye ">
+																																												<td><a href="/client/stock/show/{{ $stockitem->id }}"><i class="fa fa-eye ">
 																																																								View</i></a></td>
 																																								@else
-																																												<td><a class="text-danger"
-																																																				href="/client/stock/show/{{ $stockitem->id }}"><i
+																																												<td><a class="text-danger" href="/client/stock/show/{{ $stockitem->id }}"><i
 																																																								class="fa fa-shopping-basket ">
 																																																								Order</i></a></td>
 																																								@endif

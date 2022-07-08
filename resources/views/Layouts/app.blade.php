@@ -122,8 +122,9 @@
 				<div class="app-sidebar__overlay " data-toggle="sidebar"></div>
 				<aside class="app-sidebar">
 								<div class="app-sidebar__user bg-dark">
+
 												<a href="/client/retails/profile"><img class="app-sidebar__user-avatar d-flex w-50"
-																				src="{{ $data['retail']->retail_profile ?? 'noprofile.png' }}"
+																				src="{{ $data['retail']->retail_profile ?? auth()->user()->profiles()->first()->profile_image }}"
 																				alt="User Image"></a>
 												<div>
 																<a href="/client/retails/profile" class="text-light">
@@ -193,10 +194,12 @@
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item  " href="/client/requireditem/index"><i
 																																class="icon fa fa-circle-o"></i>All Required Items</a></li>
-																				<li><a class="treeview-item  " href="/client/requireditem/ordered/index"><i class="icon fa fa-circle-o "></i>
+																				<li><a class="treeview-item  " href="/client/requireditem/ordered/index"><i
+																																class="icon fa fa-circle-o "></i>
 																												Ordered Items</a></li>
 
-																				<li><a class="treeview-item  " href="/client/requireditem/placeorder/index"><i class="icon fa fa-circle-o "></i>
+																				<li><a class="treeview-item  " href="/client/requireditem/placeorder/index"><i
+																																class="icon fa fa-circle-o "></i>
 																												Place Order</a></li>
 																</ul>
 												</li>
@@ -298,8 +301,8 @@
 												</li>
 
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Bills Credit & TV</span><i
-																								class="treeview-indicator fa fa-angle-right"></i></a>
+																								class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Bills Credit &
+																								TV</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
 																				<li><a class="treeview-item " href="/client/bills/index"><i class="icon fa fa-circle-o"></i>All
 																												Bills</a>
@@ -330,8 +333,8 @@
 												<li><a class="app-menu__item" href="/settigs/index"><i class="app-menu__icon fa fa-cogs"></i><span
 																								class="app-menu__label">Settings</span></a>
 												</li>
-												<li><a class="app-menu__item" href="/client/dukaverse/index"><i class="app-menu__icon fa fa-server"></i><span
-																								class="app-menu__label">DukaVerse
+												<li><a class="app-menu__item" href="/client/dukaverse/index"><i
+																								class="app-menu__icon fa fa-server"></i><span class="app-menu__label">DukaVerse
 																								Account</span></a></li>
 												<li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon fa fa-file-code-o"></i><span
 																								class="app-menu__label">Help</span></a>

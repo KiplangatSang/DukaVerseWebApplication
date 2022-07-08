@@ -96,15 +96,15 @@ class RevenueRepository
         if ($month)
             $revenues = $this->retail->revenues()
             ->whereMonth('created_at', '=', $month)
-            ->whereMonth('created_at', '=', $year)
+            ->whereYear('created_at', '=', $year)
             ->get();
          else
             $revenues = $this->retail->revenues()
             ->whereYear('created_at', '=', $year)
                 ->get();
 
-
         # code...
+        
         return $revenues;
 
     }

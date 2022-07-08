@@ -17,15 +17,19 @@ class RequiredItemsRepository
 
         //dd($requiredItems);
 
-        $stocksitems = count($requiredItems);
-        $stocksrevenue = $requiredItems->sum('price');
+        $requireditems = count($requiredItems);
+        $ordereditems = count($requiredItems->where("is_ordered", true));
+        $requireditemscost = $requiredItems->sum('price');
+        $pendingitems = count($requiredItems->where("is_ordered", false));
         $allStocks = array(
             "Stocks"  => $requiredItems,
         );
         $requiredItemsData = array(
             'allStocks' =>  $allStocks,
-            'stocksitems' => $stocksitems,
-            'stocksrevenue' => $stocksrevenue,
+            'requireditems' => $requireditems,
+            'requireditemscost' => $requireditemscost,
+            'ordereditems' => $ordereditems,
+            'pendingitems' => $pendingitems,
         );
 
         return $requiredItemsData;
@@ -41,7 +45,7 @@ class RequiredItemsRepository
             'allStocks' =>  $allStocks,
         );
 
-      return  $stocksdata;
+        return  $stocksdata;
     }
 
     public function getAllRequiredItems()
@@ -59,6 +63,18 @@ class RequiredItemsRepository
         $requiredItem = $this->retail->requiredItems()->where('id', $itemid)->get();
 
         return $requiredItem;
+    }
+
+    public function updateRequiredItems($request)
+    {
+        # code...
+        $result =   $this->retail->requiredItems()->update(
+            $request,
+        );
+
+        if (!$result)
+            return false;
+        return $result;
     }
 
     //get employee sales

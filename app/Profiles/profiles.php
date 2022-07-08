@@ -5,7 +5,7 @@ namespace App\Profiles;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class profiles extends Model
+class Profiles extends Model
 {
     //
     protected $guarded = [];
@@ -15,4 +15,5 @@ class profiles extends Model
         # code...
         return $this->belongsTo(User::class);
     }
+
 }

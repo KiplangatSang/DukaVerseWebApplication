@@ -19,7 +19,7 @@
 																				src="{{ $stocksdata['allStocks']->image ?? 'noprofile.png' }}"
 																				alt="{{ $stocksdata['allStocks']->name }}"></div>
 
-												<h4 class="display-4">{{ $stocksdata['allStocks']->name }}</h4>
+												<h4 >{{ $stocksdata['allStocks']->name }}</h4>
 								</div>
 								<div class="col col-md col-xl tile  m-1 ">
 									<div class="d-flex justify-content-center">
@@ -52,7 +52,6 @@
 																																				<th>Buying Price</th>
 																																				<th>Selling Price</th>
 																																				<th>Date Entered</th>
-																																				<th>Required Status</th>
 																																				<th>Edit</th>
 																																				<th>Delete</th>
 
@@ -68,16 +67,7 @@
 																																												<td>{{ $stocksdata['allStocks']->size }}</td>
 																																												<td>{{ $stocksdata['allStocks']->buying_price }}</td>
 																																												<td>{{ $stocksdata['allStocks']->selling_price }}</td>
-
 																																												<td>{{ $stock->created_at }}</td>
-
-																																												@if (!$stock['isRequired'])
-																																																<td><a href="/stock/Set-as-Required/{{ $stock['id'] }}"
-																																																								class="btn btn-info">
-																																																								Set Required</a></td>
-																																												@else
-																																																<td>Required</td>
-																																												@endif
 																																												<td><a href="/client/stock/item/edit/{{ $stock['id'] }}"
 																																																				class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true">
 																																																								Edit</i></a></td>

@@ -22,7 +22,6 @@ class CreateSalesTable extends Migration
             $table-> double('selling_price')->nullable();
             $table-> unsignedBigInteger('employees_id')->nullable();
             $table->bigInteger('retail_items_id');
-           // $table-> string('suppliers_id')->nullable();
             $table-> bigInteger('sale_transaction_id')->nullable();
             $table->timestamps();
         });

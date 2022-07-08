@@ -26,17 +26,17 @@ class AppRepository
     public function getBaseImages()
     {
 
-     $images = array(
-      "noprofile" => "https://storage.googleapis.com/dukaverse-e4f47.appspot.com/app/noprofile.png",
-      "nofile" => "https://storage.googleapis.com/dukaverse-e4f47.appspot.com/app/nofile.png",
-     );
-     return $images;
+        $images = array(
+            "noprofile" => "https://storage.googleapis.com/dukaverse-e4f47.appspot.com/app/noprofile.png",
+            "nofile" => "https://storage.googleapis.com/dukaverse-e4f47.appspot.com/app/nofile.png",
+        );
+        return $images;
     }
 
     public function getRegisteredMonths()
     {
         # code...
-        $registrationmonths = User::distinct('month')->orderBy('month','ASC')->get('month');
+        $registrationmonths = User::distinct('month')->orderBy('month', 'ASC')->get('month');
         return $registrationmonths;
     }
 
@@ -47,68 +47,68 @@ class AppRepository
         return $users;
     }
 
-    public function getRevenue($retail,$month)
+    public function getRevenue($retail, $month)
     {
         # code...
         $revenueRepo = new SalesRepository($retail);
-        $revenue = $revenueRepo->getRevenue("month",$month);
+        $revenue = $revenueRepo->getRevenue("month", $month);
         return $revenue;
     }
 
-    public function getExpenses($retail,$month)
+    public function getExpenses($retail, $month)
     {
         # code...
         $expenseRepo = new ExpenseRepository($retail);
-        $expenses = $expenseRepo->getExpenses($retail,$month);
+        $expenses = $expenseRepo->getExpenses($retail, $month);
         return $expenses;
     }
 
 
-    public function getProfit($retail,$month)
+    public function getProfit($retail, $month)
     {
         # code...
-         $profit = 0;
-         if($this->getRevenue($retail,$month) && $this->getExpenses($retail,$month)){
-             $profit = $this->getRevenue($retail,$month) -$this->getExpenses($retail,$month);
-         }
+        $profit = 0;
+        if ($this->getRevenue($retail, $month) && $this->getExpenses($retail, $month)) {
+            $profit = $this->getRevenue($retail, $month) - $this->getExpenses($retail, $month);
+        }
         return $profit;
     }
 
-    public function getRevenueGrowth($retail,$month)
+    public function getRevenueGrowth($retail, $month)
     {
         # code...
-       $thisMonthRev = $this->getRevenue($retail,$month);
-       $lastMonthRev = $this->getRevenue($retail,$month);
-       $growth = $thisMonthRev- $lastMonthRev;
-       $growthPercentile= ($growth/$thisMonthRev)*100;
+        $thisMonthRev = $this->getRevenue($retail, $month);
+        $lastMonthRev = $this->getRevenue($retail, $month);
+        $growth = $thisMonthRev - $lastMonthRev;
+        $growthPercentile = ($growth / $thisMonthRev) * 100;
 
         return $growthPercentile;
     }
 
-    public function getExpenseGrowth($retail,$month)
+    public function getExpenseGrowth($retail, $month)
     {
         # code...
-        $thisMonthEx = $this->getExpenses($retail,$month);
-        $lastMonthEx = $this->getExpenses($retail,$month);
-        $growth = $thisMonthEx- $lastMonthEx;
-        $growthPercentile= ($growth/$thisMonthEx)*100;
+        $thisMonthEx = $this->getExpenses($retail, $month);
+        $lastMonthEx = $this->getExpenses($retail, $month);
+        $growth = $thisMonthEx - $lastMonthEx;
+        $growthPercentile = ($growth / $thisMonthEx) * 100;
 
-         return $growthPercentile;
+        return $growthPercentile;
     }
 
-    public function getProfitGrowth($retail,$month)
+    public function getProfitGrowth($retail, $month)
     {
-        $thisMonthProfit = $this->getProfit($retail,$month);
-        $lastMonthProfit = $this->getProfit($retail,$month);
-        $growth = $thisMonthProfit- $lastMonthProfit;
-        $growthPercentile= ($growth/$thisMonthProfit)*100;
+        $thisMonthProfit = $this->getProfit($retail, $month);
+        $lastMonthProfit = $this->getProfit($retail, $month);
+        $growth = $thisMonthProfit - $lastMonthProfit;
+        $growthPercentile = ($growth / $thisMonthProfit) * 100;
 
-         return $growthPercentile;
+        return $growthPercentile;
     }
 
 
-     public function getAppData()
-     {
+    public function getAppData()
+    {
         # code...
         $baseController  = new BaseController();
         $retail = $baseController->getRetail();
@@ -125,14 +125,14 @@ class AppRepository
         $loansRepo = new LoansRepository($retail);
 
         $dates = null;
-        try{
-            $dates = $retail
-            ->select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, MONTHNAME(created_at) month_name'))
-            ->distinct()
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->get();
-        }catch(Exception $e){
+        try {
+            $dates = $retail->salesTransactions()
+                ->select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, MONTHNAME(created_at) month_name'))
+                ->distinct()
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
+                ->get();
+        } catch (Exception $e) {
             $e->getMessage();
         }
 
@@ -162,10 +162,10 @@ class AppRepository
             $month = $date->month;
             $monthName = $date->month_name;
             $sales = $this->getMonthlySales($salesRepo, $month);
-           // dd($sales);
+
             $expenses = $this->getMonthlyExpense($expenseRepo, $month);;
             $revenue = $this->getMonthlyRevenue($revenueRepo, $month);
-            $stock = $this->getLoanApplications($loansRepo, $month);
+            $stock = count($stockRepo->getDisctictStockItems($month));
             $loans = $this->getLoanApplications($loansRepo, $month);
 
             //set piechart data
@@ -192,6 +192,7 @@ class AppRepository
         $data['loansData']  = $loansData;
 
         //piechart data
+
         $data['salesPData']  = $salesPData;
         $data['expensePData'] = $expensePData;
         $data['revenuePData'] = $revenuePData;
@@ -200,8 +201,10 @@ class AppRepository
 
 
         $data['sales_value'] = $this->getMonthlySales($salesRepo);
-        $data['expenses_value'] = $expenseRepo->getAllExpenses();
-        $data['revenue_value'] =  $revenueRepo->getAllRevenue();
+        // $data['expenses_value'] = $expenseRepo->getAllExpenses();
+        $data['expenses_value'] = $this->getMonthlyExpense($expenseRepo,date("m"));
+        //$data['revenue_value'] =  $revenueRepo->getAllRevenue();
+        $data['revenue_value'] =  $this->getMonthlyRevenue($revenueRepo,date("m"));
         $data['profit_value'] = $profitRepo->getProfit();
 
         $data['sales_growth'] =  $salesRepo->getSalesGrowth();
@@ -223,81 +226,75 @@ class AppRepository
         $data['retail'] = $retail;
 
         return $data;
-     }
+    }
 
-     public function getMonths($periods)
-     {
+    public function getMonths($periods)
+    {
 
-         $months = array();
-         foreach ($periods as $period) {
-             $month = $period->month_name;
-             array_push($months, $month);
-         }
-         return $months;
-     }
+        $months = array();
+        foreach ($periods as $period) {
+            $month = $period->month_name;
+            array_push($months, $month);
+        }
+        return $months;
+    }
 
-     public function getLoanApplications($loansRepo, $period)
-     {
+    public function getLoanApplications($loansRepo, $month)
+    {
 
-         $loans = array();
-         $loan = count($loansRepo->getLoanApplications("month", $period));
-         array_push($loans, $loan);
+       // $loans = array();
+        $loan = $loansRepo->getAppliedLoans($month, null)->sum("loan_amount");
+        //array_push($loans, $loan);
+        return $loan;
+    }
 
-         return $loan;
-     }
-
-     public function getMonthlyRevenue($revenueRepo, $period)
-     {
-
-
-         $revenue = count($revenueRepo->getMonthlyRevenue("month", $period));
-
-         return $revenue;
-     }
-
-     public function getMonthlyExpense($expenseRepo, $period)
-     {
-
-         $expense = $expenseRepo->getMonthlyExpenses($period);
-
-         return $expense;
-     }
-
-     public function getMonthlySales($salesRepo= null, $period = null)
-     {
-         $sale = $salesRepo->getMonthlySales($period)->sum('paid_amount');
-         //dd( $sale);
-         return $sale;
-     }
+    public function getMonthlyRevenue($revenueRepo, $period)
+    {
 
 
-     //sets pie chart data
-     public function pieChartData($data, $month)
-     {
-         $pdata = array();
-         # code...
-         $color = $this->getColor();
-         $value = $data;
+        $revenue = $revenueRepo->getMonthlyRevenue($period)->sum('revenue');
 
-       // $value = 20;
-         $highlight = $this->getColor();
-         $label = $month;
+        return $revenue;
+    }
 
-         $pdata['color'] = $color;
-         $pdata['value'] = $value;
-         $pdata['highlight'] = $highlight;
-         $pdata['label'] = $label;
-         return $pdata;
-     }
+    public function getMonthlyExpense($expenseRepo, $period)
+    {
 
-     //gets random color value
-     public function getColor()
-     {
-         return '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
-     }
+        $expense = $expenseRepo->getMonthlyExpenses($period)->sum('expense');
+
+        return $expense;
+    }
+
+    public function getMonthlySales($salesRepo = null, $period = null)
+    {
+        $sale = $salesRepo->getMonthlySales($period)->sum('paid_amount');
+        //dd( $sale);
+        return $sale;
+    }
 
 
+    //sets pie chart data
+    public function pieChartData($data, $month)
+    {
+        $pdata = array();
+        # code...
+        $color = $this->getColor();
+        $value = $data;
 
+        // $value = 20;
+        $highlight = $this->getColor();
+        $label = $month;
 
+        $pdata['color'] = $color;
+        $pdata['value'] = $value;
+        $pdata['highlight'] = $highlight;
+        $pdata['label'] = $label;
+        return $pdata;
+    }
 
+    //gets random color value
+    public function getColor()
+    {
+        return '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+    }
 }

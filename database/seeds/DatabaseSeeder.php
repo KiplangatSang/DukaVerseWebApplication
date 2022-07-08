@@ -33,12 +33,13 @@ class DatabaseSeeder extends Seeder
             AccountSeeder::class,
             SubscriptionSeeder::class,
             //UserSeeder::class,
-            //SalesSeeder::class,
-            // SaleTransactionsSeeder::class,
-            // RetailOwnersSeeder::class,
-            // RetailSeeder::class,
-            //ProfitsSeeder::class,
-            // ExpensesSeeder::class,
+            SalesSeeder::class,
+           SaleTransactionsSeeder::class,
+           RevenueSeeder::class,
+           // RetailOwnersSeeder::class,
+            RetailSeeder::class,
+           ProfitsSeeder::class,
+            ExpensesSeeder::class,
         ]);
     }
 }

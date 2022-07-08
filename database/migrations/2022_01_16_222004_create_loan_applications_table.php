@@ -21,6 +21,8 @@ class CreateLoanApplicationsTable extends Migration
             $table->bigInteger('loans_id');
             $table->bigInteger('users_id');
             $table->double('loan_amount');
+            $table->double('disbursed_amount');
+            $table->double('repay_amount');
             $table->integer('loan_duration');
             $table->integer('loan_status')->default(-1);
             $table->double('loan_discount')->default(0);
@@ -41,4 +43,33 @@ class CreateLoanApplicationsTable extends Migration
     {
         Schema::dropIfExists('loan_applications');
     }
+
+       //loan_status
+        /**
+         * -2 = defaulted
+         * -1 = sent
+         * 0 = processed
+         * 1 = disbursed
+         * 2 = repaid
+         */
+
+        //repayment_status
+        /**
+         * true = repaid
+         * false = not repaid
+         */
+
+        //loan_assigned_by
+        /**
+         * the person who processed the loan in the admin side
+         */
+
+        //disbursed_amount
+        /**
+         * the assigned amount to the loanee
+         */
+        //repay_amount
+        /**
+         * the amount to be paid by the loanee less the discount
+         */
 }

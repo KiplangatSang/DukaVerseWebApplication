@@ -50,6 +50,9 @@ class ProfitRepository
 
     public function getProfit($key = null, $value = null)
     {
+
+        // $profit = $this->retail->profit()->get();
+        // dd($profit);
         $year = date("Y");
         $profit = 0;
         if ($key && $value) {

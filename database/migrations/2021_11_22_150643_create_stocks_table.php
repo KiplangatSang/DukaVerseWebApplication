@@ -19,7 +19,7 @@ class CreateStocksTable extends Migration
             $table-> bigInteger('stockable_id');
             $table-> string('stockable_type');
             $table->bigInteger('retail_items_id');
-            $table->boolean('isRequired')->nullable()->default(false);
+        // $table->boolean('isRequired')->nullable()->default(false);
             $table->timestamps();
         });
     }

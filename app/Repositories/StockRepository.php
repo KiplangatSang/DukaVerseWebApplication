@@ -65,6 +65,27 @@ class StockRepository
         return $stocks;
     }
 
+    public function getDisctictStockItems($month= null,$year = null)
+    {
+        $stocks = null;
+        if (!$year)
+            $year = date('Y');
+        if ($month)
+            $stocks = $this->retail->stocks()
+                ->whereMonth('created_at', '=', $month)
+                ->whereYear('created_at', '=', $year)
+                ->get();
+        else
+            $stocks = $this->retail->expenses()
+                ->whereYear('created_at', '=', $year)
+                ->get();
+        //dd($expenses->expense);
+
+
+        return $stocks;
+    }
+
+
     public function getAllStock($key = null, $value = null)
     {
         $stocks = null;

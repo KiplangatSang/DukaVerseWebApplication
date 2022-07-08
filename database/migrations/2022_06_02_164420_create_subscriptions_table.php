@@ -23,7 +23,7 @@ class CreateSubscriptionsTable extends Migration
             $table->string("subscription_price");
             $table->boolean("subscription_status");
             $table->bigInteger("subscription_level")->default(1);
-            $table->bigInteger("subscription_discount")->default(0);
+            $table->string("subscription_discount")->default(0);
             $table->string("subscription_categories")->default(1);
             $table->timestamps();
         });

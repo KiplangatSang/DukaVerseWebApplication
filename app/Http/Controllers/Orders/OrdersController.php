@@ -116,7 +116,8 @@ class OrdersController extends BaseController
                 [
                     'is_ordered' => true,
                     'orders_id' => $order->id,
-                    'ordered_amount' => $value,
+                    'ordered_amount' =>$requireditem->ordered_amount + $value,
+                    'required_amount' =>$requireditem->required_amount -$value,
                 ]
             );
         }

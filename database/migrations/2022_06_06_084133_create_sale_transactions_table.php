@@ -19,7 +19,6 @@ class CreateSaleTransactionsTable extends Migration
             $table->text('transactionable_type');
             $table->longText('transaction_id');
             $table->longText('expense')->default(0);
-            // $table->longText('transaction_items')->nullable();
             $table->string('paid_amount')->nullable();
             $table->string('balance')->nullable();
             $table->string('discount')->nullable();
