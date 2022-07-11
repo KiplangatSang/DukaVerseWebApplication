@@ -112,6 +112,7 @@ class AppRepository
         # code...
         $baseController  = new BaseController();
         $retail = $baseController->getRetail();
+       // dd( $retail);
 
         $expenseRepo = new ExpenseRepository($retail);
         $salesRepo = new SalesRepository($retail);
@@ -202,9 +203,9 @@ class AppRepository
 
         $data['sales_value'] = $this->getMonthlySales($salesRepo);
         // $data['expenses_value'] = $expenseRepo->getAllExpenses();
-        $data['expenses_value'] = $this->getMonthlyExpense($expenseRepo,date("m"));
+        $data['expenses_value'] = $this->getMonthlyExpense($expenseRepo, date("m"));
         //$data['revenue_value'] =  $revenueRepo->getAllRevenue();
-        $data['revenue_value'] =  $this->getMonthlyRevenue($revenueRepo,date("m"));
+        $data['revenue_value'] =  $this->getMonthlyRevenue($revenueRepo, date("m"));
         $data['profit_value'] = $profitRepo->getProfit();
 
         $data['sales_growth'] =  $salesRepo->getSalesGrowth();
@@ -216,7 +217,6 @@ class AppRepository
         $data['stock'] = count($stockRepo->getDisctictStock());
         $data['required_items'] = count($requiredItemsRepo->getAllRequiredItems());
         $data['ordered_items'] = count($orderRepo->getAllorders());
-
 
         $data['employees'] = count($employeeRepo->getEmployees());
         $data['supplies'] =  count($suppliesrRepo->getAllSupplies());
@@ -242,7 +242,7 @@ class AppRepository
     public function getLoanApplications($loansRepo, $month)
     {
 
-       // $loans = array();
+        // $loans = array();
         $loan = $loansRepo->getAppliedLoans($month, null)->sum("loan_amount");
         //array_push($loans, $loan);
         return $loan;

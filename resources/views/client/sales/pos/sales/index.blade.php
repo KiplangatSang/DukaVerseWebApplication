@@ -2,10 +2,12 @@
 @section('content')
 				<div class="container-fluid p-3">
 								<div class="app-title d-flex justify-content-center">
-												<div class="mx-auto">
-																<h6 class="display-4"><i class="fa-3 fa fa-dashboard"></i>
-																				{{ session('retail')->retailName ?? env('APP_NAME') }}</h1>
-
+												<div class="row mx-auto">
+                                                    <div class="col-md-6">
+                                                        <a href="{{route("login")}}"><img class="w-75" src="{{$data['retail']->retail_profile}}" alt=""></a>
+                                                    </div>
+																<h1 class="display-4">
+																				{{$data['retail']->retail_name ?? env('APP_NAME') }}</h1>
 												</div>
 								</div>
 								<div class="row">
@@ -165,7 +167,7 @@
 																																								autocomplete="additional-name" id="inputMpesa"
 																																								onclick="disableInput('inputMpesa')">
 																																				<h1>Card</h1>
-																																				<input class="form-control" type="text" placeholder="Enter Item Code "
+																																				<input class="form-control" type="text" placeholder="Enter Card Number "
 																																								autocomplete="additional-name" id="inputCard"
 																																								onclick="disableInput('inputCard')">
 																																</div>
@@ -324,12 +326,12 @@
 				            if (result.success = true) {
 				                document.getElementById("transaction-response").style.visibility = "visible";
                                 document.getElementById("respaystatus").innerHTML = "Success Paid";
-                                document.getElementById("respayamount").innerHTML = result.data.balance;
+                                document.getElementById("respayamount").innerHTML ="Balance "+ result.data.balance;
 
 
 				            } else if (result.success = false) {
                                 document.getElementById("transaction-response").style.visibility = "visible";
-                                document.getElementById("respaystatus").innerHTML = "Error";
+                                document.getElementById("respaystatus").innerHTML = "Error on payment";
 				            }
 
 				        }
@@ -645,6 +647,7 @@
 				            document.getElementById("paid").innerHTML = result.paid_amount;
 				            setSalesStatusItems();
 				            calculateBalance();
+                            document.getElementById("textCountItems").innerHTML = resultItems.length;
 
 				        }
 				        xhttp.open("GET", "/client/sales/transactions/hold/retrieve/" + str);

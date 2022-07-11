@@ -17535,6 +17535,10 @@ be a descendant of the grid when it is being dragged.
   #prevBtn {
     background-color: #bbbbbb;
   }
+  #transaction-response {
+    max-height: 200px;
+  }
+  
   
   /* Make circles that indicate the steps of the form: */
   .step {

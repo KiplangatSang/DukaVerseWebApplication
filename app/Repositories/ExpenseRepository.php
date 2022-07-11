@@ -95,20 +95,20 @@ class ExpenseRepository
         $expenses = $this->retail->expenses()->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])->get();
         return $expenses;
     }
-
-
-    public function getExpenses($key = null, $value = null)
+    public function getExpenses($month = null, $year = null)
     {
         $year = date("Y");
         $expenses = null;
-        if ($key && $value) {
+        if ( $month) {
             $expenses = $this->retail->expenses()
-                ->where($key, $value)
+                ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
             //dd($year);
         } else
-            $expenses = $this->retail->expenses()->get();
+            $expenses = $this->retail->expenses()
+            ->whereYear('created_at', '=', $year)
+            ->get();
 
 
         $totalExpenses =  $expenses->sum('expense');
@@ -122,8 +122,9 @@ class ExpenseRepository
 
         $month = date('m');
 
-        $currentExpense = $this->getExpenses("month", $month);
-        $previousExpense =   $this->getExpenses("month", $month - 1);
+        $currentExpense = $this->getExpenses( $month);
+
+        $previousExpense =   $this->getExpenses( $month - 1);
 
         if ($previousExpense <= 0)
             $previousExpense = 1;
@@ -132,8 +133,9 @@ class ExpenseRepository
             $currentExpense = 1;
 
         $growth = (($currentExpense -  $previousExpense) / $currentExpense) * 100;
-
+       // dd( $growth);
         $growth = number_format($growth, 2);
+
         # code...
         return $growth;
     }

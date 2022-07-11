@@ -104,7 +104,7 @@ class RevenueRepository
                 ->get();
 
         # code...
-        
+
         return $revenues;
 
     }
@@ -113,8 +113,8 @@ class RevenueRepository
     {
 
         $month = date('m');
-        $currentRevenue= $this->getAllRevenue("month", $month);
-        $previousRevenue =   $this->getAllRevenue("month", $month - 1);
+        $currentRevenue= $this->getAllRevenue( $month);
+        $previousRevenue =   $this->getAllRevenue( $month - 1);
 
         //dd("$currentRevenue");
 
@@ -125,6 +125,7 @@ class RevenueRepository
             $currentRevenue = 1;
         $growth = (($currentRevenue -  $previousRevenue) / $currentRevenue) * 100;
         $growth = number_format($growth, 2);
+
         return $growth;
     }
 }

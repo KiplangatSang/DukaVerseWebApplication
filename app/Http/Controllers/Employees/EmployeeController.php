@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Employees;
 
 use App\Employees\Employees;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Repositories\EmployeesRepository;
@@ -11,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class EmployeeController extends BaseController
 {
@@ -20,15 +22,12 @@ class EmployeeController extends BaseController
         $this->middleware('auth');
     }
 
+
     public function employeeRepository()
     {
         # code...
 
         $this->retail = $this->getRetail();
-
-        if (!$this->retail) {
-            return redirect('/retails/addretail')->with('message', __('retail.create'));
-        }
 
         $this->ordersRepo = new EmployeesRepository($this->retail);
         return $this->ordersRepo;
@@ -38,9 +37,7 @@ class EmployeeController extends BaseController
     public function index()
     {
         $user = auth()->user();
-        $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
-        $emplist = Employees::whereIn('employeeable_id', $retail)->get();
-        $emplist = Employees::all();
+        $emplist = $this->employeeRepository()->getEmployees();
         $empdata = array(
             'emplist' => $emplist,
         );
@@ -51,12 +48,8 @@ class EmployeeController extends BaseController
     {
 
         $user = auth()->user();
-        $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
-        if(count($retail) < 1){
-            return redirect('/retails/addretail')->with('message','Register Your Retail Shop First' );
-        }
         $empdata = array(
-            'Retail' => $retail
+            'Retail' => $this->getRetail(),
         );
 
         return view('client.employees.create', compact('empdata'));
@@ -65,7 +58,10 @@ class EmployeeController extends BaseController
     public function store(Request $request)
     {
 
-        $data = $request->validate(
+        $user = auth()->user();
+        $retail = $this->getRetail();
+
+        $request->validate(
             [
                 'emp_name' => 'required',
                 'emp_ID' => 'required',
@@ -76,77 +72,96 @@ class EmployeeController extends BaseController
             ]
         );
 
-        $user = auth()->user();
-        $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->first();
+        $userRequest = new Request([
+            'username' => $request['emp_name'],
+            'email' => $request['emp_email'],
+            'password' =>  "password",
+            'phoneno' => $request['emp_phoneno'],
+            'terms_and_conditions' => false,
+            'api_token' => Str::random(60),
+            'is_owner' => false,
+            'is_employee' => true,
+            'role' => 1,
+            'month' => date('M'),
+            'year' => date('Y'),
+        ]);
+
+        $regContoller = new RegisterController();
+        $userresult =   $regContoller->apiRegister($userRequest);
+        $userresult = $userresult->getOriginalContent();
+        if ($userresult['success'] == false)
+            return back()->with('error', $userresult['data']);
+
+        $employee = $userresult['data']['user'];
+
+        // dd($employee);
+        //assign user account to employee account
+        $request['user_id'] =  $employee->id;
+
+        //allow for employee login
+        // create roles
+
+
+
 
         try {
 
             $retail->employees()->create(
-                $data,
+                $request->all(),
             );
 
-            return redirect('/client/employees/index')->with(__('employees.create'));
+            return redirect('/client/employee/index')->with(__('employees.create'));
         } catch (Exception $ex) {
 
-          Log::info( $ex->getMessage());
-            return back()->with('message',"Could not register Employee");
+            Log::info($ex->getMessage());
+            return back()->with('error', $ex->getMessage());
         }
-
-
-
     }
 
     public function show($emp_id)
     {
-        $emp = Employees::where('id',$emp_id)->first();
-       // dd($emp);
+        $emp = Employees::where('id', $emp_id)->first();
+        // dd($emp);
 
         $empdata = array(
             'emp' => $emp,
         );
-        return view('client.employees.show',compact('empdata'));
+        return view('client.employees.show', compact('empdata'));
         //dd($emp);
     }
 
     public function edit($emp_id)
     {
         $user = auth()->user();
-        $retail = Retail::whereIn('retailable_id',  $user)->orderBy('created_at', 'DESC')->get();
 
 
-        $emp = Employees::where('id',$emp_id)->first();
+        $emp = Employees::where('id', $emp_id)->first();
+
 
         $empdata = array(
             'emp' => $emp,
-            'Retail' => $retail,
         );
-        return view('client.employees.edit',compact('empdata'));
-        }
+        return view('client.employees.edit', compact('empdata'));
+    }
 
-        public function update($emp_id,Request $request)
-        {
-
-
-
-            Employees::where('id',$request->emp_id)->update([
-                'empName'=>$request->emp_name,
-                'empEmail' => $request->emp_email,
-                    'empPhoneno'=>$request->emp_phoneno,
-                    'empNationalId' => $request->emp_ID,
-                    'pin' => date('Y'),
-                    'empRole' => $request->emp_role,
-                    'userName' => $request->emp_name,
-                    'dateEmployed' => now(),
-                    'salary' => $request->emp_salary,
+    public function update($emp_id, Request $request)
+    {
+        $retail = $this->getRetail();
+        $retail->employees()->where('id', $request->emp_id)->update(
+            [
+                'emp_name' => $request->emp_name,
+                'emp_email' => $request->emp_email,
+                'emp_phoneno' => $request->emp_phoneno,
+                'emp_ID' => $request->emp_ID,
+                'emp_role' => $request->emp_role,
+                'emp_salary' => $request->emp_salary,
             ]
         );
-
-
-            return redirect('/employee/viewEmployee/'.$emp_id)->with('success','Update done successfully');
-            }
+        return redirect('/client/employee/show/' . $emp_id)->with('success', 'Update done successfully');
+    }
     public function delete($emp_id)
     {
         Employees::destroy($emp_id);
-        return redirect('/employees/showemployees')->with('success','Deletion Successful');
+        return redirect('/employees/showemployees')->with('success', 'Deletion Successful');
     }
 }

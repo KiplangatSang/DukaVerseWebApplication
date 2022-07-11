@@ -106,29 +106,5 @@ class BillController extends BaseController
         return view('client.bills.edit',compact('billsdata'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-        return redirect('/bills/index')->with('success', 'Update Successful');
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-        $customer = Bills::destroy($id);;
-        return redirect('/bills/index')->with('success','Deletion Successful');
-    }
 }

@@ -16,28 +16,13 @@
 												<div class="tile">
 																<h3 class="tile-title">Fill in the form to register a Employee</h3>
 																<div class="tile-body">
-																				<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/employee/updateEmployeeData/{{$empdata['emp']->id}}">
-
+																				<form class="form-horizontal" method="POST" enctype="multipart/form-data"
+																								action="/client/employee/update/{{ $empdata['emp']->id }}">
 																								@csrf
-																								<div class="form-group col">
+																								<div class="form-group col d-flex justify-content-center">
 
-
-																												<label for="exampleSelect1">Retail Name</label>
-																												<select class="form-control" id="exampleSelect1" name="retail_id" value="{{$empdata['emp']->empRole}}">
-																																@foreach ($empdata['Retail'] as $data)
-
-																																				<option value="{{ $data->id }}">{{ $data->retailName }}</option>
-																																@endforeach
-																												</select>
-
-																												@error('retail_id')
-																																<span class="invalid-feedback" role="alert">
-																																				<strong>{{ $message }}</strong>
-																																</span>
-																												@enderror
-
+																												<label class="display-4"> {{ $data['retail']->retail_name }} Shop</label>
 																								</div>
-
 																</div>
 
 																<div class="form-group col">
@@ -45,7 +30,7 @@
 
 																				<label for="exampleSelect1">Employee Name</label>
 																				<input class="form-control  @error('emp_name') is-invalid @enderror" type="text"
-																								placeholder="Enter Employee Name" name="emp_name" value="{{ $empdata['emp']->empName }}"
+																								placeholder="Enter Employee Name" name="emp_name" value="{{ $empdata['emp']->emp_name }}"
 																								autocomplete="emp_name" required>
 
 																				@error('emp_name')
@@ -61,12 +46,14 @@
 																<div class="form-group col">
 																				<div class="form-group">
 																								<label for="exampleSelect1">Role</label>
-																								<select class="form-control" id="exampleSelect1" name="emp_role" value="{{$empdata['emp']->empName}}">
+																								<select class="form-control" id="exampleSelect1" name="emp_role">
+																												<option value="{{ $empdata['emp']->emp_role }}" selected>{{ $empdata['emp']->emp_role }}
+																												</option>
 																												<option value="Sales">Sales</option>
 																												<option value="Managerial">Managerial</option>
 																												<option value="Accounts">Account</option>
 																								</select>
-                                                                                                @error('emp_role')
+																								@error('emp_role')
 																												<span class="invalid-feedback" role="alert">
 																																<strong>{{ $message }}</strong>
 																												</span>
@@ -77,11 +64,11 @@
 
 
 																<div class="form-group col">
-																				<label class="control-label ">Employee ID/Passport Number</label>
+																				<label class="control-label ">Emplo;yee ID/Passport Number</label>
 																				<div>
 																								<input class="form-control  @error('emp_ID') is-invalid @enderror" type="text"
-																												placeholder="Enter Employee ID/Passport Number" name="emp_ID" value="{{$empdata['emp']->empNationalId}}"
-																												autocomplete="emp_ID" required>
+																												placeholder="Enter Employee ID/Passport Number" name="emp_ID"
+																												value="{{ $empdata['emp']->emp_ID }}" autocomplete="emp_ID" required>
 
 																								@error('emp_ID')
 																												<span class="invalid-feedback" role="alert">
@@ -96,8 +83,8 @@
 																				<label class="control-label ">Phone Number</label>
 																				<div>
 																								<input class="form-control  @error('emp_phoneno') is-invalid @enderror" type="phone"
-																												placeholder="Enter Employee Phone Number" name="emp_phoneno" value="{{ $empdata['emp']->empPhoneno }}"
-																												autocomplete="emp_phoneno" required>
+																												placeholder="Enter Employee Phone Number" name="emp_phoneno"
+																												value="{{ $empdata['emp']->emp_phoneno }}" autocomplete="emp_phoneno" required>
 
 																								@error('emp_phoneno')
 																												<span class="invalid-feedback" role="alert">
@@ -112,7 +99,7 @@
 																				<label class="control-label ">Email</label>
 																				<div>
 																								<input class="form-control  @error('emp_email') is-invalid @enderror" type="email"
-																												placeholder="Enter Employee Email" name="emp_email" value="{{$empdata['emp']->empEmail }}"
+																												placeholder="Enter Employee Email" name="emp_email" value="{{ $empdata['emp']->emp_email }}"
 																												autocomplete="emp_email" required>
 
 																								@error('emp_email')
@@ -131,8 +118,8 @@
 																				<label class="control-label ">Salary</label>
 																				<div>
 																								<input class="form-control  @error('emp_salary') is-invalid @enderror" type="Number"
-																												placeholder="Enter Employee Salary" name="emp_salary" value="{{ $empdata['emp']->salary }}"
-																												autocomplete="emp_salary" required>
+																												placeholder="Enter Employee Salary" name="emp_salary"
+																												value="{{ $empdata['emp']->emp_salary }}" autocomplete="emp_salary" required>
 
 																								@error('emp_salary')
 																												<span class="invalid-feedback" role="alert">
@@ -162,5 +149,4 @@
 								</div>
 				</div>
 				</div>
-
 @endsection

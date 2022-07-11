@@ -66,7 +66,6 @@ class RequiredItemController extends BaseController
     public function create()
     {
         //
-
         return view('client.stock.requireditems.create');
     }
 
@@ -106,7 +105,6 @@ class RequiredItemController extends BaseController
     public function show($id)
     {
         //
-
         $stocksdata = $this->requiredItemsRepsitory()->showData($id);
         return view('client.stock.requireditems.show', compact('stocksdata'));
         //
@@ -187,9 +185,6 @@ class RequiredItemController extends BaseController
         return view('client.requireditems.order.index', compact('stocksdata'));
         //dd($requiredItems);
     }
-
-
-
 
     /**
      * Remove the specified resource from storage.

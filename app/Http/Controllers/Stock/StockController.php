@@ -184,7 +184,7 @@ class StockController extends BaseController
         //dd($stocksdata);
         return view('client.stock.store.items.edit', compact('stocksdata'));
     }
-     /**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -240,18 +240,15 @@ class StockController extends BaseController
     public function markRequired($id)
     {
 
-        $requiredResult=  $this->stockRepository()->markRequired($id);
+        $requiredResult =  $this->stockRepository()->markRequired($id);
         if (!$requiredResult)
-            return back()->with('error', 'Could mark this item as required');
+            return back()->with('error', 'Could not mark this item as required');
 
         return back()->with('success', ' Item updated successfully');
     }
 
     public function orderItems($id)
     {
-
-        /// dd("orders");
-
         return redirect('')->with('success', 'Edit Your orders here');
     }
 }

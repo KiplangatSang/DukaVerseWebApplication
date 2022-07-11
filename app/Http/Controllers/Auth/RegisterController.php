@@ -98,14 +98,17 @@ class RegisterController extends BaseController
         return $user;
     }
 
-    protected function apiRegister(Request $request)
+    public function apiRegister(Request $request)
     {
         $input = $request->only(
             'username',
             'email',
             'password',
             'phoneno',
-            'terms_and_conditions'
+            'terms_and_conditions',
+            'is_owner',
+            'is_employee',
+            'role',
         );
 
         $validator = Validator::make($request->all(), [
@@ -117,30 +120,30 @@ class RegisterController extends BaseController
             'terms_and_conditions' => 'required',
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
             return $this->sendError('Validation Error.', $validator->errors());
-        }
+
+
+        $request['password'] = Hash::make($request['password']);
+        $request['terms_and_conditions'] = $request['terms_and_conditions'];
+        $request['api_token'] = Str::random(60);
+        $request['month'] = date('M');
+        $request['year'] = date('Y');
 
         $user = User::firstOrCreate(
             [
                 'username' => $request['username'],
-                'email' => $request['email']
-            ],
-            [
-                'password' => Hash::make($request['password']),
+                'email' => $request['email'],
                 'phoneno' => $request['phoneno'],
-                'terms_and_conditions' => $request['terms_and_conditions'],
-                'api_token' => Str::random(60),
-                'month' => date('M'),
-                'year' => date('Y'),
-            ]
+            ],
+            $request->except(['username', 'email', 'phoneno']),
         );
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        // $user = User::create($input);
-        //$success['token'] =  $user->createToken('MyApp')->accessToken;
-        $user =  User::whereIn('email', $user)->first();
+        // $input = $request->all();
+        // // $input['password'] = bcrypt($input['password']);
+        // // // $user = User::create($input);
+        // // //$success['token'] =  $user->createToken('MyApp')->accessToken;
+        $user =  User::where('email', $user->email)->first();
         $user->profiles()->create([
             "user_id" => $user->id,
         ]);

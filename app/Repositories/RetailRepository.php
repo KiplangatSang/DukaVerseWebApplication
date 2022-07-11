@@ -23,9 +23,9 @@ class RetailRepository
     {
         # code...
         $user =  User::where('id', auth()->id())->first();
-        $retail =  $user->retails()->where('id', $retailId)->first();
+        $retail =  Retail::where('id', $retailId)->first();
         //dd( $retail);
-        $user->sessionRetail()->updateOrCreate(
+        $result =  $user->sessionRetail()->updateOrCreate(
             [
                 'retail_id' => $retail->id,
             ],
@@ -33,6 +33,9 @@ class RetailRepository
                 'retailNameId' => $retail->retail_Id,
             ]
         );
+       // dd($result);
+        if (!$result)
+            return false;
         return $retail;
     }
 
@@ -43,7 +46,7 @@ class RetailRepository
         $paymentPref = array(
             "mpesapaybill" => "mpesapaybill",
             "mpesatill" => "mpesatill",
-            "dukaverse"=>"dukaverse",
+            "dukaverse" => "dukaverse",
         );
 
         return $paymentPref;

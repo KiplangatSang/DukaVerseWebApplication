@@ -23,7 +23,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username', 'email', 'password', 'month',
-        'year', 'remember_token','api_token','phoneno','userpin',
+        'year', 'remember_token', 'api_token', 'phoneno', 'userpin', 'terms_and_conditions',
+        'is_owner',
+        'is_employee',
+        'role',
     ];
 
     /**
@@ -46,43 +49,53 @@ class User extends Authenticatable
 
 
 
-    public function Roles(){
-        return $this->morphOne(Roles::class,'roleable');
+    public function roles()
+    {
+        return $this->morphOne(Roles::class, 'roleable');
     }
 
-    public function tags(){
-        return $this->morphToMany(Tags::class,'taggable');
+    public function tags()
+    {
+        return $this->morphToMany(Tags::class, 'taggable');
     }
 
 
-    public function retails(){
-        return $this->morphMany(Retail::class,'retailable');
+    public function retails()
+    {
+        return $this->morphMany(Retail::class, 'retailable');
     }
 
-    public function storm5Employees(){
-        return $this->morphMany(Storm5Employees::class,'storm5employeeable');
+    public function storm5Employees()
+    {
+        return $this->morphMany(Storm5Employees::class, 'storm5employeeable');
     }
 
-    public function bills(){
-        return $this->morphMany(Bills::class,'billable');
+    public function bills()
+    {
+        return $this->morphMany(Bills::class, 'billable');
     }
-    public function sessionRetail(){
-        return $this->morphOne(SessionRetail::class,"retailable");
+    public function sessionRetail()
+    {
+        return $this->morphOne(SessionRetail::class, "retailable");
     }
 
-    public function profiles(){
+    public function profiles()
+    {
         return $this->hasOne(Profiles::class);
     }
 
-    public function account(){
-        return $this->morphOne(Account::class,"accountable");
+    public function account()
+    {
+        return $this->morphOne(Account::class, "accountable");
     }
 
-    public function accountTransactions(){
-        return $this->morphMany(Transaction::class,"transactionable");
+    public function accountTransactions()
+    {
+        return $this->morphMany(Transaction::class, "transactionable");
     }
 
-    public function employees(){
-        return $this->hasOne(Employees::class,"user_id");
+    public function employees()
+    {
+        return $this->hasOne(Employees::class, "user_id");
     }
 }

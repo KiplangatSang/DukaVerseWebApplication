@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Customers;
 
-use App\Customer\CustomerCredit;
+use App\Customers\CustomerCredit;
 use App\Customers\Customers;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;

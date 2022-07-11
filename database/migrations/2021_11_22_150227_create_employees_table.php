@@ -20,13 +20,10 @@ class CreateEmployeesTable extends Migration
             $table->longText('employeeable_type');
             $table->string('emp_name');
             $table->string('emp_email');
-            $table->string('user_name');
             $table->string('emp_ID');
             $table->unsignedBigInteger('emp_phoneno');
-            $table->unsignedBigInteger('pin');
             $table->string('emp_role');
             $table->double('emp_salary');
-            $table->string('date_employed');
             $table->timestamps();
         });
     }

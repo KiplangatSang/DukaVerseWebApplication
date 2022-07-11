@@ -48,37 +48,37 @@ class ProfitRepository
         return $result;
     }
 
-    public function getProfit($key = null, $value = null)
+    public function getProfit($month = null, $year = null)
     {
 
         // $profit = $this->retail->profit()->get();
         // dd($profit);
         $year = date("Y");
         $profit = 0;
-        if ($key && $value) {
+        $month = date('m') + 3;
+        if ($month) {
             $profit = $this->retail->profit()
-                ->where($key, $value)
+                ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
         } else
-            $profit = $this->retail->profit()->get();
+            $profit = $this->retail->profit()
+                ->whereYear('created_at', '=', $year)
+                ->get();
 
-        if (!$profit)
-            return 0;
 
-        // dd($profit);
         return $profit->sum('profit_amount');
     }
 
 
-    public function getProfitGrowth($key = "month", $value = null)
+    public function getProfitGrowth($month = null)
     {
-        if (!$value)
-            $value = date('m');
+        if (!$month)
+            $month = date('m');
 
 
-        $currentProfit = $this->getProfit($key, $value);
-        $previousProfit =   $this->getProfit("month", $value - 1);
+        $currentProfit = $this->getProfit($month);
+        $previousProfit =   $this->getProfit($month - 1);
 
 
         if ($previousProfit <= 0)

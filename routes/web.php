@@ -64,10 +64,12 @@ use App\Http\Controllers\Sales\DailySaleController;
 use App\Http\Controllers\Sales\EmployeeSaleController;
 use App\Http\Controllers\Sales\MonthlySaleController;
 use App\Http\Controllers\Sales\PaidItemsController;
+use App\Http\Controllers\Sales\POSController;
 use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\Sales\SaleTransactionController;
 use App\Http\Controllers\Sales\YearlySaleController;
+use App\Http\Controllers\SendEmailController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\stock\StockController;
 use App\Http\Controllers\Subscriptions\SubscriptionController;
@@ -91,24 +93,6 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/date', function () {
-    $start_date ="2022-01-01";
-    $end_date = "2022-12-10";
-        // Convert to timetamps
-        $min = strtotime($start_date);
-        $max = strtotime($end_date);
-
-        // Generate random number using above bounds
-        $val = rand($min, $max);
-
-        $date = date('M', $val);
-    //    $month = $date->format('F');
-        // Convert back to desired date format
-        return $date;
-
-});
-
-Route::get('/firebase', [FirebaseStorageController::class, 'create']);
 
 //dukaverse account
 Route::get('/client/dukaverse/index', [DukaVerseController::class, 'index']);
@@ -124,10 +108,6 @@ Route::get('/admin/home', function () {
 
 Route::get('/client/subscriptions', [SubscriptionController::class, 'index']);
 
-Route::get('/client/sell', function () {
-    return view('pos.sales.index');
-});
-
 Route::post('/client/subscriptions/show/{id}', [SubscriptionController::class, 'show']);
 
 
@@ -141,9 +121,9 @@ Route::get('/', function () {
 });
 
 Route::get('/pdf', [PDFPrinterController::class, 'printPDF']);
-Route::get('email-test', function () {
+Route::get('/email-test', function () {
 
-    $details['email'] = '17g01acs047@anu.ac.ke';
+    $details['email'] = 'kiplangatsang425@gmail.com';
     if (dispatch(new SendEmailJob($details))) {
         dd('done');
     } else {
@@ -155,6 +135,7 @@ Route::get('/bluetooth', function () {
     return view('bluetooth');
 });
 
+Route::get('/send-email', [SendEmailController::class, 'index']);
 
 
 //+++++++++++++++++++++++ Admin  APi ++++++++++++++++++++++++++++++++
@@ -420,6 +401,8 @@ Route::get('/client/sales/makePayment/mpesa/{trans_id}/{number}/{amount}', [Sale
 Route::get('/client/sales/makePayment/card/{number}/{amount}', [SaleController::class, 'makePayment']);
 Route::get('/client/sales/makePayment/cash/{trans_id}/{amount}', [SaleController::class, 'makeCashPayment']);
 Route::get('/client/sales/closetransaction/{trans_id}', [SaleController::class, 'closeTransaction']);
+Route::get('/client/sell', [POSController::class, 'index']);
+
 
 //store sales on hold
 Route::get('/client/sales/transactions/hold/store/{id}/{price}/{paid_amount}', [SaleTransactionController::class, 'storeItemsOnHold']);
@@ -504,15 +487,17 @@ Route::post('/stock/stock-by-retail/{id}', [StockController::class, 'getSalesByD
 
 
 // required items
-Route::get('/requireditem/create-requireditems', [RequiredItemController::class, 'create'])->name('createrequireditem');
 Route::get('/client/requireditem/index', [RequiredItemController::class, 'index'])->name('showrequieditem');
-Route::get('/client/requireditem/requireditem-item/{id}', [RequiredItemController::class, 'show']);
 Route::post('/client/requireditems/order', [RequiredItemController::class, 'order']);
-Route::get('/client/requireditems/editRequiredItems/{id}', [RequiredItemController::class, 'edit']);
+Route::get('/client/requireditem/ordered/index', [OrderedRequiredItemController::class, 'index'])->name('showrequieditem');
+
+// Route::get('/client/requireditems/editRequiredItems/{id}', [RequiredItemController::class, 'edit']);
+// Route::get('/client/requireditem/requireditem-item/{id}', [RequiredItemController::class, 'show']);
+// Route::get('/requireditem/create-requireditems', [RequiredItemController::class, 'create'])->name('createrequireditem');
+
 
 //ordered required items
-Route::get('/client/requireditem/ordered/index', [OrderedRequiredItemController::class, 'index'])->name('showrequieditem');
-Route::get('/client/requireditem/placeorder/index', [RequiredItemOrderController::class, 'index']);
+// Route::get('/client/requireditem/placeorder/index', [RequiredItemOrderController::class, 'index']);
 
 
 
@@ -521,14 +506,10 @@ Route::post('/client/orders/store', [OrdersController::class, 'store']);
 Route::get('/client/orders/index', [OrdersController::class, 'index']);
 Route::get('/client/orders/show/{id}', [OrdersController::class, 'show']);
 Route::get('/client/orders/create', [OrdersController::class, 'create']);
-Route::get('/client/orders/delete', [OrdersController::class, 'delete']);
 
 #delivered orders
-Route::post('/client/orders/delivered/store', [DeliveredOrderController::class, 'store']);
 Route::get('/client/orders/delivered/index', [DeliveredOrderController::class, 'index']);
 Route::get('/client/orders/delivered/show/{id}', [DeliveredOrderController::class, 'show']);
-Route::get('/client/orders/delivered/create', [DeliveredOrderController::class, 'create']);
-Route::get('/client/orders/delivered/delete', [DeliveredOrderController::class, 'delete']);
 
 #pending orders
 Route::get('/client/orders/pending/index', [PendingOrderController::class, 'index']);
@@ -536,7 +517,7 @@ Route::get('/client/orders/pending/show/{id}', [OrdersController::class, 'show']
 
 //loans
 Route::get('/client/loans/index', [LoansController::class, 'index'])->name('loanitems');
-Route::get('/loans/show-my-loans', [LoansController::class, 'showAppliedLoans'])->name('getMyLoans');
+// Route::get('/loans/show-my-loans', [LoansController::class, 'showAppliedLoans'])->name('getMyLoans');
 Route::get('/request-loan/{loan_id}/{amount}', [LoansController::class, 'applyLoan'])->name('LoanApplication');
 Route::get('/loans/pay-a-loan/{loanapplication_id}', [LoansApplicationsController::class, 'payLoanRequest'])->name('LoanApplication');
 
@@ -597,9 +578,7 @@ Route::post('/client/employee/store', [EmployeeController::class, 'store']);
 
 Route::get('/client/employee/show/{emp_id}', [EmployeeController::class, 'show']);
 Route::get('/client/employee/edit/{emp_id}', [EmployeeController::class, 'edit']);
-Route::post('/client/employee/updateEmployeeData/{emp_id}', [EmployeeController::class, 'update']);
-Route::get('/client/employee/viewEmployee/salaries', [EmployeeController::class, 'Salaries']);
-Route::get('/client/employee/viewEmployee/sales/{emp_id}', [EmployeeController::class, 'Sales']);
+Route::post('/client/employee/update/{emp_id}', [EmployeeController::class, 'update']);
 Route::get('/client/employee/delete/{emp_id}', [EmployeeController::class, 'delete']);
 
 //employee sales
@@ -666,17 +645,13 @@ Route::get('/client/bills/create',  [BillController::class, 'create']);
 Route::post('/client/bills/store',  [BillController::class, 'store']);
 Route::post('/client/bills/show/{id}',  [BillController::class, 'show']);
 Route::get('/client/bills/edit',  [BillController::class, 'edit']);
-Route::post('/client/bills/update',  [BillController::class, 'update']);
 //bill history
 Route::get('/client/bills/history/index',  [BillController::class, 'index']);
 Route::post('/client/bills/history/show/{id}',  [BillController::class, 'show']);
 
 //bill payment
 Route::get('/bills/payment/index/{bill_id}',  [BillPaymentController::class, 'index']);
-Route::get('/bills/payment/create',  [BillPaymentController::class, 'create']);
-Route::post('/bills/payment/update/{id}',  [BillPaymentController::class, 'update']);
 Route::get('/bills/payment/show/{id}',  [BillPaymentController::class, 'show']);
-Route::get('/bills/payment/delete/{id}',  [BillPaymentController::class, 'delete']);
 
 //bill payment history
 Route::get('/bills/payment/history/index',  [BillPaymentHistory::class, 'index']);
@@ -691,7 +666,6 @@ Route::post('/client/supplies/store',  [SuppliesController::class, 'store']);
 Route::get('/client/supplies/show/{id}',  [SuppliesController::class, 'show']);
 Route::get('/client/supplies/edit/{id}',  [SuppliesController::class, 'edit']);
 Route::post('/client/supplies/update/{id}',  [SuppliesController::class, 'update']);
-Route::post('/client/supplies/delete/{id}',  [SuppliesController::class, 'delete']);
 
 //suppliers
 Route::get('/supplies/suppliers/index',  [SuppliersController::class, 'index']);
@@ -700,10 +674,8 @@ Route::post('/supplies/suppliers/store',  [SuppliersController::class, 'store'])
 Route::get('/supplies/suppliers/show/{id}',  [SuppliersController::class, 'show']);
 Route::get('/supplies/suppliers/edit/{id}',  [SuppliersController::class, 'edit']);
 Route::post('/supplies/suppliers/update',  [SuppliersController::class, 'update']);
-Route::post('/supplies/suppliers/delete/{id}',  [SuppliersController::class, 'delete']);
 
 //supplies payment
-Route::get('supplies/payments/index',  [SuppliersPaymentController::class, 'index']);
 
 
 //settings
@@ -714,11 +686,7 @@ Route::get('/settings/show',  [SettingsController::class, 'show']);
 Route::get('/settings/delete',  [SettingsController::class, 'destroy']);
 
 //settings
-Route::get('/support',  [SuppliersPaymentController::class, 'index']);
-Route::get('/support/edit',  [SuppliersPaymentController::class, 'edit']);
-Route::get('/support/update',  [SuppliersPaymentController::class, 'update']);
-Route::get('/support/show',  [SuppliersPaymentController::class, 'show']);
-Route::get('/support/delete',  [SuppliersPaymentController::class, 'destroy']);
+
 Route::get('/support/index', function () {
     return view('client.Support.index');
 });

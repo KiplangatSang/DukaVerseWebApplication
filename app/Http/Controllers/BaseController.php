@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Employees\Employees;
 use App\Repositories\AppRepository;
 use App\Repositories\FirebaseRepository;
 use App\Retails\Retail;
@@ -21,28 +22,42 @@ class BaseController extends Controller
      */
 
     //gets retails list sent to home controller for choosing
- public function appRepository()
- {
-    # code...
-    $baseRepo = new AppRepository();
-    return $baseRepo;
- }
+    public function appRepository()
+    {
+        # code...
+        $baseRepo = new AppRepository();
+        return $baseRepo;
+    }
 
- public function getBaseImages()
- {
-    # code...
-    $baseImages = $this->appRepository()->getBaseImages();
-    return $baseImages;
- }
+    public function getBaseImages()
+    {
+        # code...
+        $baseImages = $this->appRepository()->getBaseImages();
+        return $baseImages;
+    }
     public function getRetailList()
     {
-        $retails = null;
-        # code...
         $user = User::where('id', Auth::id())->first();
-        $retails = $user->retails()->get();
-        $retailList['retails'] = $retails;
 
-        return $retailList;
+        if ($user->is_owner) {
+            $retails = null;
+            # code...
+            $retails = $user->retails()->get();
+            $retailList['retails'] = $retails;
+
+            return $retailList;
+        } elseif (!$user->is_owner && $user->is_employee) {
+            // dd($user);
+
+            $employeeaccount = $user->employees()->first();
+            $retails = null;
+            # code...
+            $retails =  $employeeaccount->employeeable()->get();
+            $retailList['retails'] = $retails;
+            return $retailList;
+        } else {
+            dd("employeeaccount");
+        }
     }
 
     public function setRetail()
@@ -62,13 +77,15 @@ class BaseController extends Controller
     public function getRetail()
     {
         $user = User::where('id', Auth::id())->first();
-        $retail = $user->sessionRetail()->get()->first();
+        //dd($user);
+        $retail = $user->sessionRetail()->first();
 
         if (!$retail)
             return false;
 
+
         $retailId  = $retail->retail_id;
-        $retail = $user->retails()->where('id', $retailId)->first();
+        $retail = Retail::where('id', $retailId)->first();
 
         if (!$retail)
             return false;
@@ -128,14 +145,14 @@ class BaseController extends Controller
         return $total;
     }
 
-    public function saveFile($folder,$file)
+    public function saveFile($folder, $file)
     {
         # code...
-        $user = User::where('id',auth()->id())->first();
+        $user = User::where('id', auth()->id())->first();
         $fileNameToStore = "";
 
         $firebase = new FirebaseRepository($this->getRetail());
-        $fileNameToStore =  $firebase->store( $user,$folder,$file);
+        $fileNameToStore =  $firebase->store($user, $folder, $file);
 
         // $jobDescFileWithExt = $file->getClientOriginalName();
         // $filename = pathinfo($jobDescFileWithExt, PATHINFO_FILENAME);

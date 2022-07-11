@@ -18,7 +18,7 @@
 
 																<div class="d-flex justify-content-center">
 
-																				<h3 class="tile-title">{{ $empdata['emp']->empName }}</h3>
+																				<h3 class="tile-title">{{ $empdata['emp']->emp_name }}</h3>
 																</div>
 																<div class="row">
 																				<div class="app-sidebar__user col-md-4">
@@ -27,7 +27,7 @@
 																																src="/storage/profiles/{{ $empdata['emp']->empProfile ?? 'noprofile.png' }}"
 																																alt="User Image">
 																								</div>
-																								
+
 
 
 																				</div>

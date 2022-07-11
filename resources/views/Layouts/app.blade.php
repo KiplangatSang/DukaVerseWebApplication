@@ -124,7 +124,7 @@
 								<div class="app-sidebar__user bg-dark">
 
 												<a href="/client/retails/profile"><img class="app-sidebar__user-avatar d-flex w-50"
-																				src="{{ $data['retail']->retail_profile ?? auth()->user()->profiles()->first()->profile_image }}"
+																				src="{{ $data['retail']->retail_profile ??auth()->user()->profiles()->first()->profile_image }}"
 																				alt="User Image"></a>
 												<div>
 																<a href="/client/retails/profile" class="text-light">
@@ -133,13 +133,13 @@
 																</a>
 																<br>
 
-																@if (Auth::user()->isOwner)
+																@if (Auth::user()->is_owner)
 
 																				<a href="/client/retails/profile" class="text-light">
 																								<p class="app-sidebar__user-designation">Retail Owner</p>
 																				</a>
 																@else
-																				@if (Auth::user()->isEmployee)
+																				@if (Auth::user()->is_employee)
 																								<a href="/client/retails/profile" class="text-light">
 																												<p class="app-sidebar__user-designation">Employee</p>
 																								</a>
@@ -150,7 +150,7 @@
 																@endif
 																<br>
 
-																<p class="app-sidebar__user-designation">{{ $data['retail']->complete }}% Complete</p>
+																<p class="app-sidebar__user-designation">{{ $data['retail']->complete ?? '0' }}% Complete</p>
 
 												</div>
 								</div>
@@ -198,9 +198,9 @@
 																																class="icon fa fa-circle-o "></i>
 																												Ordered Items</a></li>
 
-																				<li><a class="treeview-item  " href="/client/requireditem/placeorder/index"><i
+																				{{-- <li><a class="treeview-item  " href="/client/requireditem/placeorder/index"><i
 																																class="icon fa fa-circle-o "></i>
-																												Place Order</a></li>
+																												Place Order</a></li> --}}
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i

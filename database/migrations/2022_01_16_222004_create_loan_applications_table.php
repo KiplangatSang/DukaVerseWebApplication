@@ -21,9 +21,9 @@ class CreateLoanApplicationsTable extends Migration
             $table->bigInteger('loans_id');
             $table->bigInteger('users_id');
             $table->double('loan_amount');
-            $table->double('disbursed_amount');
-            $table->double('repay_amount');
-            $table->integer('loan_duration');
+            $table->double('disbursed_amount')->nullable()->default(0);
+            $table->double('repay_amount')->nullable();
+            $table->integer('loan_duration')->nullable();
             $table->integer('loan_status')->default(-1);
             $table->double('loan_discount')->default(0);
             $table->double('loan_repaid_amount')->default(0);

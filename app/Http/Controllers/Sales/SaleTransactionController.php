@@ -17,7 +17,7 @@ class SaleTransactionController extends BaseController
     {
         $this->middleware('auth');
     }
-    public function storeTransactionItems($transId,$price)
+    public function storeTransactionItems($transId, $price)
     {
         # code...
         $transaction = null;
@@ -30,7 +30,7 @@ class SaleTransactionController extends BaseController
                     "on_hold" => true,
                     "pay_status" => false,
                     "is_active" => true,
-                    "expense"=>$price,
+                    "expense" => $price,
                 ]
 
             );

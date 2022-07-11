@@ -29,10 +29,19 @@ class HomeController extends BaseController
     {
         $retails = $this->getRetailList();
 
-        if (count($retails['retails']) < 1) {
+        if (count($retails['retails']) < 1)
             return redirect("/client/retails/create")->with('error', 'Register Your Retail Shop First');
+
+        if (count($retails['retails']) == 1) {
+            
+            $retail_id= $retails['retails'][0]->id;
+            $retailRepo = new RetailRepository(auth()->user());
+            $retailRepo->storeRetailInSession($retail_id);
+            return redirect('/user/home');
+        }else{
+            return view('retails', compact('retails'));
         }
-        return view('retails', compact('retails'));
+
     }
 
     //stores the chosen retail in database
@@ -42,7 +51,7 @@ class HomeController extends BaseController
             'retail' => 'required',
 
         ]);
-        //dd( $retail);
+        dd( $request()->retail);
         $retailRepo = new RetailRepository(auth()->user());
         $retailRepo->storeRetailInSession($request->retail);
         return redirect('/user/home');

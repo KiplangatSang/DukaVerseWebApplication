@@ -2,7 +2,7 @@
 @section('content')
 				<div class="app-title">
 								<div>
-												<h1><i class="fa fa-th-list"></i> {{auth()->user()->name}} Employees</h1>
+												<h1><i class="fa fa-th-list"></i> {{ auth()->user()->name }} Employees</h1>
 												<p>List of Employees</p>
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
@@ -32,19 +32,11 @@
 																												<tbody>
 																																@foreach ($empdata['emplist'] as $emp)
 																																				<tr>
-                                                                                                                                                    <div>
-
-
-
-
-
-
-                                                                                                                                        </div>
 																																								<td>{{ $emp['emp_name'] }}</td>
 																																								<td>{{ $emp['emp_email'] }}</td>
 																																								<td>{{ $emp['emp_ID'] }}</td>
 																																								<td>{{ $emp['emp_role'] }}</td>
-																																								<td>{{ $emp['date_employed'] }}</td>
+																																								<td>{{ $emp['created_at'] }}</td>
 																																								<td>{{ $emp['emp_salary'] }}</td>
 																																								<td><a href="/client/employee/show/{{ $emp->id }}"><i class="fa fa-eye col">
 																																																				View</i></a></td>
@@ -58,5 +50,4 @@
 												</div>
 								</div>
 				</div>
-
 @endsection

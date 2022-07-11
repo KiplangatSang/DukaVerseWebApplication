@@ -13,7 +13,7 @@ class Employees extends Model
     protected $guarded=[];
 
 
-    public function Roles(){
+    public function roles(){
       return $this->morphMany(Roles::class,'roleable');
     }
 
@@ -30,7 +30,7 @@ class Employees extends Model
         return $this->hasMany(RequiredItems::class);
       }
       public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
       }
 }
 

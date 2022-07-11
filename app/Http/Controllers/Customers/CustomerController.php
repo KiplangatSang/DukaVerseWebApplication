@@ -88,8 +88,6 @@ class CustomerController extends BaseController
     {
         //
         $this->customersRepository();
-        if (!$this->retail)
-            return redirect('/home');
 
         request()->validate(
             [
@@ -185,8 +183,6 @@ class CustomerController extends BaseController
     public function update(Request $request, $id)
     {
         $this->customersRepository();
-        if (!$this->retail)
-            return redirect('/home');
         //
         $cust = $this->retail->customers()->where("id", $id)->first();
 

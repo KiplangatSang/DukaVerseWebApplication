@@ -18,9 +18,6 @@ $factory->define(Employees::class, function (Faker $faker) {
         'emp_phoneno' => rand(20000, 400000),
         'emp_role' => Str::random(10),
         'emp_ID' => rand(20000, 400000),
-        'pin' => rand(2000, 4000),
-        'user_name' => $faker->name,
-        'date_employed' => now(),
         'emp_salary' => rand(2000, 30000),
     ];
 });
