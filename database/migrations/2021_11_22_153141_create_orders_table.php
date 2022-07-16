@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table-> string('projected_cost');
             $table-> string('actual_cost')->nullable();
             $table-> integer('order_status');
+            $table-> integer('order_to')->nullable();
             $table-> boolean('payment_status')->default(false);;
             $table-> boolean('delivery_status')->default(false);
             $table-> unsignedBigInteger('suppliers_id')->nullable();

@@ -14,6 +14,7 @@ use App\Payments\Profit;
 use App\Payments\Revenue;
 use App\RequiredItems\RequiredItems;
 use App\Retail\RetailItems;
+use App\Sales\Sales;
 use App\Sales\SaleTransactions;
 use App\Stock\Stock;
 use App\Subscriptions\Subscription;
@@ -35,7 +36,7 @@ class Retail extends Model
 
     public function sales()
     {
-        return $this->morphMany(\App\Sales\Sales::class, 'retailsaleable');
+        return $this->morphMany(Sales::class, 'retailsaleable');
     }
 
     public function stocks()

@@ -58,7 +58,7 @@
 																<div class="info">
 																				<h5> Items In Store</h5>
 
-																				<p class="text-warning"><b>{{ $stocksdata['stocksitems'] }}</b></p>
+																				<p class="text-warning"><b>{{ $stockdata['stocksitems'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -66,7 +66,7 @@
 												<div class="widget-small info coloured-icon"><i class="icon fa fa-line-chart fa-3x"></i>
 																<div class="info">
 																				<h5>Stock Expense </h5>
-																				<p class="text-warning"><b>{{ $stocksdata['stocksexpense'] }} ksh</b></p>
+																				<p class="text-warning"><b>{{ $stockdata['stocksexpense'] }} ksh</b></p>
 																</div>
 												</div>
 								</div>
@@ -74,7 +74,7 @@
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
 																				<h5>Estimated Sales</h5>
-																				<p class="text-warning"><b>{{ $stocksdata['stocksexpectedSales'] }}</b></p>
+																				<p class="text-warning"><b>{{ $stockdata['stocksexpectedSales'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -82,7 +82,7 @@
 												<div class="widget-small warning coloured-icon"><i class="icon fa fa-calendar-times-o fa-3x"></i>
 																<div class="info">
 																				<h5>Estimated Revenue</h5>
-																				<p class="text-warning"><b>{{ $stocksdata['stocksrevenue'] }}</b></p>
+																				<p class="text-warning"><b>{{ $stockdata['stocksrevenue'] }}</b></p>
 																</div>
 												</div>
 								</div>
@@ -105,14 +105,14 @@
 																																				<th>Selling Price</th>
 																																				<th>Description</th>
 																																				<th>Regulation</th>
-                                                                                                                                                <th>Required</th>
+																																				<th>Required</th>
 																																				<th>Update</th>
 																																				<th>View</th>
 																																</tr>
 																												</thead>
 																												<tbody>
 
-																																@foreach ($stocksdata['allStocks'] as $stockitem)
+																																@foreach ($stockdata['allStocks'] as $stockitem)
 																																				<tr>
 
 																																								<td>
@@ -131,7 +131,7 @@
 																																												{{ $stockitem->size }}
 																																								</td>
 																																								<td>
-																																												{{ count($stockitem->item) }}
+																																												{{ count($stockitem->stocks) }}
 																																								</td>
 
 																																								<td>
@@ -140,22 +140,22 @@
 																																								<td>
 																																												{{ $stockitem->selling_price }}
 																																								</td>
-																																								<td>{{ $stockitem->description }}</td>
-																																								<td>{{ $stockitem->regulation }}</td>
+																																								<td>{{ $stockitem->description ?? 'N/A' }}</td>
+																																								<td>{{ $stockitem->regulation ?? 'N/A' }}</td>
 																																								@if (!$stockitem->is_required)
-																																												<td><a href="/client/stock/set-as-Required/{{ $stockitem['id'] }}">
+																																												<td><a href="/client/stock/item/update/required/{{ $stockitem['id'] }}">
 																																																				<h5><span class="badge badge-warning">Mark required</span></h5>
 																																																</a></td>
 																																								@elseIf($stockitem->is_required)
 																																												<td>
-                                                                                                                                                                                    <h5><span class="badge badge-danger">Required</span></h5>
-                                                                                                                                                                                    </td>
+																																																<h5><span class="badge badge-danger">Required</span></h5>
+																																												</td>
 																																								@endif
 																																								<td><a class="text-info" href="/client/stock/edit/{{ $stockitem->id }}"><i
 																																																				class="fa fa-pencil-square">
 																																																				Update</i></a></td>
 
-																																								@if (count($stockitem->item) > 0)
+																																								@if (count($stockitem->stocks) > 0)
 																																												<td><a href="/client/stock/show/{{ $stockitem->id }}"><i class="fa fa-eye ">
 																																																								View</i></a></td>
 																																								@else

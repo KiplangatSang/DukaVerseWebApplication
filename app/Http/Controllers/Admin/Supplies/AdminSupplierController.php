@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\Supplies;
 
 use App\Http\Controllers\Controller;
+use App\Supplies\Suppliers;
+use App\Supplies\Supplies;
 use Illuminate\Http\Request;
 
 class AdminSupplierController extends Controller
@@ -16,16 +18,9 @@ class AdminSupplierController extends Controller
     public function index()
     {
         //
-         $retail = auth()->user()->Retails()->get();
-         //$supplierslist = $retail->suppliers->where('id',$id)->first();
-
         $supplierslist = Suppliers::all();
-
-       // dd($supplierslist);
-
         $suppliersdata = array(
             'supplierslist' => $supplierslist,
-            'retails' => $retail,
         );
 
         return view('Supplies.Suppliers.index', compact('suppliersdata'));
@@ -51,8 +46,7 @@ class AdminSupplierController extends Controller
     public function store(Request $request)
     {
 
-        $retail = auth()->user()->Retails()->where('id', $request->retail_id)->first();
-        $retail->suppliers()->create(
+      Suppliers::create(
             [
                 'email' => $request->email,
                 'name' => $request->name,
@@ -115,14 +109,13 @@ class AdminSupplierController extends Controller
         //
 
 
-        $retail = auth()->user()->Retails()->get();
-        $retail->suppliers->updateOrCreate(
+       Suppliers::updateOrCreate(
             ['email' => $request->email, 'name' => $request->name],
             ['phone_number' => $request->name, 'address' => $request->address, 'phone_number' => $request->phone_number,]
         );
 
 
-        return redirect('/supplies/suppliers/show/'.$id);
+        return redirect('/supplies/suppliers/show/' . $id);
     }
 
     /**
@@ -137,5 +130,4 @@ class AdminSupplierController extends Controller
         $customer = Suppliers::destroy($id);;
         return redirect('/supplies/suppliers/index')->with('success', 'Deletion Successful');
     }
-
 }

@@ -24,7 +24,7 @@
 																																								<th>Item </th>
 																																								<th>Item Name</th>
 																																								<th>Size/Type</th>
-                                                                                                                                                                <th>Amount</th>
+																																								<th>Amount</th>
 																																								<th>Buying Price</th>
 																																								<th>Selling Price</th>
 																																								<th>View</th>
@@ -36,7 +36,7 @@
 
 																																												<td>
 
-																																																<img class="icon d-flex w-50" src="{{ $stock->image }}"
+																																																<img class="icon d-flex w-100" src="{{ $stock->image }}"
 																																																				alt="{{ $stock->name }}">
 
 
@@ -48,7 +48,7 @@
 																																																{{ $stock->size }}
 																																												</td>
 																																												<td>
-																																																{{count( $stock->stocks()->get()) }}
+																																																{{ count($stock->stocks()->get()) }}
 																																												</td>
 
 
@@ -119,8 +119,8 @@
 																																<label class="control-label col-md-3">Item Name</label>
 																																<div class="col-md-8">
 																																				<input class="form-control  @error('name') is-invalid @enderror" id="stockName"
-																																								name="name" type="text" placeholder="Enter Stock name" value="{{ old('name') }}"
-																																								required>
+																																								name="name" type="text" placeholder="Enter Stock name"
+																																								value="{{ old('name') }}" required>
 
 																																				@error('name')
 																																								<span class="invalid-feedback" role="alert">
@@ -177,8 +177,8 @@
 																																<label class="control-label col-md-3">Item Brand</label>
 																																<div class="col-md-8">
 																																				<input class="form-control  @error('brand') is-invalid @enderror" id="brand"
-																																								name="brand" type="text" placeholder="Enter the brand" value="{{ old('brand') }}"
-																																								required>
+																																								name="brand" type="text" placeholder="Enter the brand"
+																																								value="{{ old('brand') }}" required>
 
 																																				@error('brand')
 																																								<span class="invalid-feedback" role="alert">
@@ -226,8 +226,8 @@
 																																<div class="col-md-8">
 																																				<input class="form-control col-md-8  @error('selling_price') is-invalid @enderror"
 																																								id="selling_price" name="selling_price" type="number"
-																																								placeholder="Enter the selling price per item" value="{{ old('selling_price') }}"
-																																								required>
+																																								placeholder="Enter the selling price per item"
+																																								value="{{ old('selling_price') }}" required>
 
 																																				@error('selling_price')
 																																								<span class="invalid-feedback" role="alert">

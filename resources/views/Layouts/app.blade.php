@@ -12,6 +12,8 @@
 				<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
 				{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/cardpayments.css') }}"> --}}
 				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 				<!-- Font-icon css-->
 				<link rel="stylesheet" type="text/css"
 								href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -184,7 +186,8 @@
 																<ul class="treeview-menu ">
 																				<li><a class="treeview-item  " href="/client/stock/index"><i class="icon fa fa-circle-o"></i>All
 																												Stock</a></li>
-																				<li><a class="treeview-item " href="/create-stock"><i class="icon fa fa-circle-o "></i>Add a
+																				<li><a class="treeview-item " href="/client/stock/create"><i class="icon fa fa-circle-o "></i>Add
+																												a
 																												stock</a></li>
 																</ul>
 												</li>
@@ -252,28 +255,25 @@
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-cart-arrow-down"></i><span
-																								class="app-menu__label ">Supplies</span><i
-																								class="treeview-indicator fa fa-angle-right"></i></a>
+																								class="app-menu__icon fa fa-cart-arrow-down"></i><span class="app-menu__label ">Supplies &
+																								Market</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item " href="/supplies/suppliers/index"><i
-																																class="icon fa fa-circle-o "></i> Suppliers </a></li>
+																				<li><a class="treeview-item " href="/market"><i class="icon fa fa-circle-o "></i> Market </a>
+																				</li>
 																				<li><a class="treeview-item " href="/client/supplies/index"><i
 																																class="icon fa fa-circle-o"></i>Supplies</a></li>
-																				<li><a class="treeview-item  " href="supplies/payments/index"><i
+																				<li><a class="treeview-item  " href="/client/supplies/payments/index"><i
 																																class="icon fa fa-circle-o "></i>Pending Payments</a></li>
-																				<li><a class="treeview-item  " href="supplies/suppliers/create"><i
-																																class="icon fa fa-circle-o "></i>Add Supplier</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Finance</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  " href="table-basic.html"><i class="icon fa fa-circle-o "></i>
-																												Sales</a></li>
+																				<li><a class="treeview-item  " href="/client/transactions/index"><i class="icon fa fa-circle-o "></i>
+																												Transactions</a></li>
 																				<li><a class="treeview-item  " href="table-data-table.html"><i class="icon fa fa-circle-o "></i>
-																												Purchases</a></li>
+																												Sales Payments</a></li>
 																				<li><a class="treeview-item  " href="table-basic.html"><i class="icon fa fa-circle-o "></i>
 																												Pending Credits</a></li>
 																				<li><a class="treeview-item  " href="table-data-table.html"><i
@@ -299,7 +299,6 @@
 																								</a></li>
 																</ul>
 												</li>
-
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
 																								class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Bills Credit &
 																								TV</span><i class="treeview-indicator fa fa-angle-right"></i></a>

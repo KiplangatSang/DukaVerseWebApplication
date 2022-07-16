@@ -17425,19 +17425,23 @@ be a descendant of the grid when it is being dragged.
     color: #fff;
     text-align: center;
     animation: glow 1s ease-in-out infinite alternate;
-  }
-  
-  @-webkit-keyframes glow {
-    from {
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-    }
-    
-    to {
-      text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-    }
-  }
+}
 
-  .open-button {
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073,
+            0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073,
+            0 0 70px #e60073;
+    }
+
+    to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6,
+            0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6,
+            0 0 80px #ff4da6;
+    }
+}
+
+.open-button {
     background-color: #555;
     color: white;
     padding: 16px 20px;
@@ -17448,26 +17452,26 @@ be a descendant of the grid when it is being dragged.
     bottom: 23px;
     right: 28px;
     width: 280px;
-  }
-  
-  /* The popup chat - hidden by default */
-  .chat-popup {
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
     display: none;
     position: relative;
     right: 15px;
     border: 3px solid #f1f1f1;
     z-index: 9;
-  }
-  
-  /* Add styles to the form container */
-  .form-container {
+}
+
+/* Add styles to the form container */
+.form-container {
     width: 300px;
     padding: 10px;
     background-color: white;
-  }
-  
-  /* Full-width textarea */
-  .form-container textarea {
+}
+
+/* Full-width textarea */
+.form-container textarea {
     width: 100%;
     padding: 15px;
     margin: 5px 0 22px 0;
@@ -17475,37 +17479,38 @@ be a descendant of the grid when it is being dragged.
     background: #f1f1f1;
     resize: none;
     min-height: 200px;
-  }
-  
-  /* When the textarea gets focus, do something */
-  .form-container textarea:focus {
+}
+
+/* When the textarea gets focus, do something */
+.form-container textarea:focus {
     background-color: #ddd;
     outline: none;
-  }
-  
-  /* Set a style for the submit/send button */
-  .form-container .btn {
-    background-color: #04AA6D;
+}
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+    background-color: #04aa6d;
     color: white;
     padding: 16px 20px;
     border: none;
     cursor: pointer;
     width: 100%;
-    margin-bottom:10px;
+    margin-bottom: 10px;
     opacity: 0.8;
-  }
-  
-  /* Add a red background color to the cancel button */
-  .form-container .cancel {
-    background-color: red;
-  }
-  
-  /* Add some hover effects to buttons */
-  .form-container .btn:hover, .open-button:hover {
-    opacity: 1;
-  }
+}
 
-  #regForm {
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+    background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover,
+.open-button:hover {
+    opacity: 1;
+}
+
+#regForm {
     background-color: #ffffff;
     border-radius: 30px;
     z-index: 10;
@@ -17514,34 +17519,31 @@ be a descendant of the grid when it is being dragged.
     padding: 40px;
     width: 100%;
     min-width: 300px;
-  }
-  
-  
-  
-  /* Mark input boxes that gets an error on validation: */
-  input.invalid {
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
     background-color: #ffdddd;
-  }
-  
-  /* Hide all steps by default: */
-  .tab {
+}
+
+/* Hide all steps by default: */
+.tab {
     display: none;
-  }
-  
-  button:hover {
+}
+
+button:hover {
     opacity: 0.8;
-  }
-  
-  #prevBtn {
+}
+
+#prevBtn {
     background-color: #bbbbbb;
-  }
-  #transaction-response {
+}
+#transaction-response {
     max-height: 200px;
-  }
-  
-  
-  /* Make circles that indicate the steps of the form: */
-  .step {
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
     height: 15px;
     width: 15px;
     margin: 0 2px;
@@ -17550,28 +17552,51 @@ be a descendant of the grid when it is being dragged.
     border-radius: 50%;
     display: inline-block;
     opacity: 0.5;
-  }
-  
-  .step.active {
+}
+
+.step.active {
     opacity: 1;
     background-color: green;
-  }
-  
-  /* Mark the steps that are finished and valid: */
-  .step.finish {
-    background-color: #04AA6D;
-  }
+}
 
-  .center {
+/* Mark the steps that are finished and valid: */
+.step.finish {
+    background-color: #04aa6d;
+}
+
+.center {
     margin: auto;
     width: 30%;
     height: 50%;
-    border: 5px solid #FFFF00;
+    border: 5px solid #ffff00;
     padding: 10px;
     margin-left: 40%;
     position: absolute;
     z-index: 1001;
     /* visibility: visible; */
     visibility: hidden;
-    }
+}
 
+.is-hidden {
+    display: none;
+}
+
+.item{
+    position: relative;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+        0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
+        0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.price-input{
+    z-index: 99999;
+    position: absolute;
+}

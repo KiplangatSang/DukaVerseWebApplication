@@ -20,7 +20,8 @@ class CreateAccountsTable extends Migration
             $table->longText("account");
             $table->longText("account_ref");
             $table->double("balance")->default(0);
-            $table->string("last_balance")->nullable();;
+            $table->string("last_balance")->nullable();
+            $table->string("on_hold")->nullable();;
             $table->string("initial_deposit")->nullable();;
             $table->double("max_amount")->nullable();
             $table->double("min_amount")->nullable();;

@@ -16,16 +16,16 @@
 												<div class="tile">
 																<div class="tile-body">
 																				<div class="table-responsive">
-																								<form action="/client/orders/store"   enctype="application/x-www-form-urlencoded" method="POST">
+																								<form action="/client/orders/store" enctype="application/x-www-form-urlencoded" method="POST">
 																												@csrf
 
 																												<div class="row m-3">
 
 
-                                                                                                                                <div class=" col-sm-3">
-                                                                                                                                    <button class="btn btn-danger" type = "Submit">Confirm Order</button>
+																																<div class=" col-sm-3">
+																																				<button class="btn btn-danger" type="Submit">Confirm Order</button>
 
-                                                                                                                                </div>
+																																</div>
 
 
 																												</div>
@@ -36,7 +36,7 @@
 																																				<tr>
 																																								<th>Item </th>
 																																								<th>Item Name</th>
-                                                                                                                                                                <th> Brand</th>
+																																								<th> Brand</th>
 																																								<th>Item Size</th>
 																																								<th>Item Amount</th>
 																																								<th>Delete</th>
@@ -53,11 +53,15 @@
 																																																</div>
 																																												</td>
 																																												<td>{{ $stock->item->name }}</td>
-                                                                                                                                                                                <td>{{ $stock->item->brand }}</td>
+																																												<td>{{ $stock->item->brand }}</td>
 																																												<td>{{ $stock->item->size }}</td>
-																																												<td><input name="{{ $stock->id }}" value="{{ $stock->required_amount }}"></td>
-																																												<td><a href="/requireditems/editRequiredItems/{{ $stock['id'] }}"><i class="fa fa-trash-o"
-																																																								aria-hidden="true"> Delete</i></a></td>
+																																												<td>
+                                                                                                                                                                                    <div>
+                                                                                                                                                                                    <input class="form-control" name="{{ $stock->id }}" value="{{ $stock->required_amount }}">
+                                                                                                                                                                                </div>
+																																												</td>
+																																												<td><a href="/requireditems/editRequiredItems/{{ $stock['id'] }}"><i
+																																																								class="fa fa-trash-o" aria-hidden="true"> Delete</i></a></td>
 
 
 
@@ -73,5 +77,4 @@
 												</div>
 								</div>
 				</div>
-
 @endsection

@@ -5,7 +5,7 @@
 </head>
 <body>
 
- <h1>This is test mail from Tutsmake.com</h1>
+ <h1>This is test mail from DukaVerse.gmail.com</h1>
  <p>Laravel 8 send email example</p>
 
 </body>

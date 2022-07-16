@@ -33,4 +33,9 @@ class Orders extends Model
     {
         return $this->hasMany(RequiredItems::class,"orders_id");
     }
+
+    public function supplyItems()
+    {
+        return $this->hasMany(SupplyItems::class, 'retail_items_id');
+    }
 }

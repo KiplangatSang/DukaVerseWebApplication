@@ -36,7 +36,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_employee')->default(false);
             $table->boolean('is_admin')->default(false);
             $table->integer('role')->default(1);
-            $table->boolean('isSuspended')->default(false);
+            $table->boolean('is_suspended')->default(false);
             $table->string('api_token');
             $table->string('month');
             $table->integer('year');

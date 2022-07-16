@@ -77,7 +77,7 @@ class RegisterController extends BaseController
                 'email' => $data['email'],
             ],
             [
-
+                'role' => $data['role'] ?? 1,
                 'phoneno' => $data['phoneno'],
                 'password' => Hash::make($data['password']),
                 'terms_and_conditions' => $data['terms_and_conditions'],
@@ -149,5 +149,21 @@ class RegisterController extends BaseController
         ]);
         $success['user'] = $user;
         return $this->sendResponse($success, 'User registered successfully.');
+    }
+
+    public function accountDescription()
+    {
+        # code...
+        $account = array(
+            "0" => "Admin",
+            "1" => "Retailer",
+            "2" => "Supplier",
+        );
+    }
+
+    public function supplierCreate()
+    {
+        # code...
+        return view('auth.supplierregister');
     }
 }

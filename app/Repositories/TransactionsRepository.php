@@ -14,10 +14,10 @@ class TransactionsRepository
     {
         $this->retail = $retail;
     }
-    public function saveTransaction($gateway, $accounts_id, $amount, $message, $trans_type, $cost, $currency, $purpose)
+    public function saveTransaction($gateway, $accounts_id=null, $amount, $message, $trans_type, $cost, $currency, $purpose)
     {
         # code...
-      $result =  $this->retail->accountTransactions()->create([
+        $result =  $this->retail->accountTransactions()->create([
             "trans_id" => Str::random($this->STRLENGTH),
             "amount" => $amount,
             "gateway" => $gateway,
@@ -31,10 +31,10 @@ class TransactionsRepository
             "total_amount" => $cost + $amount,
             "party_A" =>  9114295,
             "party_B" => $this->retail->retailable()->first()->phoneno,
-           // "party_B" = $this->retail->retailOwner()->user()->phone_no,
+            // "party_B" = $this->retail->retailOwner()->user()->phone_no,
         ]);
 
-       return $result;
+        return $result;
     }
 
 
@@ -42,6 +42,13 @@ class TransactionsRepository
     {
         # code...
         $transaction = $this->retail->accountTransactions()->where('id', $id)->first();
+        return $transaction;
+    }
+
+    public function getTransactions()
+    {
+        # code...
+        $transaction = $this->retail->accountTransactions()->get();
         return $transaction;
     }
 }

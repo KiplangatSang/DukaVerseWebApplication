@@ -20,9 +20,20 @@ use App\Repositories\SuppliesRepository;
 use App\Retails\SessionRetail;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Stevebauman\Location\Facades\Location;
 
 class AppRepository
 {
+    public function getLocation($ip)
+    {
+        # code...
+
+
+        $currentUserInfo = Location::get($ip);
+      
+
+        return  $currentUserInfo;
+    }
     public function getBaseImages()
     {
 

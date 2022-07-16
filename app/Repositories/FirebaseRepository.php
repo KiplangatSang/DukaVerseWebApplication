@@ -15,13 +15,13 @@ class FirebaseRepository
 
     protected $factory = null;
     protected $retail = null;
-    public function __construct(Retail $retail)
+    public function __construct($account = null)
     {
         $this->factory = (new Factory)
             ->withServiceAccount("C:\\xampp\\htdocs\\DukaVerse\\storage\\app\\firebase\\firebase_credentials.json")
             ->withDatabaseUri(env('FIREBASE_DATABASE_URL'));
         // dd(env('FIREBASE_DATABASE_URL'));
-      return   $this->retail = $retail;
+        $this->retail = $account;
     }
     /**
      * Display a listing of the resource.
@@ -32,7 +32,7 @@ class FirebaseRepository
      *
      */
 
-    public function store(User $user, $folder, $file)
+    public function store($user, $folder, $file)
     {
         //
         try {
@@ -72,10 +72,10 @@ class FirebaseRepository
             $package = "client/" . $retail->id . "/employee/" . $user->id . "/";
         } elseif (!$user->isEmployee && $user->role == 1) {
             $package = "client/" . $retail->id . "/" . $user->id . "/";
+        } elseif ($user->role == 2) {
+            $package = "supplier/" . $user->id . "/";
         } elseif ($user->role == 3) {
             $package = "customers/" . $user->id . "/";
-        } elseif ($user->role == 4) {
-            $package = "suppliers/" . $user->id . "/";
         }
         return $package;
     }

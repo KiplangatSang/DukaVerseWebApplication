@@ -29,57 +29,65 @@ use App\Http\Controllers\Admin\Profiles\ProfileController;
 use App\Http\Controllers\Admin\Supplies\AdminSupplierController;
 use App\Http\Controllers\Admin\Supplies\SuppliersController as SuppliesSuppliersController;
 use App\Http\Controllers\Admin\Support\AdminSupportController;
-use App\Http\Controllers\Banks\EquityBankController;
-use App\Http\Controllers\Bills\BillController;
-use App\Http\Controllers\Bills\BillPaymentController;
-use App\Http\Controllers\Customers\CustomerController;
-use App\Http\Controllers\Customers\CustomerCreditController;
-use App\Http\Controllers\DukaVerseController;
-use App\Http\Controllers\Employees\EmployeeController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Retailer\Banks\EquityBankController;
+use App\Http\Controllers\Retailer\Bills\BillController;
+use App\Http\Controllers\Retailer\Bills\BillPaymentController;
+use App\Http\Controllers\Retailer\Customers\CustomerController;
+use App\Http\Controllers\Retailer\Customers\CustomerCreditController;
+use App\Http\Controllers\Retailer\DukaVerseController;
+use App\Http\Controllers\Retailer\Employees\EmployeeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\payments\mpesa\MpesaController;
-use App\Http\Controllers\FcmCloudMessagingController;
+use App\Http\Controllers\Retailer\payments\mpesa\MpesaController;
+use App\Http\Controllers\Retailer\FcmCloudMessagingController;
 use App\Http\Controllers\Finance\AdminSalesController as FinanceAdminSalesController;
-use App\Http\Controllers\Firebase\FirebaseController;
-use App\Http\Controllers\Firebase\FirebaseStorageController;
-use App\Http\Controllers\Loans\AppliedLoansController;
-use App\Http\Controllers\Loans\LoanPaymentController;
-use App\Http\Controllers\Loans\LoansApplicationsController;
-use App\Http\Controllers\Loans\LoansController;
-use App\Http\Controllers\Orders\DeliveredOrderController;
-use App\Http\Controllers\Orders\OrdersController;
-use App\Http\Controllers\Orders\PendingOrderController;
-use App\Http\Controllers\Payments\CardPayments\CardPaymentsController;
-use App\Http\Controllers\payments\CardPayments\StripeController;
-use App\Http\Controllers\Profile\ProfileController as ProfileProfileController;
-use App\Http\Controllers\Reports\PDFPrinterController;
-use App\Http\Controllers\RequiredItems\OrderedRequiredItemController;
-use App\Http\Controllers\RequiredItems\RequiredItemOrderController;
-use App\Http\Controllers\RequiredItems\RequiredItemController;
-use App\Http\Controllers\Retails\RetailController;
-use App\Http\Controllers\Retails\RetailsController;
-use App\Http\Controllers\Sales\CreditItemController;
-use App\Http\Controllers\Sales\CreditItemsController;
-use App\Http\Controllers\Sales\DailySaleController;
-use App\Http\Controllers\Sales\EmployeeSaleController;
-use App\Http\Controllers\Sales\MonthlySaleController;
-use App\Http\Controllers\Sales\PaidItemsController;
-use App\Http\Controllers\Sales\POSController;
-use App\Http\Controllers\Sales\SaleController;
-use App\Http\Controllers\Sales\SalesController;
-use App\Http\Controllers\Sales\SaleTransactionController;
-use App\Http\Controllers\Sales\YearlySaleController;
-use App\Http\Controllers\SendEmailController;
-use App\Http\Controllers\Settings\SettingsController;
-use App\Http\Controllers\stock\StockController;
-use App\Http\Controllers\Subscriptions\SubscriptionController;
-use App\Http\Controllers\Supplies\SuppliersController;
-use App\Http\Controllers\Supplies\SuppliesController;
+use App\Http\Controllers\Market\MarketController;
+use App\Http\Controllers\Retailer\Firebase\FirebaseController;
+use App\Http\Controllers\Retailer\Firebase\FirebaseStorageController;
+use App\Http\Controllers\Retailer\Loans\AppliedLoansController;
+use App\Http\Controllers\Retailer\Loans\LoanPaymentController;
+use App\Http\Controllers\Retailer\Loans\LoansApplicationsController;
+use App\Http\Controllers\Retailer\Loans\LoansController;
+use App\Http\Controllers\Retailer\Orders\DeliveredOrderController;
+use App\Http\Controllers\Retailer\Orders\OrdersController;
+use App\Http\Controllers\Retailer\Orders\PendingOrderController;
+use App\Http\Controllers\Retailer\Payments\CardPayments\CardPaymentsController;
+use App\Http\Controllers\Retailer\payments\CardPayments\StripeController;
+use App\Http\Controllers\Retailer\Profile\ProfileController as ProfileProfileController;
+use App\Http\Controllers\Retailer\Reports\PDFPrinterController;
+use App\Http\Controllers\Retailer\RequiredItems\OrderedRequiredItemController;
+use App\Http\Controllers\Retailer\RequiredItems\RequiredItemOrderController;
+use App\Http\Controllers\Retailer\RequiredItems\RequiredItemController;
+use App\Http\Controllers\Retailer\Retails\RetailController;
+use App\Http\Controllers\Retailer\Retails\RetailsController;
+use App\Http\Controllers\Retailer\Sales\CreditItemController;
+use App\Http\Controllers\Retailer\Sales\CreditItemsController;
+use App\Http\Controllers\Retailer\Sales\DailySaleController;
+use App\Http\Controllers\Retailer\Sales\EmployeeSaleController;
+use App\Http\Controllers\Retailer\Sales\MonthlySaleController;
+use App\Http\Controllers\Retailer\Sales\PaidItemsController;
+use App\Http\Controllers\Retailer\Sales\POSController;
+use App\Http\Controllers\Retailer\Sales\SaleController;
+use App\Http\Controllers\Retailer\Sales\SalesController;
+use App\Http\Controllers\Retailer\Sales\SaleTransactionController;
+use App\Http\Controllers\Retailer\Sales\YearlySaleController;
+use App\Http\Controllers\Retailer\SendEmailController;
+use App\Http\Controllers\Retailer\Settings\SettingsController;
+use App\Http\Controllers\Retailer\stock\StockController;
+use App\Http\Controllers\Retailer\Subscriptions\SubscriptionController;
+use App\Http\Controllers\Retailer\Supplies\SuppliersController;
+use App\Http\Controllers\Retailer\Supplies\SuppliesController;
+use App\Http\Controllers\Retailer\TransactionController;
+use App\Http\Controllers\Suppliers\Items\ItemController;
+use App\Http\Controllers\Suppliers\Orders\OrderController as OrdersOrderController;
+use App\Http\Controllers\Suppliers\Orders\OrderDeliveredController;
+use App\Http\Controllers\Suppliers\Retail\RetailController as RetailRetailController;
 use App\Jobs\SendEmailJob;
 use App\Repositories\B2BPayments\ipay;
 use App\Repositories\Payments\B2BPayments\ipay as B2BPaymentsIpay;
 use App\Repositories\RoutesRepository;
 use App\Retails\Retail;
+use App\Supplies\Orders;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -95,6 +103,8 @@ use Illuminate\Support\Facades\Auth;
 
 
 //dukaverse account
+Route::get('/register/accountdescription', [RegisterController::class, 'accountDescription']);
+Route::get('/supplier/register', [RegisterController::class, 'supplierCreate'])->name('supplierregister');
 Route::get('/client/dukaverse/index', [DukaVerseController::class, 'index']);
 
 Route::get('/home', function () {
@@ -112,6 +122,7 @@ Route::post('/client/subscriptions/show/{id}', [SubscriptionController::class, '
 
 
 Route::get('/user/retail', [HomeController::class, 'retails'])->middleware('auth');
+Route::get('/user/supplier', [HomeController::class, 'suppliers'])->middleware('auth');
 
 Route::get('/user/home', [HomeController::class, 'index'])->middleware('auth');
 Route::post(' /user/home/retails/show', [HomeController::class, 'show'])->middleware('auth');
@@ -175,7 +186,7 @@ Route::get('/admin/ipay/pay/search', function () {
 });
 
 #suppliers
-Route::post('/admin/suppliers/index', [AdminSupplierController::class, 'index']);
+Route::get('/admin/suppliers/index', [AdminSupplierController::class, 'index']);
 
 Route::get('/admin/suppliers/create', [AdminCustomerController::class, 'create']);
 Route::post('/admin/suppliers/store', [AdminCustomerController::class, 'store']);
@@ -463,7 +474,7 @@ Route::get('/client/sales/paiditems/index', [PaidItemsController::class, 'index'
 
 
 //stock
-Route::get('/create-stock', [StockController::class, 'create'])->name('createstock');
+Route::get('/client/stock/create', [StockController::class, 'create'])->name('createstock');
 Route::get('/client/stock/index', [StockController::class, 'index'])->name('showstock');
 
 Route::get('/client/stock/show/{id}', [StockController::class, 'show']);
@@ -491,15 +502,13 @@ Route::get('/client/requireditem/index', [RequiredItemController::class, 'index'
 Route::post('/client/requireditems/order', [RequiredItemController::class, 'order']);
 Route::get('/client/requireditem/ordered/index', [OrderedRequiredItemController::class, 'index'])->name('showrequieditem');
 
+
 // Route::get('/client/requireditems/editRequiredItems/{id}', [RequiredItemController::class, 'edit']);
 // Route::get('/client/requireditem/requireditem-item/{id}', [RequiredItemController::class, 'show']);
-// Route::get('/requireditem/create-requireditems', [RequiredItemController::class, 'create'])->name('createrequireditem');
 
 
 //ordered required items
 // Route::get('/client/requireditem/placeorder/index', [RequiredItemOrderController::class, 'index']);
-
-
 
 //Orders
 Route::post('/client/orders/store', [OrdersController::class, 'store']);
@@ -591,6 +600,7 @@ Route::get('/client/employee/salaries/show/{emp_id}', [EmployeeController::class
 Route::get('/terms_and_conditions', function () {
     return view('termsandconditions');
 });
+Route::get('/accept/termsandconditions', [Terms_and_conditionsController::class, 'index'])->name("termsandconditions");
 
 // user profile
 Route::get('/client/user/profile/edit/{id}',  [ProfileProfileController::class, 'edit']);
@@ -660,6 +670,10 @@ Route::get('/bills/payment/history/delete',  [BillPaymentHistory::class, 'delete
 
 
 //suppliers
+Route::get('/market', [MarketController::class, 'index']);
+Route::get('/market/show/{id}', [MarketController::class, 'show']);
+Route::post('/market/store', [MarketController::class, 'store']);
+Route::post('/market/delete/{id}', [MarketController::class, 'destroy']);
 Route::get('/client/supplies/index',  [SuppliesController::class, 'index']);
 Route::get('/client/supplies/create',  [SuppliesController::class, 'create']);
 Route::post('/client/supplies/store',  [SuppliesController::class, 'store']);
@@ -668,12 +682,14 @@ Route::get('/client/supplies/edit/{id}',  [SuppliesController::class, 'edit']);
 Route::post('/client/supplies/update/{id}',  [SuppliesController::class, 'update']);
 
 //suppliers
-Route::get('/supplies/suppliers/index',  [SuppliersController::class, 'index']);
-Route::get('/supplies/suppliers/create',  [SuppliersController::class, 'create']);
-Route::post('/supplies/suppliers/store',  [SuppliersController::class, 'store']);
-Route::get('/supplies/suppliers/show/{id}',  [SuppliersController::class, 'show']);
-Route::get('/supplies/suppliers/edit/{id}',  [SuppliersController::class, 'edit']);
-Route::post('/supplies/suppliers/update',  [SuppliersController::class, 'update']);
+Route::get('/client/supplies/suppliers/index',  [SuppliersController::class, 'index']);
+Route::get('/client/supplies/suppliers/create',  [SuppliersController::class, 'create']);
+Route::post('/client/supplies/suppliers/store',  [SuppliersController::class, 'store']);
+Route::get('/client/supplies/suppliers/show/{id}',  [SuppliersController::class, 'show']);
+Route::get('/client/supplies/suppliers/edit/{id}',  [SuppliersController::class, 'edit']);
+Route::post('/client/supplies/suppliers/update',  [SuppliersController::class, 'update']);
+
+//supplies o
 
 //supplies payment
 
@@ -686,7 +702,46 @@ Route::get('/settings/show',  [SettingsController::class, 'show']);
 Route::get('/settings/delete',  [SettingsController::class, 'destroy']);
 
 //settings
-
 Route::get('/support/index', function () {
     return view('client.Support.index');
+});
+
+//finance
+//transactions
+Route::get('/client/transactions/index', [TransactionController::class, 'index'])->name('transactions');
+
+
+//SUPPLIERS THIS IS FOR SUPPLIER ACCOUNT
+
+//stock
+Route::get('/supplier/stock/index',  [ItemController::class, 'index']);
+Route::get('/supplier/stock/create',  [ItemController::class, 'create']);
+Route::post('/supplier/stock/store',  [ItemController::class, 'store']);
+Route::get('/supplier/stock/edit/{id}',  [ItemController::class, 'edit']);
+Route::get('/supplier/stock/show/{id}',  [ItemController::class, 'show']);
+Route::post('/supplier/stock/update/{id}',  [ItemController::class, 'update']);
+
+//stockitems
+Route::get('/supplier/stock/item/edit/{id}',  [ItemController::class, 'edit']);
+Route::post('/supplier/stock/item/update/{id}',  [ItemController::class, 'updateItem']);
+
+//Orders
+Route::get('/supplier/orders/index',  [OrdersOrderController::class, 'index']);
+Route::get('/supplier/orders/delivered/index',  [OrderDeliveredController::class, 'index']);
+Route::get('/supplier/orders/delivered/show/{id}',  [OrderDeliveredController::class, 'show']);
+Route::get('/supplier/orders/pending/index',  [OrderDeliveredController::class, 'index']);
+Route::get('/supplier/orders/store',  [OrdersOrderController::class, 'store']);
+Route::get('/supplier/orders/show/{id}',  [OrdersOrderController::class, 'show']);
+
+//retails
+Route::get('/supplier/retails/index',  [RetailRetailController::class, 'index']);
+
+
+
+
+Route::get('/display-user', [AdminLocationsController::class, 'index']);
+
+Route::get('/location', function () {
+    # code...
+    return view('location');
 });

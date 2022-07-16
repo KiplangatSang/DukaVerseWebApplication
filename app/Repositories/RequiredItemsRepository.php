@@ -106,14 +106,16 @@ class RequiredItemsRepository
         return $requiredItem;
     }
 
-    public function storeRequiredItems($stock)
+    public function storeRequiredItems($item, $amount = null)
     {
         # code...
+        if (!$amount)
+            $amount = 1;
         $requiredResult =  $this->retail->requiredItems()->create([
             "employees_id" => auth()->id(),
-            "retail_items_id" => $stock->retail_items_id,
-            "required_amount" => 1,
-            "projected_cost" => $stock->items()->first()->buying_price,
+            "retail_items_id" => $item->id,
+            "required_amount" => $amount,
+            "projected_cost" => $item->selling_price,
         ]);
 
         if (!$requiredResult)

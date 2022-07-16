@@ -1,5 +1,4 @@
 
-
 @extends('layouts.login')
 @section('content')
 				<section class="material-half-bg">

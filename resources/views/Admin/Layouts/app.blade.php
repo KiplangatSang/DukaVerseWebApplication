@@ -2,9 +2,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 
-
-
-
 <head>
 
 				<title>DukaVerse</title>
@@ -108,7 +105,8 @@
 																				</li>
 																				<li><a class="dropdown-item" href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a>
 																				</li>
-																				<li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+																				<li><a class="dropdown-item" href="{{ route('logout') }}"
+																												onclick="event.preventDefault();
 																														document.getElementById('logout-form').submit();"><i
 																																class="fa fa-sign-out fa-lg"></i>{{ __('Logout') }}</a>
 																								<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -124,22 +122,27 @@
 				<div class="app-sidebar__overlay " data-toggle="sidebar"></div>
 				<aside class="app-sidebar">
 
-								<div class="app-sidebar__user"><a href="/client/retails/profile"><img class="app-sidebar__user-avatar d-flex w-25"
-																src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
-																alt="User Image"></a>
+								<div class="app-sidebar__user"><a href="/client/retails/profile"><img
+																				class="app-sidebar__user-avatar d-flex w-25"
+																				src="/storage/RetailPictures/{{ $data['retailimage']->retailPicture ?? 'noprofile.png' }}"
+																				alt="User Image"></a>
 												<div>
-                                                    <a href="/client/retails/profile"><p class="app-sidebar__user-name">
-																				{{ $data['retailimage']->retailName ?? (Auth::user()->username ?? 'guest') }}</p></a>
+																<a href="/client/retails/profile">
+																				<p class="app-sidebar__user-name">
+																								{{ $data['retailimage']->retailName ?? (Auth::user()->username ?? 'guest') }}</p>
+																</a>
 
 
 																@if (Auth::user()->isOnwer)
-                                                                <a href="/client/retails/profile"><p class="app-sidebar__user-designation">Retail Owner</p></a>
+																				<a href="/client/retails/profile">
+																								<p class="app-sidebar__user-designation">Retail Owner</p>
+																				</a>
 																@else
 																				@if (Auth::user()->isEmployee)
-                                                                                <p class="app-sidebar__user-designation">
-                                                                                    Employee</a></p>
+																								<p class="app-sidebar__user-designation">
+																												Employee</a></p>
 																				@else
-                                                                                <p class="app-sidebar__user-designation">Guest</a></p>
+																								<p class="app-sidebar__user-designation">Guest</a></p>
 																				@endif
 
 																@endif
@@ -158,7 +161,8 @@
 																																class="icon fa fa-circle-o"></i>Customers</a></li>
 																				<li><a class="treeview-item " href="/admin/customers/create" target="_blank" rel="noopener"><i
 																																class="icon fa fa-circle-o"></i> Add Customer</a></li>
-																				<li><a class="treeview-item  " href="/salesitemsoncredit"><i class="icon fa fa-circle-o "></i>Items
+																				<li><a class="treeview-item  " href="/salesitemsoncredit"><i
+																																class="icon fa fa-circle-o "></i>Items
 																												On Credit</a></li>
 																				<li><a class="treeview-item  " href="/createsales"><i class="icon fa fa-circle-o "></i>
 																												Add item sold</a></li>
@@ -169,10 +173,11 @@
 																								class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Finance</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  " href="/admin/finance/index"><i class="icon fa fa-circle-o"></i>View
+																				<li><a class="treeview-item  " href="/admin/finance/index"><i
+																																class="icon fa fa-circle-o"></i>View
 																												Finances</a></li>
-																				<li><a class="treeview-item " href="/admin/finance/graphs/index" target="_blank" rel="noopener"><i
-																																class="icon fa fa-circle-o"></i>View Graphs</a>
+																				<li><a class="treeview-item " href="/admin/finance/graphs/index" target="_blank"
+																												rel="noopener"><i class="icon fa fa-circle-o"></i>View Graphs</a>
 																				</li>
 																				<li><a class="treeview-item  " href="/admin/finance/reports/index"><i
 																																class="icon fa fa-circle-o "></i>show
@@ -207,7 +212,8 @@
 																												All Loans</a></li>
 																				<li><a class="treeview-item " href="/admin/loans/create"><i class="icon fa fa-circle-o"></i>Add a
 																												Loan</a></li>
-																				<li><a class="treeview-item " href="#"><i class="icon fa fa-circle-o"></i>Loan Restrictions</a>
+																				<li><a class="treeview-item " href="#"><i class="icon fa fa-circle-o"></i>Loan
+																												Restrictions</a>
 																				</li>
 																</ul>
 												</li>
@@ -252,7 +258,7 @@
 																								class="app-menu__icon fa fa-edit"></i><span class="app-menu__label ">Suppliers</span><i
 																								class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item " href="/admin/supplies/suppliers/index"><i
+																				<li><a class="treeview-item " href="/admin/suppliers/index"><i
 																																class="icon fa fa-circle-o "></i> Suppliers </a></li>
 																				<li><a class="treeview-item " href="/admin/supplies/index"><i
 																																class="icon fa fa-circle-o"></i>Supplies</a></li>
@@ -280,8 +286,7 @@
 																				<li><a class="treeview-item  " href="/admin/finance/profit/index"><i
 																																class="icon fa fa-circle-o "></i>Total
 																												profit</a></li>
-																				<li><a class="treeview-item  " href="/admin/finance/index"><i
-																																class="icon fa fa-circle-o "></i>
+																				<li><a class="treeview-item  " href="/admin/finance/index"><i class="icon fa fa-circle-o "></i>
 																												Reports</a></li>
 																</ul>
 												</li>

@@ -23,6 +23,8 @@ class CreateRetailItemsTable extends Migration
             $table->longText('image');
             $table->double('selling_price');
             $table->unsignedBigInteger('buying_price');
+            $table->unsignedBigInteger('discount')->nullable();
+            $table->unsignedBigInteger('pay_price')->nullable();
             $table->longText('description')->nullable();
             $table->longText('regulation')->nullable();
             $table->string('suppliers_id')->nullable();

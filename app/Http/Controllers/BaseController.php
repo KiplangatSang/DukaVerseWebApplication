@@ -22,6 +22,15 @@ class BaseController extends Controller
      */
 
     //gets retails list sent to home controller for choosing
+
+
+    public function user()
+    {
+        $user = User::where('id', auth()->id())->first();
+        return $user;
+    }
+
+
     public function appRepository()
     {
         # code...
@@ -148,18 +157,41 @@ class BaseController extends Controller
     public function saveFile($folder, $file)
     {
         # code...
+
         $user = User::where('id', auth()->id())->first();
+        //dd( $user);
+        // dd($this->user());
         $fileNameToStore = "";
 
-        $firebase = new FirebaseRepository($this->getRetail());
-        $fileNameToStore =  $firebase->store($user, $folder, $file);
+        if (!$this->getRetail()) {
+            $firebase = new FirebaseRepository();
+            $fileNameToStore =  $firebase->store($user, $folder, $file);
+        } else {
+            $firebase = new FirebaseRepository($this->getRetail());
+            $fileNameToStore =  $firebase->store($user, $folder, $file);
+        }
 
-        // $jobDescFileWithExt = $file->getClientOriginalName();
-        // $filename = pathinfo($jobDescFileWithExt, PATHINFO_FILENAME);
-        // $extension = $file->getClientOriginalExtension();
-        // $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-        // //   Log::info("File" .$fileNameToStore);
-        // //storage_path()
         return $fileNameToStore;
+    }
+
+    public function getIp()
+    {
+        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) {
+            if (array_key_exists($key, $_SERVER) === true) {
+                foreach (explode(',', $_SERVER[$key]) as $ip) {
+                    $ip = trim($ip); // just to be safe
+                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
+                        return $ip;
+                    }
+                }
+            }
+        }
+    }
+    public function location()
+    {
+        # code...
+        $apprepo = new AppRepository();
+        $location = (array)$apprepo->getLocation( $this->getIp());
+        return $location;
     }
 }

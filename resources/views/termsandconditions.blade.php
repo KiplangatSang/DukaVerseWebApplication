@@ -1,17 +1,17 @@
-@extends('Layouts.homelayout')
+@extends('layouts.login')
 @section('content')
 				<div class="container well mt-3 justify-content-center">
 
-								<h3 class="display-5 text-danger "> Storm5 Terms and Conditions Policy</h3>
+								<h3 class="display-5 text-danger "> DukaVerse Terms and Conditions Policy</h3>
 
 								<p class="content ">
-												Welcome to <strong>Storm5 Store</strong>.
+												Welcome to <strong>DukaVerse Store</strong>.
 								</p>
 
-								<p class="display-7"> These terms and conditions outline the rules and regulations for the use of Storm5 Store’s
+								<p class="display-7"> These terms and conditions outline the rules and regulations for the use of DukaVerse Store’s
 												Website.</p>
 
-								<p class="display-6">Storm5 is an Online Application that enables its customers and users to manage and
+								<p class="display-6">DukaVerse is an Online Application that enables its customers and users to manage and
 												supervise their Retail and shop.
 												We offer great services essential for growth of a retail shop.<br>
 												By accessing this website we assume you accept these terms and conditions in full. Do not continue to use Storm5
@@ -50,9 +50,10 @@
 								<h3 class="display-5 text-danger "> Cookies</h3>
 
 								<p class="well">
-												We employ the use of cookies. By using Storm5 Store’s website you consent to the use of cookies in accordance
+												We employ the use of cookies. By using DukaVerse Store’s website you consent to the use of cookies in accordance
 												with
-												Storm5 Store’s privacy policy. Most of the modern day interactive websites use cookies to enable us to retrieve
+												DukaVerse Store’s privacy policy. Most of the modern day interactive websites use cookies to enable us to
+												retrieve
 												user
 												details for each visit.
 
@@ -74,7 +75,8 @@
 								</p>
 								<p><strong>You must not:</strong></p>
 								<ul>
-												<li>Republish material that is not directly associated with your Storm5 account or is a property of Storm5 .
+												<li>Republish material that is not directly associated with your DukaVerse account or is a property of DukaVerse
+																.
 																Sell, rent or sub-license your account to any third parties.
 																Redistribute content from (Store Name) (unless content is specifically made for redistribution).
 																Disclaimer</li>
@@ -84,11 +86,7 @@
 																respect of satisfactory quality, fitness for purpose and/or the use of reasonable care and skill).
 												</li>
 								</ul>
-
-
-
 								<p class="text-danger">Nothing in this disclaimer will:
-
 								</p>
 								<ul>
 												<li> Limit or exclude our or your liability for death or personal injury resulting from negligence.
@@ -113,20 +111,15 @@
 												will
 												not be liable for any loss or damage of any nature.
 								</p>
-   	<div class="well m-3">
-                    <input
-                                    class="form-check-input mb-1 @error('terms_and_conditions') is-invalid @enderror"
-                                    type="checkbox" value="" id="terms_and_conditions "
-                                    name="termsAndConditions"  {{ action(Terms_and_conditionsController, ['index']) }} />
-                    <label class="form-check-label " for="form2Example3g">
-                                    I agree all statements in
-                                    <a href="/terms_and_conditions" class="text-body"><u>Terms of
-                                                                    service</u></a>
-                    </label>
-    </div>
+								<div class="well m-3">
+												<input class="form-check-input mb-1 @error('terms_and_conditions') is-invalid @enderror" type="checkbox"
+																value="true" onclick="{{ route('termsandconditions') }}" id="terms_and_conditions "
+																name="termsAndConditions" />
+												<label class="form-check-label " for="form2Example3g">
+																I agree all statements in
+																<a href="/terms_and_conditions" class="text-body"><u>Terms of
+																								service</u></a>
+												</label>
+								</div>
 				</div>
-
-
-
-
 @endsection

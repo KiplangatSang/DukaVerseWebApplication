@@ -48,6 +48,11 @@
 																																																																</a>
 																																																												@endif
 																																																								</div>
+																																																								<div class="p-2 m-2">
+																																																												<a class="button btn-primary" href="{{ route('supplierregister') }}">Are
+																																																																you a supplier?</a>
+
+																																																								</div>
 																																																				</div>
 																																																@endauth
 																																												</div>
@@ -81,7 +86,7 @@
 																																</div>
 																																<div>
 																																				<div class="d-flex justify-content-center">
-                                                                                                                                                    Access Funds to see your Business
+																																								Access Funds to see your Business
 																																								Grow</div>
 																																				<img class="slider-img" src="dist/images/DukaVerse/loans.jpg">
 																																</div>

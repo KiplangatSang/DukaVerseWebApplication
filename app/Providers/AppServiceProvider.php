@@ -52,5 +52,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer(['home','client.*' ], AppComposer::class);
         View::composer(['admin.*',], AdminAppComposer::class);
+        View::composer(['supplier.*',], AdminAppComposer::class);
+
     }
 }

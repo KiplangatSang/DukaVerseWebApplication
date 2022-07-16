@@ -40,9 +40,8 @@
 																												<div class="form-group row">
 																																<label class="control-label col-md-3">Click to select item image</label>
 																																<div class="col-md-8">
-																																				<input class="form-control  @error('image') is-invalid @enderror"
-																																								id="image" name="image" type="file"
-																																								placeholder="Enter item image">
+																																				<input class="form-control  @error('image') is-invalid @enderror" id="image"
+																																								name="image" type="file" placeholder="Enter item image">
 
 																																				@error('image')
 																																								<span class="invalid-feedback" role="alert">

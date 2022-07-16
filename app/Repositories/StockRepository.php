@@ -32,12 +32,8 @@ class StockRepository
 
         if (!$item)
             return false;
-        //
-        // dd($item);
-        // $retailItem =  $this->retail->items()->whereIn('id', $item)->first();
-        // dd( $retailItem->id);
 
-       $item= $this->retail->stocks()->updateOrCreate(
+        $item = $this->retail->stocks()->updateOrCreate(
             [
                 'code' => $request->code,
             ],
@@ -65,7 +61,7 @@ class StockRepository
         return $stocks;
     }
 
-    public function getDisctictStockItems($month= null,$year = null)
+    public function getDisctictStockItems($month = null, $year = null)
     {
         $stocks = null;
         if (!$year)
@@ -91,13 +87,13 @@ class StockRepository
         $stocks = null;
         if ($key && $value) {
             $stocks = $this->retail->stocks()->where($key, $value)->with('items')
-            ->get();
+                ->get();
         } else
             $stocks = $this->retail->stocks()
-            ->with('items')
-            ->get();
+                ->with('items')
+                ->get();
 
-            //dd($stocks);
+        //dd($stocks);
         foreach ($stocks as $stock) {
             $stock['item'] =  $stock->items()->first();
         }
@@ -122,10 +118,12 @@ class StockRepository
     public function getStock()
     {
         # code...
-        $stockItems = $this->retail->items()->get();
-        foreach ($stockItems as $stockItem) {
-            $stockItem['item'] = $stockItem->stocks()->get();
-        }
+        $stockItems = $this->retail->items()
+            ->with('stocks')
+            ->get();
+        // foreach ($stockItems as $stockItem) {
+        //     $stockItem['item'] = $stockItem->stocks()->get();
+        // }
         // dd($stockItems);
         return $stockItems;
     }
@@ -137,7 +135,7 @@ class StockRepository
             ->with('stocks')
             ->where('id', $items_id)
             ->first();
-            return $item;
+        return $item;
         // $stockItems = $item->stocks()
         //     ->whereIn('stockable_id', $this->retail)
         //     ->get();
@@ -235,21 +233,21 @@ class StockRepository
         return true;
     }
 
-    public function markRequired($id)
+    public function markRequired($id,$amount= null)
     {
 
-        $stock = $this->retail->stocks()->where('id', $id)->first();
+        $item = $this->retail->items()->where('id', $id)->first();
 
-        if (!$stock)
+        if (!$item)
             return false;
-        $stockUpdate = $stock->update(
+        $stockUpdate = $item->update(
             [
-                "isRequired" => true,
+                "is_required" => true,
             ]
         );
         $requiredRepo = new RequiredItemsRepository($this->retail);
 
-        $requiredResult =  $requiredRepo->storeRequiredItems($stock);
+        $requiredResult =  $requiredRepo->storeRequiredItems($item,$amount);
         $stockData["stockUpdate"] = $stockUpdate;
 
         if (!$requiredResult)

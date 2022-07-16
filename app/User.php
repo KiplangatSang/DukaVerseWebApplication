@@ -6,9 +6,14 @@ use App\Accounts\Account;
 use App\Accounts\Transaction;
 use App\Bills\Bills;
 use App\Employees\Employees;
+use App\Payments\Expenses;
 use App\Profiles\Profiles;
+use App\Retail\RetailItems;
 use App\Retails\Retail;
 use App\Retails\SessionRetail;
+use App\Stock\Stock;
+use App\Supplies\Orders;
+use App\Supplies\SupplyItems;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -97,5 +102,31 @@ class User extends Authenticatable
     public function employees()
     {
         return $this->hasOne(Employees::class, "user_id");
+    }
+    public function items()
+    {
+        return $this->morphMany(RetailItems::class, 'itemable');
+    }
+
+    public function stocks()
+    {
+        return $this->morphMany(Stock::class, 'stockable');
+    }
+
+
+    public function expenses()
+    {
+        # code...
+        return $this->morphMany(Expenses::class, 'expenseable');
+    }
+
+    public function orders()
+    {
+        return $this->morphMany(Orders::class, 'orderable');
+    }
+
+    public function supplyItems()
+    {
+        return $this->morphMany(SupplyItems::class, 'supply_itemable');
     }
 }
