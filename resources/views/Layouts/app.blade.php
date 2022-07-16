@@ -267,21 +267,18 @@
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i
-																								class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Finance</span><i
-																								class="treeview-indicator fa fa-angle-right"></i></a>
+																								class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Finance &
+																								Transactions</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 																<ul class="treeview-menu">
-																				<li><a class="treeview-item  " href="/client/transactions/index"><i class="icon fa fa-circle-o "></i>
+																				<li><a class="treeview-item  " href="/client/transactions/index"><i
+																																class="icon fa fa-circle-o "></i>
 																												Transactions</a></li>
-																				<li><a class="treeview-item  " href="table-data-table.html"><i class="icon fa fa-circle-o "></i>
-																												Sales Payments</a></li>
-																				<li><a class="treeview-item  " href="table-basic.html"><i class="icon fa fa-circle-o "></i>
-																												Pending Credits</a></li>
-																				<li><a class="treeview-item  " href="table-data-table.html"><i
-																																class="icon fa fa-circle-o "></i>Expenses</a></li>
-																				<li><a class="treeview-item  " href="table-basic.html"><i class="icon fa fa-circle-o "></i>Total
-																												profit</a></li>
-																				<li><a class="treeview-item  " href="table-data-table.html"><i class="icon fa fa-circle-o "></i>
-																												Reports</a></li>
+																				<li><a class="treeview-item  " href="/client/transactions/sales/index"><i class="icon fa fa-circle-o "></i>
+																												Sales Transactions</a></li>
+																				<li><a class="treeview-item  " href="/client/transactions/supply/index"><i class="icon fa fa-circle-o "></i>
+																												Supplies Transactions</a></li>
+																				<li><a class="treeview-item  " href="/client/transactions/loans/index"><i class="icon fa fa-circle-o "></i>
+																												Loans Transactions</a></li>
 																</ul>
 												</li>
 												<li class="treeview"><a class="app-menu__item " href="#" data-toggle="treeview"><i

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Retailer;
+namespace App\Http\Controllers\Retailer\Transactions;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Repositories\TransactionsRepository;
 use Illuminate\Http\Request;
 
-class TransactionController extends BaseController
+class LoanTransactionController extends BaseController
 {
     public function __construct()
     {
@@ -27,8 +27,11 @@ class TransactionController extends BaseController
      */
     public function index()
     {
-        $transactions =  $this->transactionRepository()->getTransactions();
-        return $transactions;
+        //
+        $transactions =  $this->transactionRepository()->getLoansTransactions();
+        $transactiondata['transactions'] = $transactions;
+        $transactiondata['amount'] = $transactions->sum('total_amount');
+        return view('client.transactions.salestransactions.index', compact('transactiondata'));
     }
     /**
      * Show the form for creating a new resource.

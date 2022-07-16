@@ -77,7 +77,10 @@ use App\Http\Controllers\Retailer\stock\StockController;
 use App\Http\Controllers\Retailer\Subscriptions\SubscriptionController;
 use App\Http\Controllers\Retailer\Supplies\SuppliersController;
 use App\Http\Controllers\Retailer\Supplies\SuppliesController;
-use App\Http\Controllers\Retailer\TransactionController;
+use App\Http\Controllers\Retailer\Transactions\LoanTransactionController;
+use App\Http\Controllers\Retailer\Transactions\SaleTransactionController as TransactionsSaleTransactionController;
+use App\Http\Controllers\Retailer\Transactions\SupplyTransactionController;
+use App\Http\Controllers\Retailer\Transactions\TransactionController;
 use App\Http\Controllers\Suppliers\Items\ItemController;
 use App\Http\Controllers\Suppliers\Orders\OrderController as OrdersOrderController;
 use App\Http\Controllers\Suppliers\Orders\OrderDeliveredController;
@@ -709,6 +712,15 @@ Route::get('/support/index', function () {
 //finance
 //transactions
 Route::get('/client/transactions/index', [TransactionController::class, 'index'])->name('transactions');
+Route::get('/client/transactions/show/{id}', [TransactionController::class, 'show'])->name('showtransactions');
+
+//sales transactions
+Route::get('/client/transactions/sales/index', [TransactionsSaleTransactionController::class, 'index'])->name('salestransactions');
+
+//supply transactions
+Route::get('/client/transactions/supply/index', [SupplyTransactionController::class, 'index'])->name('supplytransactions');
+//loans transactions
+Route::get('/client/transactions/loans/index', [LoanTransactionController::class, 'index'])->name('loantransactions');
 
 
 //SUPPLIERS THIS IS FOR SUPPLIER ACCOUNT

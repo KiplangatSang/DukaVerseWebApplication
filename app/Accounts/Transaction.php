@@ -15,4 +15,10 @@ class Transaction extends Model
         # code...
         return $this->morphTo();
     }
+
+    public function purposeable()
+    {
+        # code...
+        return $this->morphTo();
+    }
 }

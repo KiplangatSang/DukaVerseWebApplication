@@ -2,10 +2,10 @@
 @section('content')
 				<div class="app-title">
 								<div>
-												<h1><i class="fa fa-th-list"></i> Transactions Table</h1>
+												<h1><i class="fa fa-th-list"></i>Sales Transactions Table</h1>
 												<div class="row">
 																<div class="col">
-																				<p class="p-2">All Transactions</p>
+																				<p class="p-2">Sales Transactions</p>
 
 																</div>
 
@@ -13,8 +13,8 @@
 								</div>
 								<ul class="app-breadcrumb breadcrumb side">
 												<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-												<li class="breadcrumb-item">Transactions</li>
-												<li class="breadcrumb-item active"><a href="#">Transactions Table</a></li>
+												<li class="breadcrumb-item">Sales Transactions</li>
+												<li class="breadcrumb-item active"><a href="#">Sales Transactions Table</a></li>
 								</ul>
 				</div>
 				<div class="row">

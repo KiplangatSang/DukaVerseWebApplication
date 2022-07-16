@@ -35,6 +35,8 @@ class CreateTransactionsTable extends Migration
             $table->string("trans_id");
             $table->integer("transactionable_id");
             $table->string("transactionable_type");
+            $table->integer("purposeable_id")->nullable();
+            $table->string("purposeable_type")->nullable();
             $table->string("amount");
             $table->string("gateway");
             $table->bigInteger("accounts_id")->nullable();
@@ -46,7 +48,7 @@ class CreateTransactionsTable extends Migration
             $table->string("currency")->default("ksh");
             $table->string("purpose");
             $table->double("total_amount");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             $table->timestamps();
         });
     }
