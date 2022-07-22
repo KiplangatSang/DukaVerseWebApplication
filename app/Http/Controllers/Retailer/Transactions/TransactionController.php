@@ -63,7 +63,6 @@ class TransactionController extends BaseController
     {
         //
         $transaction =  $this->transactionRepository()->getTransaction($id);
-        dd($transaction);
         $transactiondata['transaction'] = $transaction;
         return view('client.transactions.show', compact('transactiondata'));
     }

@@ -245,9 +245,22 @@ class SaleController extends BaseController
                 ]
             );
 
+            $transaction = $retail->salesTransactions()->where("transaction_id", $transactions->transaction_id)->first();
+
             $transRepo = new TransactionsRepository($this->getRetail());
 
-            $mpesadata = $transRepo->saveTransaction("CASH", null, $amount, "Retail Goods Payment",  3, 0, "ksh", "SALES");
+            $mpesadata = $transRepo->saveTransaction(
+                "CASH",
+                null,
+                $amount,
+                "Retail Goods Payment",
+                3,
+                0,
+                "ksh",
+                "SALES",
+                $transaction->id,
+                "App\Sales\Sales",
+            );
             if (!$mpesadata)
                 return $this->sendError("Could not store transaction", $transaction);
 
@@ -287,7 +300,18 @@ class SaleController extends BaseController
             return $this->sendError("error", $transaction);
 
         $transRepo = new TransactionsRepository($this->getRetail());
-        $mpesadata = $transRepo->saveTransaction("MPESA", $account, $amount, "Retail Goods Payment",  2, 0, "ksh", "SALES");
+        $mpesadata = $transRepo->saveTransaction(
+            "MPESA",
+            $account,
+            $amount,
+            "Retail Goods Payment",
+            2,
+            0,
+            "ksh",
+            "SALES",
+            $transaction->id,
+            "App\Sales\Sales",
+        );
 
         $request = new \Illuminate\Http\Request();
         $request->setMethod('POST');
