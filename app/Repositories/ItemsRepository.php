@@ -7,10 +7,10 @@ use Illuminate\Support\Str;
 
 class ItemsRepository
 {
-    private $retail;
-    public function __construct($retail)
+    private $account;
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
 
 
@@ -19,11 +19,11 @@ class ItemsRepository
     public function saveStock($request)
     {
 
-        $this->retail->stocks()->create(
+        $this->account->stocks()->create(
             $request->except('stockImageFile'),
         );
 
-        $item = $this->retail->items()->updateOrCreate(
+        $item = $this->account->items()->updateOrCreate(
             [
                 'name' => $request->name,
                 'brand' => $request->brand,
@@ -47,14 +47,14 @@ class ItemsRepository
     public function getItems()
     {
         # code...
-        $items  = $this->retail->retailItems()->get();
+        $items  = $this->account->retailItems()->get();
         return $items;
     }
 
     public function getItem($id)
     {
         # code...
-        $item  = $this->retail->retailItems()->where('id', $id)->first();
+        $item  = $this->account->retailItems()->where('id', $id)->first();
         return $item;
     }
     public function getItemStock($id = null)

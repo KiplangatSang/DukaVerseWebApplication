@@ -4,23 +4,23 @@ namespace App\Repositories;
 
 class OrdersRepository
 {
-    private $retail;
-    public function __construct($retail)
+    private $account;
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
     public function getDisctictRequiredItems()
     {
-        $orders = $this->retail->orders()->distinct('itemName', 'itemSize')->get();
+        $orders = $this->account->orders()->distinct('itemName', 'itemSize')->get();
         foreach ($orders as $order) {
-            $order->itemAmount = $this->retail->orders()->where('itemName', $order->itemName)->sum('itemAmount');
-            $order->price = $this->retail->orders()->where('itemName', $order->itemName)->sum('price');
+            $order->itemAmount = $this->account->orders()->where('itemName', $order->itemName)->sum('itemAmount');
+            $order->price = $this->account->orders()->where('itemName', $order->itemName)->sum('price');
         }
         return $orders;
     }
     public function getAllorders()
     {
-        $orders = $this->retail->orders()->orderBy('created_at', 'DESC')->get();
+        $orders = $this->account->orders()->orderBy('created_at', 'DESC')->get();
 
         return $orders;
     }
@@ -58,7 +58,7 @@ class OrdersRepository
     public function getDeliveredOrders()
     {
         # code...
-        $orders = $this->retail->orders()->orderBy('created_at', 'DESC')
+        $orders = $this->account->orders()->orderBy('created_at', 'DESC')
             ->where('order_status', 1)
             ->where('delivery_status', true)
             ->get();
@@ -93,7 +93,7 @@ class OrdersRepository
     {
         # code...
 
-        $orders = $this->retail->orders()->orderBy('created_at', 'DESC')
+        $orders = $this->account->orders()->orderBy('created_at', 'DESC')
         ->where('delivery_status', false)
         ->get();
 
@@ -128,7 +128,7 @@ class OrdersRepository
     //get sale by item id
     public function getOrdersById($itemid)
     {
-        $order = $this->retail->orders()->where('sales_empid', $itemid)->get();
+        $order = $this->account->orders()->where('sales_empid', $itemid)->get();
 
         return $order;
     }
@@ -136,7 +136,7 @@ class OrdersRepository
     //get employee sales
     public function getEmployeeOrders($empid)
     {
-        $order = $this->retail->orders()->where('employees_id', $empid)->get();
+        $order = $this->account->orders()->where('employees_id', $empid)->get();
 
         return $order;
     }
@@ -144,21 +144,21 @@ class OrdersRepository
     //get employee sales
     public function getordersByDate($startDate, $endDate)
     {
-        $order = $this->retail->orders()->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])->get();
+        $order = $this->account->orders()->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])->get();
         return $order;
     }
 
 
     public function getordersCost()
     {
-        $ordersPrice = $this->retail->orders()->sum('price');
+        $ordersPrice = $this->account->orders()->sum('price');
         # code...
         return $ordersPrice;
     }
 
     public function getOrders($key, $value)
     {
-        $sales =  $this->retail->orders()->where($key, $value)->orderBy('created_at', 'DESC')->get();
+        $sales =  $this->account->orders()->where($key, $value)->orderBy('created_at', 'DESC')->get();
         //dd($sales);
         return $sales;
     }

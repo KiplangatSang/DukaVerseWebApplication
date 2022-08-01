@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Retailer\Transactions;
 
+use App\Helpers\Billing\OrderDetails;
+use App\Helpers\Billing\PaymentGatewayContract;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Retailer\payments\mpesa\MpesaController;
 use App\Repositories\TransactionsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class TransactionController extends BaseController
 {
@@ -28,18 +32,35 @@ class TransactionController extends BaseController
     public function index()
     {
         $transactions =  $this->transactionRepository()->getTransactions();
-        $transactiondata['transactions'] =$transactions;
-        $transactiondata['amount'] =$transactions->sum('total_amount');
-        return view('client.transactions.index',compact('transactiondata'));
+        $transactiondata['transactions'] = $transactions;
+        $transactiondata['amount'] = $transactions->sum('total_amount');
+        return view('client.transactions.index', compact('transactiondata'));
     }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(OrderDetails $orderdetails, PaymentGatewayContract  $payment)
     {
         //
+        $amount = 1;
+
+        $trans_data = $this->saveTransaction(
+            "MPESA",
+            $amount,
+            $amount,
+            0,
+            "ksh",
+            "SUPPLIES",
+            "Retail Goods Payment",
+            1,
+            $orderdetails,
+            $payment
+        );
+        if (!$trans_data)
+            dd($trans_data);
+        dd($trans_data);
     }
 
     /**
@@ -48,9 +69,64 @@ class TransactionController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, OrderDetails $orderdetails, PaymentGatewayContract  $payment)
     {
-        //
+
+        $request->validate(
+            [
+                'gateway' => ['required'],
+                'amount' => ['required'],
+                'transaction_type' => ['required'],
+                'cost' => ['required'],
+                'currency' => ['required'],
+                'purpose' => ['required'],
+            ]
+        );
+
+        $transactiondata = $this->storeTransaction($request);
+        if ($request->gateway == "CASH")
+            return $transactiondata;
+
+        $order = $orderdetails->all($transactiondata);
+
+         $result = $payment->charge($transactiondata);
+
+        return  $result;
+    }
+
+
+    public function storeTransaction(Request $request)
+    {
+        # code...
+        $transactiondata =  $this->transactionRepository()->saveTransaction(
+            $request->gateway ?? null,
+            $request->accounts_id ?? null,
+            $request->amount ?? null,
+            $request->message ?? null,
+            $request->transaction_type ?? null,
+            $request->cost ?? null,
+            $request->currency ?? null,
+            $request->purpose ?? null,
+            $request->purpose_id ?? null,
+        );
+
+        return  $transactiondata;
+    }
+
+    public function setPurposeable($purpose)
+    {
+        # code...
+        if ($purpose == "SALES") {
+            $purposable_type = "App\Sales\Sales";
+        } else if ($purpose == "LOANS") {
+            $purposable_type = "App\Loans\Loans";
+        } else if ($purpose == "SUPPLIES") {
+            $purposable_type = "App\Supples\Supplies";
+        } else {
+            $purposable_type = null;
+        }
+
+        return   $purposable_type;
     }
 
     /**
@@ -101,3 +177,16 @@ class TransactionController extends BaseController
         //
     }
 }
+
+
+            // $request = new \Illuminate\Http\Request();
+        // $request->setMethod('POST');
+        // $request->request->add(['mpesadata' =>  $mpesadata]);
+
+
+        // $mpesaCont = new MpesaController();
+        // $mpesaRes = $mpesaCont->stkPush($request);
+
+
+        // if (!$mpesaRes)
+        //     return false;

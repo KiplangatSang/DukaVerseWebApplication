@@ -55,7 +55,7 @@ class StockController extends BaseController
         );
 // dd($allStocks);
 
-        return view("client.stock.store.index", compact('stocksdata'));
+        return view("client.stock.store.index", compact('stockdata'));
     }
 
     /**

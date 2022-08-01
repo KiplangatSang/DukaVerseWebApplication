@@ -6,10 +6,10 @@ use App\Stock\Stock;
 
 class StockRepository
 {
-    private $retail;
-    public function __construct($retail)
+    private $account;
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
 
     public function saveStock($request)
@@ -17,7 +17,7 @@ class StockRepository
 
         // dd($request->all());
 
-        $item = $this->retail->items()->updateOrCreate(
+        $item = $this->account->items()->updateOrCreate(
             [
                 'name' => $request->name,
                 'brand' => $request->brand,
@@ -33,7 +33,7 @@ class StockRepository
         if (!$item)
             return false;
 
-        $item = $this->retail->stocks()->updateOrCreate(
+        $item = $this->account->stocks()->updateOrCreate(
             [
                 'code' => $request->code,
             ],
@@ -47,7 +47,7 @@ class StockRepository
 
         $expense = $request->buying_price;
         //save through expense repository
-        $expenseRepo = new ExpenseRepository($this->retail);
+        $expenseRepo = new ExpenseRepository($this->account);
         $expenseResult = $expenseRepo->saveExpense($expense);
         if (!$expenseResult)
             return false;
@@ -56,7 +56,7 @@ class StockRepository
 
     public function getDisctictStock()
     {
-        $stocks = $this->retail->stocks()->get();
+        $stocks = $this->account->stocks()->get();
 
         return $stocks;
     }
@@ -67,12 +67,12 @@ class StockRepository
         if (!$year)
             $year = date('Y');
         if ($month)
-            $stocks = $this->retail->stocks()
+            $stocks = $this->account->stocks()
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
         else
-            $stocks = $this->retail->expenses()
+            $stocks = $this->account->expenses()
                 ->whereYear('created_at', '=', $year)
                 ->get();
         //dd($expenses->expense);
@@ -86,10 +86,10 @@ class StockRepository
     {
         $stocks = null;
         if ($key && $value) {
-            $stocks = $this->retail->stocks()->where($key, $value)->with('items')
+            $stocks = $this->account->stocks()->where($key, $value)->with('items')
                 ->get();
         } else
-            $stocks = $this->retail->stocks()
+            $stocks = $this->account->stocks()
                 ->with('items')
                 ->get();
 
@@ -100,25 +100,12 @@ class StockRepository
         return $stocks;
     }
 
-    // public function getItems($key = null, $value = null)
-    // {
-    //     $stocks = null;
-    //     if ($key && $value) {
-    //         $stocks = $this->retail->stocks()->where($key, $value)->get();
-    //     } else
-    //         $stocks = $this->retail->stocks()->get();
-
-    //     foreach ($stocks as $stock) {
-    //         $stock['item'] =  $stock->items()->first();
-    //     }
-    //     return $stocks;
-    // }
 
     //get items
     public function getStock()
     {
         # code...
-        $stockItems = $this->retail->items()
+        $stockItems = $this->account->items()
             ->with('stocks')
             ->get();
         // foreach ($stockItems as $stockItem) {
@@ -131,21 +118,16 @@ class StockRepository
     //get stock items
     public function getStockItems($items_id)
     {
-        $item = $this->retail->items()
+        $item = $this->account->items()
             ->with('stocks')
             ->where('id', $items_id)
             ->first();
         return $item;
-        // $stockItems = $item->stocks()
-        //     ->whereIn('stockable_id', $this->retail)
-        //     ->get();
-        // $stockItems['retail_item'] = $item;
-        // return $stockItems;
     }
 
     public function getRetailItem($items_id)
     {
-        $item = $this->retail->items()
+        $item = $this->account->items()
             ->where('id', $items_id)
             ->first();
 
@@ -158,7 +140,7 @@ class StockRepository
     {
         # code...
         $stockValue = 0;
-        $stocks = $this->retail->stocks()->get();
+        $stocks = $this->account->stocks()->get();
         foreach ($stocks as $stock) {
             $item = $stock->items()->first();
             if ($item)
@@ -173,7 +155,7 @@ class StockRepository
     {
         # code...
         $stockExpense = 0;
-        $stocks = $this->retail->stocks()->get();
+        $stocks = $this->account->stocks()->get();
         //dd($stocks);
         foreach ($stocks as $stock) {
             $item = $stock->items()->first();
@@ -188,7 +170,7 @@ class StockRepository
     //get sale by item id
     public function getStocksById($id)
     {
-        $stock = $this->retail->stocks()->where('id', $id)->first();
+        $stock = $this->account->stocks()->where('id', $id)->first();
         if (!$stock)
             return false;
         $stock['item'] =  $stock->items()->first();
@@ -199,7 +181,7 @@ class StockRepository
     //get sale by item code
     public function getStockById($code)
     {
-        $stock = $this->retail->stocks()->where('code', $code)->first();
+        $stock = $this->account->stocks()->where('code', $code)->first();
         $stock['item'] =  $stock->items()->first();
 
         return $stock;
@@ -211,8 +193,8 @@ class StockRepository
     {
 
 
-        $projectedsales = $this->retail->items()->sum('selling_price');
-        $stockexpense = $this->retail->items()->sum('buying_price');
+        $projectedsales = $this->account->items()->sum('selling_price');
+        $stockexpense = $this->account->items()->sum('buying_price');
         $projectedRevenue = $projectedsales - $stockexpense;
 
         return $projectedRevenue;
@@ -220,7 +202,7 @@ class StockRepository
 
     public function getSaleItem($key, $value)
     {
-        $sales =  $this->retail->sales()->where($key, $value)->orderBy('created_at', 'DESC')->get();
+        $sales =  $this->account->sales()->where($key, $value)->orderBy('created_at', 'DESC')->get();
         //dd($sales);
         return $sales;
     }
@@ -233,10 +215,10 @@ class StockRepository
         return true;
     }
 
-    public function markRequired($id,$amount= null)
+    public function markRequired($id, $amount = null)
     {
 
-        $item = $this->retail->items()->where('id', $id)->first();
+        $item = $this->account->items()->where('id', $id)->first();
 
         if (!$item)
             return false;
@@ -245,9 +227,9 @@ class StockRepository
                 "is_required" => true,
             ]
         );
-        $requiredRepo = new RequiredItemsRepository($this->retail);
+        $requiredRepo = new RequiredItemsRepository($this->account);
 
-        $requiredResult =  $requiredRepo->storeRequiredItems($item,$amount);
+        $requiredResult =  $requiredRepo->storeRequiredItems($item, $amount);
         $stockData["stockUpdate"] = $stockUpdate;
 
         if (!$requiredResult)

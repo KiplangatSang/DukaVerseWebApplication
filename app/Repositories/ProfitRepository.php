@@ -7,12 +7,12 @@ use Illuminate\Support\Str;
 
 class ProfitRepository
 {
-    private $retail;
+    private $account;
     protected $month, $year, $expense = null;
 
-    public function __construct($retail)
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
 
 
@@ -22,7 +22,7 @@ class ProfitRepository
         $this->month = now('m');
         $this->year = now("Y");
         // get last expense
-        $lastProfit =  $this->retail->profit()
+        $lastProfit =  $this->account->profit()
             ->where('month', $this->month)
             ->whereYear('created_at', '=', $this->year)
             ->get('profit_amount')
@@ -33,7 +33,7 @@ class ProfitRepository
 
         //save expense by locking db
         $result = DB::transaction(function () {
-            $this->retail->profit()->updateOrCreate(
+            $this->account->profit()->updateOrCreate(
                 [
                     "month" => $this->month,
                     "year" => $this->year,
@@ -57,12 +57,12 @@ class ProfitRepository
         $profit = 0;
         $month = date('m') + 3;
         if ($month) {
-            $profit = $this->retail->profit()
+            $profit = $this->account->profit()
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
         } else
-            $profit = $this->retail->profit()
+            $profit = $this->account->profit()
                 ->whereYear('created_at', '=', $year)
                 ->get();
 

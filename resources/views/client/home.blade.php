@@ -15,6 +15,43 @@
 
 												<div class="widget-small primary coloured-icon"><i class="icon fa fa-etsy fa-3x"></i>
 																<div class="info">
+																				<h4>Payment Preference</h4>
+																				<p><b>{{ $data['retail']->paymentpreference ?? 'N/A' }}</b></p>
+																</div>
+												</div>
+
+								</div>
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small info coloured-icon"><i class="icon fa fa-cart-arrow-down fa-2x"></i>
+																<div class="info">
+																				<h4>Account</h4>
+																				<p><b>{{ $data['supplies'] }}</b></p>
+																</div>
+												</div>
+								</div>
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small warning coloured-icon"><i class="icon fa fa-cart-plus fa-2x"></i>
+																<div class="info">
+																				<h4>DukaVerse Account</h4>
+																				<p><b>{{ $data['retail']->accounts()->first()->account }}</b></p>
+																</div>
+												</div>
+								</div>
+								<div class="col-md-6 col-lg-3">
+												<div class="widget-small danger coloured-icon"><i class="icon fa fa-credit-card-alt fa-2x"></i>
+																<div class="info">
+																				<h4>DukaVerse Balance</h4>
+																				<p><b>{{ $data['retail']->accounts()->first()->balance . ' ksh' }}</b></p>
+																</div>
+												</div>
+								</div>
+
+				</div>
+				<div class="row">
+								<div class="col-md-6 col-lg-3">
+
+												<div class="widget-small primary coloured-icon"><i class="icon fa fa-etsy fa-3x"></i>
+																<div class="info">
 																				<h4>Employees</h4>
 																				<p><b>{{ $data['employees'] }}</b></p>
 																</div>
@@ -284,35 +321,35 @@
 				<script type="text/javascript" src="{{ asset('assets/js/plugins/chart.js') }}"></script>
 				<script type="text/javascript">
 				    /*
-																								                   var data = {
-																												        labels: @json($data['months']),
-																												        datasets: [{
-																												                label: "My First dataset",
-																												                fillColor: "rgba(220,220,220,0.2)",
-																												                strokeColor: "rgba(220,220,220,1)",
-																												                pointColor: "rgba(220,220,220,1)",
-																												                pointStrokeColor: "#fff",
-																												                pointHighlightFill: "#fff",
-																												                pointHighlightStroke: "rgba(220,220,220,1)",
-																												                data: @json($data['salesData'])
-																												            },
-																												            {
-																												                label: "My Second dataset",
-																												                fillColor: "rgba(151,187,205,0.2)",
-																												                strokeColor: "rgba(151,187,205,1)",
-																												                pointColor: "rgba(151,187,205,1)",
-																												                pointStrokeColor: "#fff",
-																												                pointHighlightFill: "#fff",
-																												                pointHighlightStroke: "rgba(151,187,205,1)",
-																												                data: @json($data['salesData'])
+																																				                   var data = {
+																																								        labels: @json($data['months']),
+																																								        datasets: [{
+																																								                label: "My First dataset",
+																																								                fillColor: "rgba(220,220,220,0.2)",
+																																								                strokeColor: "rgba(220,220,220,1)",
+																																								                pointColor: "rgba(220,220,220,1)",
+																																								                pointStrokeColor: "#fff",
+																																								                pointHighlightFill: "#fff",
+																																								                pointHighlightStroke: "rgba(220,220,220,1)",
+																																								                data: @json($data['salesData'])
+																																								            },
+																																								            {
+																																								                label: "My Second dataset",
+																																								                fillColor: "rgba(151,187,205,0.2)",
+																																								                strokeColor: "rgba(151,187,205,1)",
+																																								                pointColor: "rgba(151,187,205,1)",
+																																								                pointStrokeColor: "#fff",
+																																								                pointHighlightFill: "#fff",
+																																								                pointHighlightStroke: "rgba(151,187,205,1)",
+																																								                data: @json($data['salesData'])
 
 
 
-																												            }
-																												        ]
-																												    };
+																																								            }
+																																								        ]
+																																								    };
 
-																								                    */
+																																				                    */
 				    var loansLdata = {
 				        labels: @json($data['months']),
 				        datasets: [{

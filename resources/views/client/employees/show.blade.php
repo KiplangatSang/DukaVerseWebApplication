@@ -24,12 +24,8 @@
 																				<div class="app-sidebar__user col-md-4">
 																								<div class="col-md-8">
 																												<img class="app-sidebar__user-avatar d-flex w-25 ml-3"
-																																src="/storage/profiles/{{ $empdata['emp']->empProfile ?? 'noprofile.png' }}"
-																																alt="User Image">
+																																src="{{ $empdata['emp']->emp_profile ?? 'noprofile.png' }}" alt="Profile">
 																								</div>
-
-
-
 																				</div>
 																				<div class="app-sidebar__user col-md-8">
 																								<div class="tile-body row d-flex justify-content-center">
@@ -41,18 +37,19 @@
 																																				class="btn btn-success "> Show Sales
 																																</button></a>
 
-																												<a class="mr-3"
-																																href="/client/employee/salaries/show/{{ $empdata['emp']->id }}"><button
+																												<a class="mr-3" href="/client/employee/salaries/show/{{ $empdata['emp']->id }}"><button
 																																				class="btn btn-info "> Show Salaries
 																																</button></a>
-																												<a class="mr-3" href="/employee/delete/{{ $empdata['emp']->id }}"><button
+																												<a class="mr-3" href="/client/employee/salary/create/{{ $empdata['emp']->id }}"><button
+																																				class="btn btn-secondary"> Pay Employee
+																																</button></a>
+																												<a class="mr-3" href="/client/employee/delete/{{ $empdata['emp']->id }}"><button
 																																				class="btn btn-danger "> Delete Employee
 																																</button></a>
+
 																								</div>
 
 																				</div>
-
-
 																</div>
 
 												</div>
@@ -74,7 +71,7 @@
 																								</div>
 																								<div class="row">
 																												<h5 class="dispalay-4 text-muted mr-3">Role</h5>
-																												<h5 class="dispalay-3 ">{{ $empdata['emp']->emp_role}}</h5>
+																												<h5 class="dispalay-3 ">{{ $empdata['emp']->emp_role }}</h5>
 
 																								</div>
 
@@ -110,17 +107,17 @@
 																				<div class="col">
 																								<div class="row">
 																												<h5 class="dispalay-4 text-muted mr-3">NHIF</h5>
-																												<h5 class="dispalay-3 ">{{ $empdata['emp']->emp_NHIF ?? "N/A"}}</h5>
+																												<h5 class="dispalay-3 ">{{ $empdata['emp']->emp_NHIF ?? 'N/A' }}</h5>
 
 																								</div>
 																								<div class="row">
 																												<h5 class="dispalay-4 text-muted mr-3">NSSF</h5>
-																												<h5 class="dispalay-3 ">{{ $empdata['emp']->emp_NSSF ?? "N/A" }}</h5>
+																												<h5 class="dispalay-3 ">{{ $empdata['emp']->emp_NSSF ?? 'N/A' }}</h5>
 
 																								</div>
 																								<div class="row">
 																												<h5 class="dispalay-4 text-muted mr-3">KRA</h5>
-																												<h5 class="dispalay-3 ">{{ $empdata['emp']->emp_KRA ?? "N/A" }}</h5>
+																												<h5 class="dispalay-3 ">{{ $empdata['emp']->emp_KRA ?? 'N/A' }}</h5>
 
 																								</div>
 

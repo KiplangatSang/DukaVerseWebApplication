@@ -8,11 +8,11 @@ use PhpParser\Node\Stmt\Return_;
 class TransactionsRepository
 {
 
-    protected $STRLENGTH = 16;
-    protected $retail = null;
-    public function __construct($retail)
+    protected $STRLENGTH = 8;
+    protected $account = null;
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
     public function saveTransaction(
         $gateway,
@@ -23,12 +23,17 @@ class TransactionsRepository
         $cost,
         $currency,
         $purpose,
-        $purposeable_id = null,
-        $purposeable_type = null
+        $purposeable_id = null
     ) {
         # code...
-        $result =  $this->retail->accountTransactions()->create([
-            "trans_id" => Str::random($this->STRLENGTH),
+        if ($purposeable_id)
+            $purposeable_type = $this->setPurposeable($purpose);
+        else
+            $purposeable_type = null;
+
+        $code = "MNA" . Str::random($this->STRLENGTH) . "OP" . rand(10, 99);
+        $result =  $this->account->accountTransactions()->create([
+            "trans_id" => $code,
             "amount" => $amount,
             "gateway" => $gateway,
             "status" => false,
@@ -40,7 +45,7 @@ class TransactionsRepository
             "purpose" => $purpose,
             "total_amount" => $cost + $amount,
             "party_A" =>  9114295,
-            "party_B" => $this->retail->retailable()->first()->phoneno,
+            "party_B" => $this->account->retailable()->first()->phoneno,
             "purposeable_id" => $purposeable_id,
             "purposeable_type" => $purposeable_type,
         ]);
@@ -51,8 +56,7 @@ class TransactionsRepository
     public function getTransaction($id)
     {
         # code...
-        $transaction = $this->retail->accountTransactions()->where('id', $id)
-            ->with('sales')
+        $transaction = $this->account->accountTransactions()->where('id', $id)
             ->first();
         return $transaction;
     }
@@ -60,14 +64,14 @@ class TransactionsRepository
     public function getTransactions()
     {
         # code...
-        $transactions = $this->retail->accountTransactions()
+        $transactions = $this->account->accountTransactions()
             ->get();
         return $transactions;
     }
     public function getSalesTransactions()
     {
         # code...
-        $transactions = $this->retail->accountTransactions()
+        $transactions = $this->account->accountTransactions()
             ->where('purpose', "SALES")
             ->get();
         return $transactions;
@@ -75,7 +79,7 @@ class TransactionsRepository
     public function getSuppliesTransactions()
     {
         # code...
-        $transactions = $this->retail->accountTransactions()
+        $transactions = $this->account->accountTransactions()
             ->where('purpose', "SUPPLY")
             ->get();
         return $transactions;
@@ -83,9 +87,25 @@ class TransactionsRepository
     public function getLoansTransactions()
     {
         # code...
-        $transactions = $this->retail->accountTransactions()
+        $transactions = $this->account->accountTransactions()
             ->where('purpose', "LOANS")
             ->get();
         return $transactions;
+    }
+
+    public function setPurposeable($purpose)
+    {
+        # code...
+        if ($purpose == "SALES") {
+            $purposable_type = "App\Sales\Sales";
+        } else if ($purpose == "LOANS") {
+            $purposable_type = "App\Loans\Loans";
+        } else if ($purpose == "SUPPLIES") {
+            $purposable_type = "App\Supplies\Supplies";
+        } else {
+            $purposable_type = null;
+        }
+
+        return   $purposable_type;
     }
 }

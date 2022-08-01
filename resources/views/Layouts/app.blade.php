@@ -246,9 +246,7 @@
 																												Employees List</a></li>
 																				<li><a class="treeview-item " href="/employee/viewEmployee/sales"><i
 																																class="icon fa fa-circle-o"></i>Employee Sales</a></li>
-																				<li><a class="treeview-item" href="form-samples.html"><i
-																																class="icon fa fa-circle-o "></i>Requests</a></li>
-																				<li><a class="treeview-item " href="/employee/viewEmployee/salaries"><i
+																				<li><a class="treeview-item " href="/client/employee/salary/index"><i
 																																class="icon fa fa-circle-o "></i>Salaries</a></li>
 																				<li><a class="treeview-item " href="/client/employee/create"><i
 																																class="icon fa fa-circle-o "></i>Add Employee</a></li>

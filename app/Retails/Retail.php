@@ -7,6 +7,7 @@ use App\Accounts\Transaction;
 use App\Bills\Bills;
 use App\Customers\Customers;
 use App\Employees\Employees;
+use App\Employees\RetailSalary;
 use App\Loans\LoanApplication;
 use App\Loans\Loans;
 use App\Payments\Expenses;
@@ -140,5 +141,9 @@ class Retail extends Model
 
     public function subscriptions(){
         return $this->hasOne(Subscription::class,"subscription_id");
+    }
+
+    public function retailSalary(){
+        return $this->morphMany(RetailSalary::class,"salaryable");
     }
 }

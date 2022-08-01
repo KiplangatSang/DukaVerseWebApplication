@@ -2,6 +2,7 @@
 
 namespace App\Accounts;
 
+use App\Employees\RetailSalary;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
@@ -13,5 +14,11 @@ class Account extends Model
     {
         # code...
         return $this->morphTo();
+    }
+
+    public function retailSalary()
+    {
+        # code...
+      return $this->hasMany(RetailSalary::class,"account_id");
     }
 }

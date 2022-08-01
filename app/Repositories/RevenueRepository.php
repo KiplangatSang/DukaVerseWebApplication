@@ -7,11 +7,11 @@ use Illuminate\Support\Str;
 
 class RevenueRepository
 {
-    private $retail;
+    private $account;
     protected $month, $year, $revenue = null, $lastRevenue = null;
-    public function __construct($retail)
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
 
     public function saveRevenue($revenue)
@@ -21,7 +21,7 @@ class RevenueRepository
         $this->year = now("y");
 
         // get last revenues
-        $this->lastRevenue =  $this->retail->revenues()->where('month', $this->month)
+        $this->lastRevenue =  $this->account->revenues()->where('month', $this->month)
             ->where('year', $this->year)
             ->get('expense')
             ->first();
@@ -31,7 +31,7 @@ class RevenueRepository
 
         //save revenues by locking db
         $result = DB::transaction(function () {
-            $this->retail->revenues()->updateOrCreate(
+            $this->account->revenues()->updateOrCreate(
                 [
                     "month" => $this->month,
                     "year" => $this->year,
@@ -49,9 +49,9 @@ class RevenueRepository
     {
         $revenues = null;
         if ($key && $value) {
-            $revenues = $this->retail->revenues()->where($key, $value)->first();
+            $revenues = $this->account->revenues()->where($key, $value)->first();
         } else
-            $revenues = $this->retail->revenues()->first();
+            $revenues = $this->account->revenues()->first();
 
         if (!$revenues)
             return 0;
@@ -62,7 +62,7 @@ class RevenueRepository
     //get employee sales
     public function getRevenuesByDate($startDate, $endDate)
     {
-        $revenues = $this->retail->revenues()->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])->get();
+        $revenues = $this->account->revenues()->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])->get();
         return $revenues;
     }
 
@@ -72,12 +72,12 @@ class RevenueRepository
         $year = date("Y");
         $revenues = null;
         if ($month) {
-            $revenues = $this->retail->revenues()
+            $revenues = $this->account->revenues()
                 ->whereMonth("created_at", $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
         } else
-            $revenues = $this->retail->revenues()
+            $revenues = $this->account->revenues()
             ->whereYear('created_at', '=', $year)
             ->get();
 
@@ -94,12 +94,12 @@ class RevenueRepository
         $revenues = null;
 
         if ($month)
-            $revenues = $this->retail->revenues()
+            $revenues = $this->account->revenues()
             ->whereMonth('created_at', '=', $month)
             ->whereYear('created_at', '=', $year)
             ->get();
          else
-            $revenues = $this->retail->revenues()
+            $revenues = $this->account->revenues()
             ->whereYear('created_at', '=', $year)
                 ->get();
 

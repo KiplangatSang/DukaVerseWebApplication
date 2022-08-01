@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Retailer\Sales;
 
+use App\Helpers\Billing\OrderDetails;
+use App\Helpers\Billing\PaymentGatewayContract;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\payments\mpesa\MpesaController;
 use App\Http\Controllers\Retailer\payments\mpesa\MpesaController as MpesaMpesaController;
@@ -122,7 +124,7 @@ class SaleController extends BaseController
         if (!$item)
             return false;
 
-        $transactionResult = $this->saveTransaction($trans_id, $item);
+        $transactionResult = $this->saveSaleTransaction($trans_id, $item);
 
         if (!$transactionResult)
             return false;
@@ -185,44 +187,8 @@ class SaleController extends BaseController
         return  $result;
     }
 
-    public function saveTransaction($trans_id, $item)
-    {
-        # code...
-        // $old_items = array();
 
-        $price = $item->items()->first()->selling_price;
-
-        if ($trans_id == "null" || $trans_id == null)
-            $trans_id = Str::random($this->TRANSACTIONSTRLEN);
-
-
-
-        $transController = new SaleTransactionController();
-        $activeTrns = $transController->getActiveTransaction($trans_id);
-
-        if ($activeTrns) {
-            $trans_id = $activeTrns->transaction_id;
-            $price = $activeTrns->expense + $price;
-            // dd("id ".$trans_id);
-        }
-
-        //store transaction  and items
-        $transacResult = $transController->storeTransactionItems($trans_id, $price);
-
-        if (!$transacResult)
-            return false;
-
-        //store sales
-        $salesResult  = $this->salesRepository()->addSoldItemFromStock($item, $transacResult->id);
-        //dd( $salesResult );
-        if (!$salesResult)
-            return false;
-
-        //dd(count($old_items));
-        return $trans_id;
-    }
-
-    public function makeCashPayment($trans_id, $amount)
+    public function makeCashPayment($trans_id, $amount,OrderDetails $orderdetails, PaymentGatewayContract  $payment)
     {
         $transaction = $this->getRetail()->salesTransactions()->where('transaction_id', $trans_id)->first();
         if (!$transaction)
@@ -234,7 +200,7 @@ class SaleController extends BaseController
             $transaction['balance'] = $balance;
 
             $retail = $this->getRetail();
-            $transactions = $retail->salesTransactions()->updateOrCreate(
+            $saletransactions = $retail->salesTransactions()->updateOrCreate(
                 ["transaction_id" => $trans_id],
                 [
                     "on_hold" => false,
@@ -245,21 +211,22 @@ class SaleController extends BaseController
                 ]
             );
 
-            $transaction = $retail->salesTransactions()->where("transaction_id", $transactions->transaction_id)->first();
+            $saletransaction = $retail->salesTransactions()->where("transaction_id", $saletransactions->transaction_id)->first();
+            $gateway = "CASH";
+            $purpose = "SALES";
+            $message = "Retail Goods Payment";
 
-            $transRepo = new TransactionsRepository($this->getRetail());
-
-            $mpesadata = $transRepo->saveTransaction(
-                "CASH",
-                null,
+            $mpesadata = $this->saveTransaction(
+                $gateway,
                 $amount,
-                "Retail Goods Payment",
-                3,
+                1,
                 0,
                 "ksh",
-                "SALES",
-                $transaction->id,
-                "App\Sales\Sales",
+                $purpose,
+                $message,
+                $saletransaction->id,
+                $orderdetails,
+                $payment
             );
             if (!$mpesadata)
                 return $this->sendError("Could not store transaction", $transaction);
@@ -289,45 +256,79 @@ class SaleController extends BaseController
                 "is_active" => false,
             ]
         );
+        $transaction = $this->getRetail()->salesTransactions()->where('transaction_id', $transactions->transaction_id)->first();
 
         return $this->sendResponse($transaction, "The transaction is successfull");
     }
 
-    public function makeMpesaPayment($trans_id, $account, $amount)
+    public function makeMpesaPayment($trans_id, $account, $amount,OrderDetails $orderdetails, PaymentGatewayContract  $payment)
     {
         $transaction = $this->getRetail()->salesTransactions()->where('transaction_id', $trans_id)->first();
+
         if (!$transaction)
             return $this->sendError("error", $transaction);
 
-        $transRepo = new TransactionsRepository($this->getRetail());
-        $mpesadata = $transRepo->saveTransaction(
-            "MPESA",
-            $account,
+        $gateway = "MPESA";
+        $purpose = "SALES";
+        $message = "Retail Goods Payment";
+
+        $mpesadata = $this->saveTransaction(
+            $gateway,
             $amount,
-            "Retail Goods Payment",
             2,
             0,
             "ksh",
-            "SALES",
+            $purpose,
+            $message,
             $transaction->id,
-            "App\Sales\Sales",
+            $orderdetails,
+            $payment
         );
 
-        $request = new \Illuminate\Http\Request();
-        $request->setMethod('POST');
-        $request->request->add(['mpesadata' =>  $mpesadata]);
+        dd($mpesadata);
 
-
-        $mpesaCont = new MpesaMpesaController();
-        $mpesaRes = $mpesaCont->stkPush($request);
-        // dd($mpesaRes);
-        if (!$mpesaRes)
+        if (!$mpesadata)
             return $this->sendError("Could not send Request", $transaction);
-        if (array_key_exists('errorCode', $mpesaRes))
-            return $this->sendError($mpesaRes['errorMessage'], $transaction);
+        if (array_key_exists('errorCode', (array)$mpesadata))
+            return $this->sendError($mpesadata['errorMessage'], $transaction);
 
         return $this->sendResponse($transaction, "The transaction is successfull");
-        // else
-        //     return $this->sendError("Amount is less than the required amount", $transaction);
+    }
+
+
+    public function saveSaleTransaction($trans_id, $item)
+    {
+        # code...
+        // $old_items = array();
+
+        $price = $item->items()->first()->selling_price;
+
+        if ($trans_id == "null" || $trans_id == null)
+            $trans_id = Str::random($this->TRANSACTIONSTRLEN);
+
+
+
+        $transController = new SaleTransactionController();
+        $activeTrns = $transController->getActiveTransaction($trans_id);
+
+        if ($activeTrns) {
+            $trans_id = $activeTrns->transaction_id;
+            $price = $activeTrns->expense + $price;
+        }
+
+        //store transaction  and items
+        $transacResult = $transController->storeTransactionItems($trans_id, $price);
+
+        if (!$transacResult)
+            return false;
+
+        //store sales
+        $salesResult  = $this->salesRepository()->addSoldItemFromStock($item, $transacResult->id);
+        //dd( $salesResult );
+        if (!$salesResult)
+            return false;
+
+        //dd(count($old_items));
+        return $trans_id;
     }
 }

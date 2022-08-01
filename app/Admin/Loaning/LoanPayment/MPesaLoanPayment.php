@@ -17,23 +17,9 @@ class MPesaLoanPayment extends LoanPayment
 
     }
 
-    // private function transactMoney()
-    // {
-
-    //     if ($this->pay($this->account, $this->amount)) {
-    //         $this->status = $this->setPaymentStatus(true);
-    //     } else {
-    //         $this->status = $this->setPaymentStatus(false);
-    //     }
-    //     $this->date = $this->setPaymentDate();
-    // }
-
     public function pay()
     {
         $timeStamp = date('YmdHis');
-
-        // dd(env('MPESA_STK_SHORTCODE'));
-
         $password = env('MPESA_STK_SHORTCODE') . env('MPESA_PASSKEY') . $timeStamp;
         $body = array(
             'BusinessShortCode' => env('MPESA_SHORTCODE'),

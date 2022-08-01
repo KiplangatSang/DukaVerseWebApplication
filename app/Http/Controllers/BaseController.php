@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Employees\Employees;
+use App\Helpers\Billing\OrderDetails;
+use App\Helpers\Billing\PaymentGatewayContract;
+use App\Http\Controllers\Retailer\Transactions\TransactionController;
 use App\Repositories\AppRepository;
 use App\Repositories\FirebaseRepository;
 use App\Retails\Retail;
@@ -191,7 +194,41 @@ class BaseController extends Controller
     {
         # code...
         $apprepo = new AppRepository();
-        $location = (array)$apprepo->getLocation( $this->getIp());
+        $location = (array)$apprepo->getLocation($this->getIp());
         return $location;
+    }
+
+    public function saveTransaction(
+        $gateway,
+        $amount,
+        $transaction_type,
+        $cost,
+        $currency,
+        $purpose,
+        $message,
+        $purpose_id = null,
+        OrderDetails $orderdetails,
+        PaymentGatewayContract  $payment
+    ) {
+        # code...
+        $requestdata = array(
+            "gateway" => $gateway,
+            "amount" => $amount,
+            "transaction_type" => $transaction_type,
+            "cost" => $cost,
+            "currency" => $currency,
+            "purpose" => $purpose,
+            "message" => $message,
+            "purpose_id" => $purpose_id
+        );
+        $request = new Request();
+        $request->setMethod('POST');
+        // $request->request->add(['mpesadata' =>  $mpesadata]);
+        $request->request->add($requestdata);
+        $transactionController = new TransactionController();
+        $result =  $transactionController->store($request, $orderdetails, $payment);
+        if (!$result)
+            return false;
+        return $result;
     }
 }

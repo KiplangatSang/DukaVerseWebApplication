@@ -7,32 +7,32 @@ use Illuminate\Support\Facades\Log;
 
 class CustomersRepository
 {
-    private $retail;
-    public function __construct($retail)
+    private $account;
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
         // try{
-        //     $this->retail->retailOwner()->get();
+        //     $this->account->retailOwner()->get();
         // }catch(Exception $e){
         //  Log::info($e->getMessage());
         // }
     }
     public function getDisctictCustomers()
     {
-        $customers = $this->retail->orders()->distinct('email')->get();
+        $customers = $this->account->orders()->distinct('email')->get();
 
         return $customers;
     }
     public function getAllCustomers()
     {
-        $customers = $this->retail->customers()->get();
+        $customers = $this->account->customers()->get();
         return $customers;
     }
 
     //get sale by item id
     public function getCustomerById( $id)
     {
-        $customer = $this->retail->customers()->where('id',$id)->get();
+        $customer = $this->account->customers()->where('id',$id)->get();
 
         return $customer;
     }
@@ -40,28 +40,28 @@ class CustomersRepository
     //get employee sales
     public function getCustomersCredit($id)
     {
-        $order = $this->retail->customers()->where('id',$id)->get('credit');
+        $order = $this->account->customers()->where('id',$id)->get('credit');
         return $order;
     }
 
      //get employee sales
      public function getCustomersByDate($startDate, $endDate)
      {
-         $order = $this->retail->customers()->whereBetween('created_at', [$startDate." 00:00:00",$endDate." 23:59:59"])->get();
+         $order = $this->account->customers()->whereBetween('created_at', [$startDate." 00:00:00",$endDate." 23:59:59"])->get();
          return $order;
      }
 
 
      public function getCustomersCost()
      {
-        $creditPrice = $this->retail->customers()->sum('creditPrice');
+        $creditPrice = $this->account->customers()->sum('creditPrice');
          # code...
          return $creditPrice ;
      }
 
      public function getCustomers($key,$value)
      {
-         $customers =  $this->retail->customers()->where($key,$value)->orderBy('created_at', 'DESC')->get();
+         $customers =  $this->account->customers()->where($key,$value)->orderBy('created_at', 'DESC')->get();
          //dd($sales);
       return $customers;
      }

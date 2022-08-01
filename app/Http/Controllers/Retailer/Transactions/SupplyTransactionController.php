@@ -28,7 +28,7 @@ class SupplyTransactionController extends BaseController
     public function index()
     {
         //
-        $transactions =  $this->transactionRepository()->getSalesTransactions();
+        $transactions =  $this->transactionRepository()->getSuppliesTransactions();
         $transactiondata['transactions'] = $transactions;
         $transactiondata['amount'] = $transactions->sum('total_amount');
         return view('client.transactions.salestransactions.index', compact('transactiondata'));

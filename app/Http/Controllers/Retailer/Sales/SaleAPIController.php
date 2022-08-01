@@ -128,7 +128,7 @@ class SaleAPIController extends BaseController
             return false;
 
 
-        $transactionResult = $this->saveTransaction($trans_id, $item);
+        $transactionResult = $this->saveSaveTransaction($trans_id, $item);
 
         if (!$transactionResult)
             return false;
@@ -191,7 +191,7 @@ class SaleAPIController extends BaseController
         return  $result;
     }
 
-    public function saveTransaction($trans_id, $item)
+    public function saveSaleTransaction($trans_id, $item)
     {
         # code...
         // $old_items = array();
@@ -291,15 +291,9 @@ class SaleAPIController extends BaseController
 
         $transRepo = new TransactionsRepository($this->getRetail());
 
-        $mpesadata = $transRepo->saveTransaction("MPESA", $account, $amount, "Retail Goods Payment",  2, 0, "ksh", "Retail Goods Payment");
-
-        $request = new \Illuminate\Http\Request();
-        $request->setMethod('POST');
-        $request->request->add(['mpesadata' =>  $mpesadata]);
+        $mpesaRes = $transRepo->saveTransaction("MPESA", $account, $amount, "Retail Goods Payment",  2, 0, "ksh", "Retail Goods Payment");
 
 
-        $mpesaCont = new MpesaController();
-        $mpesaRes = $mpesaCont->stkPush($request);
         // dd($mpesaRes);
         if (!$mpesaRes)
             return $this->sendError("Could not send Mpesa Request", $transaction);

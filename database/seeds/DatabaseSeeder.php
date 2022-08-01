@@ -1,6 +1,5 @@
 <?php
 
-use App\Customers\Customers;
 use Illuminate\Database\Seeder;
 
 
@@ -32,12 +31,13 @@ class DatabaseSeeder extends Seeder
             RetailItemsSeeder::class,
             AccountSeeder::class,
             SubscriptionSeeder::class,
-            UserSeeder::class,
             SalesSeeder::class,
             SaleTransactionsSeeder::class,
             RevenueSeeder::class,
+           // RetailSalarySeeder::class,
+            // UserSeeder::class,
             // RetailOwnersSeeder::class,
-            // RetailSeeder::class,
+             RetailSeeder::class,
             ProfitsSeeder::class,
             ExpensesSeeder::class,
         ]);

@@ -4,10 +4,10 @@ namespace App\Repositories;
 
 class RequiredItemsRepository
 {
-    private $retail;
-    public function __construct($retail)
+    private $account;
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
 
     public function indexData()
@@ -38,7 +38,7 @@ class RequiredItemsRepository
     public function showData($id)
     {
         //
-        $allStocks = $this->retail->stocks()->where('stockName', $id)
+        $allStocks = $this->account->stocks()->where('stockName', $id)
             ->orderBy('created_at', 'DESC')
             ->get();
         $stocksdata = array(
@@ -50,7 +50,7 @@ class RequiredItemsRepository
 
     public function getAllRequiredItems()
     {
-        $requiredItems = $this->retail->requiredItems()->get();
+        $requiredItems = $this->account->requiredItems()->get();
         foreach ($requiredItems as $requiredItem) {
             $requiredItem['item'] = $requiredItem->items()->first();
         }
@@ -60,7 +60,7 @@ class RequiredItemsRepository
     //get sale by item id
     public function getRequiredItemsById($itemid)
     {
-        $requiredItem = $this->retail->requiredItems()->where('id', $itemid)->get();
+        $requiredItem = $this->account->requiredItems()->where('id', $itemid)->get();
 
         return $requiredItem;
     }
@@ -68,7 +68,7 @@ class RequiredItemsRepository
     public function updateRequiredItems($request)
     {
         # code...
-        $result =   $this->retail->requiredItems()->update(
+        $result =   $this->account->requiredItems()->update(
             $request,
         );
 
@@ -80,28 +80,28 @@ class RequiredItemsRepository
     //get employee sales
     public function getEmployeeRequiredItems($empid)
     {
-        $requiredItem = $this->retail->requiredItems()->where('employees_id', $empid)->get();
+        $requiredItem = $this->account->requiredItems()->where('employees_id', $empid)->get();
         return $requiredItem;
     }
 
     //get employee sales
     public function getRequiredItemsByDate($startDate, $endDate)
     {
-        $requiredItem = $this->retail->requiredItems()->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])->get();
+        $requiredItem = $this->account->requiredItems()->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])->get();
         return $requiredItem;
     }
 
 
     public function getRequiredItemsCost()
     {
-        $requiredItemPrice = $this->retail->requiredItems()->sum('price');
+        $requiredItemPrice = $this->account->requiredItems()->sum('price');
         # code...
         return $requiredItemPrice;
     }
 
     public function getRequiredItems($key, $value)
     {
-        $requiredItem =  $this->retail->requiredItems()->where($key, $value)->orderBy('created_at', 'DESC')->get();
+        $requiredItem =  $this->account->requiredItems()->where($key, $value)->orderBy('created_at', 'DESC')->get();
         //dd($sales);
         return $requiredItem;
     }
@@ -111,7 +111,7 @@ class RequiredItemsRepository
         # code...
         if (!$amount)
             $amount = 1;
-        $requiredResult =  $this->retail->requiredItems()->create([
+        $requiredResult =  $this->account->requiredItems()->create([
             "employees_id" => auth()->id(),
             "retail_items_id" => $item->id,
             "required_amount" => $amount,

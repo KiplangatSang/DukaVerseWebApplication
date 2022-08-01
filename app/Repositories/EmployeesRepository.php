@@ -4,22 +4,22 @@ namespace App\Repositories;
 
 class EmployeesRepository
 {
-    private $retail;
-    public function __construct($retail)
+    private $account;
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
 
     public function getEmployees()
     {
-        $employees = $this->retail->employees()->orderBy('created_at', 'desc')->get();
+        $employees = $this->account->employees()->orderBy('created_at', 'desc')->get();
         return $employees;
     }
 
     //get sale by item id
     public function getEmployeeById($id)
     {
-        $employee = $this->retail->employees()->where('id', $id)->first();
+        $employee = $this->account->employees()->where('id', $id)->first();
 
         return $employee;
     }
@@ -27,7 +27,7 @@ class EmployeesRepository
     //get employee sales
     public function getEmployeeSales($empid)
     {
-        $sales = $this->retail->sales()->where('employees_id', $empid)->get();
+        $sales = $this->account->sales()->where('employees_id', $empid)->get();
 
         return $sales;
     }
@@ -37,7 +37,7 @@ class EmployeesRepository
 
     public function getSaleItem($key, $value)
     {
-        $sales =  $this->retail->employees()->where($key, $value)->orderBy('created_at', 'DESC')->get();
+        $sales =  $this->account->employees()->where($key, $value)->orderBy('created_at', 'DESC')->get();
         //dd($sales);
         return $sales;
     }

@@ -6,6 +6,7 @@ use App\Accounts\Account;
 use App\Accounts\Transaction;
 use App\Bills\Bills;
 use App\Employees\Employees;
+use App\Employees\RetailSalary;
 use App\Payments\Expenses;
 use App\Profiles\Profiles;
 use App\Retail\RetailItems;
@@ -128,5 +129,10 @@ class User extends Authenticatable
     public function supplyItems()
     {
         return $this->morphMany(SupplyItems::class, 'supply_itemable');
+    }
+
+    public function retailSalary()
+    {
+        return $this->hasMany(RetailSalary::class, 'paid_by');
     }
 }

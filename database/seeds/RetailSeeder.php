@@ -1,5 +1,6 @@
 <?php
 
+use App\Employees\RetailSalary;
 use App\Retails\Retail;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +15,7 @@ class RetailSeeder extends Seeder
     {
         //
 
-        factory(Retail::class,10)
+        factory(RetailSalary::class,10)
         ->create();
     }
 }

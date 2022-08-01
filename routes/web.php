@@ -1,5 +1,8 @@
 <?php
 
+use App\Helpers\Billing\OrderDetails;
+use App\Helpers\Billing\PaymentGateway;
+use App\Helpers\Billing\PaymentGatewayContract;
 use App\Http\Controllers\Admin\Bills\AdminBillController;
 use App\Http\Controllers\Admin\Bills\AdminBillsHistoryController;
 use App\Http\Controllers\Admin\Bills\AdminBillsPaymentController;
@@ -42,6 +45,7 @@ use App\Http\Controllers\Retailer\payments\mpesa\MpesaController;
 use App\Http\Controllers\Retailer\FcmCloudMessagingController;
 use App\Http\Controllers\Finance\AdminSalesController as FinanceAdminSalesController;
 use App\Http\Controllers\Market\MarketController;
+use App\Http\Controllers\Retailer\Employees\EmployeeSalariesController;
 use App\Http\Controllers\Retailer\Firebase\FirebaseController;
 use App\Http\Controllers\Retailer\Firebase\FirebaseStorageController;
 use App\Http\Controllers\Retailer\Loans\AppliedLoansController;
@@ -143,10 +147,6 @@ Route::get('/email-test', function () {
     } else {
         dd('failed');
     }
-});
-
-Route::get('/bluetooth', function () {
-    return view('bluetooth');
 });
 
 Route::get('/send-email', [SendEmailController::class, 'index']);
@@ -474,8 +474,6 @@ Route::get('/client/sales/credit/index', [CreditItemController::class, 'index'])
 //paid items
 Route::get('/client/sales/paiditems/index', [PaidItemsController::class, 'index']);
 
-
-
 //stock
 Route::get('/client/stock/create', [StockController::class, 'create'])->name('createstock');
 Route::get('/client/stock/index', [StockController::class, 'index'])->name('showstock');
@@ -592,6 +590,16 @@ Route::get('/client/employee/show/{emp_id}', [EmployeeController::class, 'show']
 Route::get('/client/employee/edit/{emp_id}', [EmployeeController::class, 'edit']);
 Route::post('/client/employee/update/{emp_id}', [EmployeeController::class, 'update']);
 Route::get('/client/employee/delete/{emp_id}', [EmployeeController::class, 'delete']);
+
+//salaries
+Route::get('/client/employee/salary/index', [EmployeeSalariesController::class, 'index']);
+Route::get('/client/employee/salary/create/{id}', [EmployeeSalariesController::class, 'create']);
+Route::post('/client/employee/salary/store/{id}', [EmployeeSalariesController::class, 'store']);
+Route::get('/client/employee/salary/show/{id}', [EmployeeSalariesController::class, 'show']);
+// Route::get('/client/employee/salary/edit/{id}', [EmployeeSaleController::class, 'edit']);
+// Route::post('/client/employee/salary/update/{id}', [EmployeeSaleController::class, 'updte']);
+// Route::post('/client/employee/salary/delete/{id}', [EmployeeSaleController::class, 'deletes']);
+
 
 //employee sales
 Route::get('/client/sales/employee/show/{id}', [EmployeeSaleController::class, 'show']);
@@ -713,6 +721,9 @@ Route::get('/support/index', function () {
 //transactions
 Route::get('/client/transactions/index', [TransactionController::class, 'index'])->name('transactions');
 Route::get('/client/transactions/show/{id}', [TransactionController::class, 'show'])->name('showtransactions');
+Route::get('/client/transactions/store', [TransactionController::class, 'store'])->name('storetransactions');
+Route::get('/client/transactions/create', [TransactionController::class, 'create'])->name('createtransactions');
+
 
 //sales transactions
 Route::get('/client/transactions/sales/index', [TransactionsSaleTransactionController::class, 'index'])->name('salestransactions');

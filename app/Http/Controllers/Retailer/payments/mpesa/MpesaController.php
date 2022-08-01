@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Retailer\payments\mpesa;
 use App\Admin\Loaning\LoanPayment\MPesaLoanPayment;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -52,28 +53,35 @@ class MpesaController extends BaseController
             ? 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
             : 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
 
-        $curl = curl_init($url);
-        curl_setopt_array(
-            $curl,
-            array(
-                CURLOPT_HTTPHEADER => ['Content-Type: application/json; charset=utf8'],
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_HEADER => false,
-                CURLOPT_USERPWD => env('MPESA_CONSUMER_KEY') . ":" . env('MPESA_CONSUMER_SECRET')
-            )
-        );
-        $response = json_decode(curl_exec($curl));
-        curl_close($curl);
+        try {
+            $curl = curl_init($url);
+            curl_setopt_array(
+                $curl,
+                array(
+                    CURLOPT_HTTPHEADER => ['Content-Type: application/json; charset=utf8'],
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_HEADER => false,
+                    CURLOPT_USERPWD => env('MPESA_CONSUMER_KEY') . ":" . env('MPESA_CONSUMER_SECRET')
+                )
+            );
 
-        if (!$response)
-            return false;
+            $response = json_decode(curl_exec($curl));
+            curl_close($curl);
+            if (!$response)
+                return false;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
         return $response->access_token;
     }
+
+
     /* get from   safaricom app*/
     public function makeHttp($url, $body)
     {
         $token = $this->getAccessToken();
+
         if (!$token)
             return false;
 
@@ -96,7 +104,7 @@ class MpesaController extends BaseController
         curl_close($curl);
         if (!$curl_response)
             return "error";
-        dd($curl_response);
+
         return $curl_response;
     }
 
@@ -160,28 +168,24 @@ class MpesaController extends BaseController
     public function stkPush(Request $request)
     {
 
-        // Log::info('Endpoint Hit');
-
         $timeStamp = date('YmdHis');
         $callbackUrl = env('MPESA_TEST_URL') . '/api/stkpush';
-        Log::info($callbackUrl);
-
         $password = env('MPESA_STK_SHORTCODE') . env('MPESA_PASSKEY') . $timeStamp;
         $body = array(
             //business shortcode is store number in buy goods
             'BusinessShortCode' => env('MPESA_STK_SHORTCODE'),
             'Password' => base64_encode($password),
             'Timestamp' => $timeStamp,
-            'TransactionType' => 'CustomerPayBillOnline',
+            //'TransactionType' => 'CustomerBuyGoodsOnline',
+            'TransactionType' => 'CustomerBuyGoodsOnline',
             'Amount' => $request->mpesadata->amount,
-            'PartyA' => $request->mpesadata->party_B,
+            'PartyA' =>  env('MPESA_TEST_MSISDN'),
             'PartyB' => env('MPESA_STK_SHORTCODE'),
-            'PhoneNumber' => $request->mpesadata->party_B,
+            'PhoneNumber' => env('MPESA_TEST_MSISDN'),
             'CallBackURL' => $callbackUrl,
             'AccountReference' => $request->mpesadata->party_B,
             'TransactionDesc' => $request->mpesadata->message,
         );
-
 
         $url = env('MPESA_ENV') == 0
             ? 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
@@ -190,7 +194,7 @@ class MpesaController extends BaseController
         $response = $this->makeHttp($url, $body);
         $result = (array)json_decode($response);
 
-        //dd($result);
+        dd($response);
         return $result;
     }
 

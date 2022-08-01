@@ -6,10 +6,10 @@ use App\Stock\Stock;
 
 class SalesRepository
 {
-    private $retail;
-    public function __construct($retail)
+    private $account;
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
 
 
@@ -23,7 +23,7 @@ class SalesRepository
         $solditemscount = count($allSales);
         $salesTotalPrice = $allSales->sum('selling_price');
         $salesrevenue = $this->getRevenue();
-        $meansales = $this->retail->sales()->get()->Avg('selling_price');
+        $meansales = $this->account->sales()->get()->Avg('selling_price');
         $meansales = round($meansales, 2);
         $growth = $this->getProfitPercentage();
         $growth = round($growth, 2);
@@ -46,7 +46,7 @@ class SalesRepository
     {
         # code...
         $stockdata = array(
-            "allStock"  => $this->retail->stocks()->get(),
+            "allStock"  => $this->account->stocks()->get(),
 
         );
 
@@ -68,7 +68,7 @@ class SalesRepository
     public function destroy($id)
     {
         //
-        $result = $this->retail->sales()->destroy($id);
+        $result = $this->account->sales()->destroy($id);
         if (!$result)
             return false;
         return $result;
@@ -77,7 +77,7 @@ class SalesRepository
     //store sales item
     public function saveSalesItem($request)
     {
-        $this->retail->sales()->create(
+        $this->account->sales()->create(
             $request,
         );
     }
@@ -85,9 +85,7 @@ class SalesRepository
     public function saveSalesItemFromStock($request)
     {
         // dd($request);
-        //  dd($request->retail_items_id);
-
-        $result = $this->retail->sales()->create(
+        $result = $this->account->sales()->create(
             [
                 'code' => $request->code,
                 'selling_price' => $request->item->selling_price,
@@ -105,11 +103,10 @@ class SalesRepository
     }
     public function getDisctictSoldItems()
     {
-        //dd($this->retail);
-        $sales = $this->retail->sales()->distinct('itemName', 'itemSize')->get();
+        $sales = $this->account->sales()->distinct('itemName', 'itemSize')->get();
         foreach ($sales as $sale) {
-            $sale->itemAmount = $this->retail->sales()->where('itemName', $sale->itemName)->sum('itemAmount');
-            $sale->price = $this->retail->sales()->where('itemName', $sale->itemName)->sum('selling_price');
+            $sale->itemAmount = $this->account->sales()->where('itemName', $sale->itemName)->sum('itemAmount');
+            $sale->price = $this->account->sales()->where('itemName', $sale->itemName)->sum('selling_price');
         }
 
         return $sales;
@@ -123,20 +120,20 @@ class SalesRepository
         if (!$year)
             $year = date('Y');
         if ($month)
-            $items = $this->retail->items()
+            $items = $this->account->items()
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
 
         else {
             $month = date('m');
-            $items = $this->retail->items()
+            $items = $this->account->items()
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
         }
         foreach ($items as $item) {
-            $item['sales'] =  $item->sales()->whereIn('retailsaleable_id', $this->retail)->get();
+            $item['sales'] =  $item->sales()->whereIn('retailsaleable_id', $this->account)->get();
         }
 
         return $items;
@@ -150,14 +147,14 @@ class SalesRepository
         if (!$year)
             $year = date('Y');
         if ($month)
-            $sales = $this->retail->sales()
+            $sales = $this->account->sales()
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
 
         else {
             $month = date('m');
-            $sales = $this->retail->sales()
+            $sales = $this->account->sales()
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
@@ -181,7 +178,7 @@ class SalesRepository
     //get sale by item id
     public function getSuppliesById($itemid)
     {
-        $sale = $this->retail->supplies()->where('id', $itemid)->get();
+        $sale = $this->account->supplies()->where('id', $itemid)->get();
 
         return $sale;
     }
@@ -189,7 +186,7 @@ class SalesRepository
     //get supplies sales
     public function getSupplierSupplies($id)
     {
-        $sale = $this->retail->supplies()->where('supplier_id', $id)->get();
+        $sale = $this->account->supplies()->where('supplier_id', $id)->get();
 
         return $sale;
     }
@@ -197,7 +194,7 @@ class SalesRepository
     //get employee sales
     public function getSalesByDate($startDate, $endDate)
     {
-        $sale = $this->retail->sales()->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])->get();
+        $sale = $this->account->sales()->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])->get();
         return $sale;
     }
 
@@ -207,11 +204,11 @@ class SalesRepository
         $salesRevenue = 0;
         $salesexpense = 0;
 
-        $sales = $this->retail->sales()
+        $sales = $this->account->sales()
             ->where($key, $value)
             ->sum('selling_price');
 
-        $stockRepo = new StockRepository($this->retail);
+        $stockRepo = new StockRepository($this->account);
         $salesexpense = $stockRepo->getStockExpense();
 
         $salesRevenue = $sales - $salesexpense;
@@ -236,10 +233,10 @@ class SalesRepository
 
     public function getSaleItem($item_id)
     {
-        $item = $this->retail->items()->where('id', $item_id)->first();
+        $item = $this->account->items()->where('id', $item_id)->first();
 
         $sales =  $item->sales()
-            ->whereIn('retailsaleable_id', $this->retail)
+            ->whereIn('retailsaleable_id', $this->account)
             ->orderBy('created_at', 'DESC')->get();
 
         foreach ($sales as $sale)
@@ -249,7 +246,7 @@ class SalesRepository
     //get sale by item id
     public function getStockById($itemid)
     {
-        $stock = $this->retail->stocks()->where('code', $itemid)->first();
+        $stock = $this->account->stocks()->where('code', $itemid)->first();
         $stock['item'] =  $stock->items()->first();
         return $stock;
     }
@@ -260,12 +257,12 @@ class SalesRepository
             $year = date('Y');
         $transactions = null;
         if ($month)
-            $transactions = $this->retail->salesTransactions()
+            $transactions = $this->account->salesTransactions()
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
         else
-            $transactions = $this->retail->salesTransactions()
+            $transactions = $this->account->salesTransactions()
                 ->whereMonth('created_at', '=', date('m'))
                 ->whereYear('created_at', '=', $year)
                 ->get();
@@ -278,11 +275,11 @@ class SalesRepository
     {
         $month = date('m');
 
-        $currentTransactions = $this->retail->salesTransactions()
+        $currentTransactions = $this->account->salesTransactions()
             ->whereMonth('created_at', '=', $month)
             ->sum('paid_amount');
 
-        $previousTransactions = $this->retail->salesTransactions()
+        $previousTransactions = $this->account->salesTransactions()
             ->whereMonth('created_at', '=', $month - 1)
             ->sum('paid_amount');
 
@@ -304,7 +301,7 @@ class SalesRepository
     public function removeStockItem($id)
     {
         # code...
-        $stockRepo = new StockRepository($this->retail);
+        $stockRepo = new StockRepository($this->account);
         $result = $stockRepo->removeStockItem($id);
         if (!$result)
             return false;
@@ -315,7 +312,7 @@ class SalesRepository
     public function addSoldItemFromStock($item, $transId)
     {
         # code...
-        $stockRepo = new StockRepository($this->retail);
+        $stockRepo = new StockRepository($this->account);
 
         $salesItem = $item;
 
@@ -345,7 +342,7 @@ class SalesRepository
     public function getPaidSoldItems()
     {
         # code...
-        $transactions = $this->retail->salesTransactions()->where('pay_status', true)->get();
+        $transactions = $this->account->salesTransactions()->where('pay_status', true)->get();
         foreach ($transactions as $transaction) {
             $sales = $this->getTransactionItems($transaction);;
             $transaction['sales'] = $sales;
@@ -357,7 +354,7 @@ class SalesRepository
     {
         # code...
 
-        $transactions = $this->retail->salesTransactions()->where('on_credit', true)->get();
+        $transactions = $this->account->salesTransactions()->where('on_credit', true)->get();
         foreach ($transactions as $transaction) {
             $sales = $this->getTransactionItems($transaction);
             $transaction['sales'] = $sales;
@@ -369,7 +366,7 @@ class SalesRepository
     //employees
     public function getEmployeeSales($id)
     {
-        $emp = $this->retail->employees()->where('id', $id)->first();
+        $emp = $this->account->employees()->where('id', $id)->first();
         $sales = $emp->sales()->get();
         foreach ($sales as $sale) {
             $sale['saleitem'] = $sale->items()->first();

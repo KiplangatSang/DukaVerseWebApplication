@@ -14,40 +14,40 @@ use Faker\Generator as Faker;
 class LoansRepository
 {
 
-    private $retail;
-    public function __construct($retail)
+    private $account;
+    public function __construct($account)
     {
-        $this->retail = $retail;
+        $this->account = $account;
     }
 
     //getApplied loans
-    public function getAppliedLoans($month = null,$year = null)
+    public function getAppliedLoans($month = null, $year = null)
     {
         # code...
-            if (!$year)
-                $year = date('Y');
+        if (!$year)
+            $year = date('Y');
 
-            if ($month)
-            $loanApplications = $this->retail->loanApplications()
+        if ($month)
+            $loanApplications = $this->account->loanApplications()
                 ->whereMonth('created_at', '=', $month)
                 ->whereYear('created_at', '=', $year)
                 ->get();
         else
-            $loanApplications = $this->retail->loanApplications()
+            $loanApplications = $this->account->loanApplications()
                 ->whereMonth('created_at', '=', date('m'))
                 ->whereYear('created_at', '=', $year)
                 ->get();
-            foreach ($loanApplications as $application) {
-                $application['loan'] =  $application->loans()->first();
-            }
-            return $loanApplications;
+        foreach ($loanApplications as $application) {
+            $application['loan'] =  $application->loans()->first();
+        }
+        return $loanApplications;
     }
 
     //get all Loans
     public function getLoanApplications()
     {
 
-        $loanApplications = $this->retail->loanApplications()->get();
+        $loanApplications = $this->account->loanApplications()->get();
 
         $loanApplications = LoanApplication::all();
 
@@ -60,7 +60,7 @@ class LoansRepository
     public function getLoans()
     {
         # code...
-        $loans = $this->retail->loans()->get();
+        $loans = $this->account->loans()->get();
         return $loans;
     }
 
@@ -121,9 +121,9 @@ class LoansRepository
     public function getLoanApplicationById($id)
     {
         # code...
-        $loanApplication = $this->retail->loanApplications()->where('id', $id)->first();
+        $loanApplication = $this->account->loanApplications()->where('id', $id)->first();
 
-            $loanApplication['loan'] =  $loanApplication->loans()->first();
+        $loanApplication['loan'] =  $loanApplication->loans()->first();
         return $loanApplication;
     }
 }
